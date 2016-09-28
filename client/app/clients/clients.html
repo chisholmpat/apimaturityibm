@@ -1,0 +1,174 @@
+<div class="container" style="margin-top:1%;">
+	<div class=row>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>Clients ({{clientsCtrl.clients.length}})</h4>
+				</div>
+				<div class="panel-body">
+					<table class="table table.responsive table-hover table-striped">
+						<thead class="thead">
+							<tr>
+								<th>Clients</th>
+								<th style="text-align:center;">Assessments</th>
+								<th style="text-align:right;"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="client in clientsCtrl.clients" ng-click="clientsCtrl.selectClient(client)">
+								<td><a ui-sref="single({_id: client._id})">{{client.name}}</a></td>
+
+								<td style="text-align:center;">{{clientsCtrl.assessmentCount(client)}}</td>
+
+								<td style="text-align:right;">
+									<button class="btn btn-danger btn-md" ng-click="clientsCtrl.deleteClient(client)">
+										Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6" ng-data="{{clientsCtrl.client}}">
+			<div class="panel panel-default" >
+				<div class="panel-heading">
+					<Strong>{{clientsCtrl.client.name}}</Strong>
+				</div>
+				<div class="panel-body">
+					<div>
+						<button type="button" class="btn btn-default btn-md" style="float:right;" ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.addNew(clientsCtrl.client)">
+							Add New <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+						<button class="btn btn-default btn-md" style="float:right;" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.saveClient(clientsCtrl.client)">
+							Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+						</button>	
+
+						<button type="button" class="btn btn-default btn-md" ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
+							Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						</button>
+						<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
+							Cancel <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div>
+						<div class="card text-xs-center" style="margin-top:2%">
+							<div class="card-header">
+								<ul class="nav nav-tabs card-header-tabs pull-xs-left">
+									<li class="nav-item">
+										<a class="nav-link active" href="#" ng-click="clientsCtrl.select(1)">Contact</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" ng-click="clientsCtrl.select(2)">Details</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link disabled" href="#" ng-click="clientsCtrl.select(3)">Competitors</a>
+									</li>
+								</ul>
+							</div>
+							<div class="card-block" ng-show="clientsCtrl.isSelected(1)">
+								<h4 class="card-title"></h4>
+								<ul class="list-group">
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="nameInput">Name</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.name">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Contact:</strong> {{clientsCtrl.client.contact}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Contact</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.contact">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Country:</strong> {{clientsCtrl.client.country}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Country</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.country">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Phone:</strong> {{clientsCtrl.client.phone}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Phone</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.phone">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>E-mail:</strong> {{clientsCtrl.client.email}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">E-mail</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.email">
+									</li>
+								</ul>
+							</div>
+							<div class="card-block" ng-show="clientsCtrl.isSelected(2)">
+								<h4 class="card-title"></h4>
+								<ul class="list-group">
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Industry:</strong> {{clientsCtrl.client.industry}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Industry</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.industry">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Industry Segment:</strong> {{clientsCtrl.client.industry_segment}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Industry Segment</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.industry_segment">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Revenue:</strong> ${{clientsCtrl.client.revenue}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Revenue</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.revenue">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Market Share:</strong> {{clientsCtrl.client.market_share}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Market Share</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.market_share">
+									</li>
+
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Market Capitalization:</strong> {{clientsCtrl.client.market_capitalization}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Market Capitalization</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.market_capitalization">
+									</li>
+								</ul>
+							</div>
+							<div class="card-block" ng-show="clientsCtrl.isSelected(3)">
+								<h4 class="card-title"></h4>
+								<ul class="list-group">
+									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
+										<strong>Competitors:</strong> {{clientsCtrl.client.competitors}}
+									</li>
+									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
+										<label for="contactInput">Competitors</label>
+										<input type="text" class="form-control" ng-model="clientsCtrl.client.competitors">
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
