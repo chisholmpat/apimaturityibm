@@ -1,6 +1,6 @@
 'use strict';
 
-export default class AssessmentsComponent {
+export default class HistoryComponent {
   $http;
   socket;
 

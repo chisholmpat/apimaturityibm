@@ -95,11 +95,10 @@ export class ClientsComponent {
 
   assessmentCount(client) {
     this.count = 0;
-    var q = client.assessments;
   
-    for (var j=0, jLen=q.length; j<jLen; j++) {
+    for (var i = 0; i < client.assessments.length; i++) {
       ++this.count;
-    }//End nFor
+    }
 
     return this.count;
   }//End assessmentCount

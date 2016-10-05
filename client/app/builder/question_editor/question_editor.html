@@ -1,28 +1,24 @@
-<pre>{{user.data.clients[0].assessments[0].assessment[0].questions[0] | json}}</pre>
 <div class="container" style="margin-top:2%;">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h4><small>Category: </small>{{form.name}}<br/><small>Created on: {{form.date | date: format: short}}</small></h4>
+			<small>{{editCtrl.tempName}} > {{editCtrl.formName}}</small><br/>
+			<h4>Questions:</h4>
 		</div>
 		<div class="panel-body">
 			<form class="form-inline">
 				<div class="form-group" style="float:right; vertical-align:middle;">
-					
-
 					<label for="newQuestion">Add Question:</label>
-					<input class="form-control" type="text" id="newQuestion" placeholder="Question text..." ng-model="newQ.question">
+					<input class="form-control" type="text" id="newQuestion" placeholder="Question text..." ng-model="editCtrl.newQuestion.question">
 
 					<label for="catSelect">Category: </label>
-					<select class="form-control" id="catSelect" ng-model="newQ.category">
-						<option selected>Select...</option>
+					<select class="form-control" id="catSelect" ng-model="editCtrl.newQuestion.category">
 						<option value="Self Assessment">Self Assessment</option>
 						<option value="Quantitative Assessment">Quantitative Assessment</option>
 					</select>
 
-					<button class="form-control" type="button" class="btn btn-default btn-md" ng-click="saveQuestion()">
+					<button class="form-control" type="button" class="btn btn-default btn-md" ng-click="editCtrl.saveQuestion(editCtrl.newQuestion)">
 						Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
 					</button>
-
 				</div>
 			</form>
 		</div>
@@ -37,28 +33,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="(question, q) in form.questions">
-						<td ng-hide="q.edit">{{q.question}}</td>
-						<td ng-show="q.edit"><input type="text" ng-model="q.question"></td>
+					<tr ng-repeat="question in editCtrl.questions">
+						<td ng-hide="question.edit">{{question.question}}</td>
+						<td ng-show="question.edit"><input type="text" ng-model="question.question"></td>
 
-						<td>{{q.date | date: format: short}}</td>
+						<td>{{question.date | date: format: short}}</td>
 
-						<td ng-hide="q.edit">{{q.category}}</td>
-						<td ng-show="q.edit"><input type="text" ng-model="q.category"></td>
+						<td ng-hide="question.edit">{{question.category}}</td>
+						<td ng-show="question.edit"><input type="text" ng-model="question.category"></td>
 
-						<td ng-hide="q.edit" style="text-align:right;">
-							<button class="btn btn-default btn-md" ng-click="toggleEdit(q)">
+						<td ng-hide="question.edit" style="text-align:right;">
+							<button class="btn btn-default btn-md" ng-click="editCtrl.toggleEdit(question)">
 								Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							</button>
-							<button class="btn btn-danger" ng-click="deleteQuestion(question, q)">
+							<button class="btn btn-danger" ng-click="editCtrl.deleteQuestion(question)">
 								Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 							</button>
 						</td>
-						<td ng-show="q.edit" style="text-align:right;">
-							<button class="btn btn-default btn-md" ng-click="updateForm(q)">
+						<td ng-show="question.edit" style="text-align:right;">
+							<button class="btn btn-default btn-md" ng-click="editCtrl.updateQuestion(question)">
 								Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
 							</button>
-							<button class="btn btn-danger" ng-click="toggleEdit(q)">
+							<button class="btn btn-danger" ng-click="editCtrl.toggleEdit(question)">
 								Cancel <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
 							</button>
 						</td>

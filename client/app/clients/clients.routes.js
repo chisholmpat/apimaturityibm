@@ -1,4 +1,6 @@
 'use strict';
+import NewAssessmentComponent from './new_assessment/new_assessment.component'
+import HistoryComponent from './history/history.component'
 
 export default function routes($stateProvider) {
   'ngInject';
@@ -19,8 +21,8 @@ export default function routes($stateProvider) {
     })
     .state('viewAssessments', {
       url: '/clients/assessment-history',
-      template: require('./clients.viewAssessments.html'),
-      controller: AssessmentsComponent,
+      template: require('./history/history.html'),
+      controller: HistoryComponent,
       controllerAs: 'asCtrl',
       params: {
         userId: null,
@@ -28,70 +30,3 @@ export default function routes($stateProvider) {
       }//End params
     });
 }
-
-class AssessmentsComponent {
-  $http;
-  socket;
-
-  /*@ngInject*/
-  constructor($http, $scope, socket, Auth) {
-    this.$http = $http;
-    this.socket = socket;
-    this.getCurrentUser = Auth.getCurrentUserSync;
-    this.userId = $scope.$resolve.$stateParams.userId;
-    this.clientId = $scope.$resolve.$stateParams.clientId;
-    this.assessments = {};
-  }//End constructor
-
-  $onInit() {      
-    this.$http.get('/api/users/client/' + this.userId + '/' + this.clientId).then(response => {
-      this.client = response.data;
-      this.assessments = this.client.assessments;
-    })
-  }//End onInit
-
-  deleteAssessment(assessment) {
-
-  }//End deleteAssessment
-} //End AssessmentsComponent
-
-class NewAssessmentComponent {
-  $http;
-  socket;
-
-  /*@ngInject*/
-  constructor($http, $scope, socket, Auth) {
-    this.$http = $http;
-    this.socket = socket;
-    this.getCurrentUser = Auth.getCurrentUserSync;
-    this.userId = $scope.$resolve.$stateParams.userId;
-    this.clientId = $scope.$resolve.$stateParams.clientId;
-    this.templates;
-  }//End constructor
-
-  $onInit() {
-    this.newAssessment = {
-      name: 'TestingSaves123',
-      assessment: [{}]
-    };
-    this.$http.get('/api/users/me').then(response => {
-      this.templates = response.data.assessmentTemplates;
-      this.newAssessment.assessment = this.templates[0].assessment;
-    })
-
-    this.$http.get('/api/users/client/' + this.userId + '/' + this.clientId).then(response => {
-      this.client = response.data;
-    })
-  }//End onInit
-
-  saveAssessment() {
-    this.$http.post('/api/users/assessmentNew/' + this.userId + '/' + this.clientId, this.newAssessment);
-    //Redirect code goes here
-  }//End saveAssessment 
-}//End newAssessmentComponent
-
-
-
-
-
-

@@ -136,7 +136,7 @@ export function authCallback(req, res) {
  */
 
 /**
- * Get a list of clients
+ * Get an instance of a client
  */
 export function showClient(req, res) {
   var userId = req.params.id, clientId = req.params.clientId;
@@ -145,7 +145,7 @@ export function showClient(req, res) {
   .then(user => {
     var client = user.clients.id(clientId);
     res.json(client);
-  })//End UserFind
+  })
 }//End indexClients
 
 /**
@@ -183,9 +183,9 @@ export function destroyClient(req, res) {
 }//End destroyClient
 
 /**
- * Delete a client
+ * Update a client
  */
- export function upsertClient(req, res) {
+export function upsertClient(req, res) {
   var userId = req.params.id, clientId = req.params.clientId, clientEdit = req.body;
 
   User.findById(userId).exec()
@@ -197,11 +197,11 @@ export function destroyClient(req, res) {
       if (err) return handleError(err)
       res.status(204).end();
     })
-  })//End promise
- }//End upsertClient
+  })
+}//End upsertClient
 
 /**
- * Crud for a assessments
+ * CRD for user assessment sub-documents
  */
 
 export function showAssessment(req, res) {
@@ -211,8 +211,9 @@ export function showAssessment(req, res) {
   .then(user => {
     var client = user.clients.id(clientId);
     var assessment = client.assessments.id(assessmentId);
+
     res.json(assessment);
-  })//End UserFind
+  })
 }//End indexClients
 
 export function createAssessment(req, res) { 
@@ -229,3 +230,213 @@ export function createAssessment(req, res) {
     })
   })
 }//End createClient
+
+/**
+ * CRD for user assessmentTemplate sub-documents
+ */
+
+/**
+ * Show a list of templates
+ */
+export function showTemplates(req, res) {
+  var userId = req.params.id;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var templates = user.assessmentTemplates;
+
+    res.json(templates);
+  })
+}//End showTemplates
+
+/**
+ * Create a new template assessment
+ */
+export function createTemplate(req, res) { 
+  var userId = req.params.id, newTemplate = req.body;
+
+  User.findById(userId).exec()
+  .then(user => { 
+    user.assessmentTemplates.push(newTemplate);
+    var assessmentTemplates = user.assessmentTemplates; 
+
+    user.save(function (err, clients) {
+      if (err) return handleError(err)
+      res.json(assessmentTemplates);
+    })
+  })
+}//End createTemplate
+
+/**
+ * Delete a template assessment
+ */
+export function destroyTemplate(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    user.assessmentTemplates.id(assessmentId).remove();
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End destroyTemplate
+
+/**
+ * CRUD for form sub-documents
+ */
+
+/**
+ * Show all form groups in the assessment template
+ */
+export function showTemplateForms(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    var forms = assessmentTemplate.assessment;
+    res.json(forms); 
+  })
+ }//End showTemplate forms
+
+/**
+ * Create a form group in the assessment template
+ */
+export function createForm(req, res) { 
+  var userId = req.params.id, assessmentId = req.params.assessmentId, newForm = req.body;
+
+  User.findById(userId).exec()
+  .then(user => { 
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    assessmentTemplate.assessment.push(newForm);
+    var forms = assessmentTemplate.assessment; 
+
+    user.save(function (err, clients) {
+      if (err) return handleError(err)
+      res.json(forms);
+    })
+  })
+}//End createForm
+
+/**
+ * Delete a form in the assessment template
+ */
+export function destroyForm(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    assessmentTemplate.assessment.id(formId).remove();
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End destroyTemplate
+
+/**
+ * Update a form in the assessment template
+ */
+export function upsertForm(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId,
+    formEdit = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    var form = assessmentTemplate.assessment.id(formId);
+    Object.assign(form, formEdit);
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End upsertForm
+
+/**
+ * Crud for question sub-documents
+ */
+
+/**
+ * Show questions in form
+ */
+export function showFormQuestions(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    var form = assessmentTemplate.assessment.id(formId);
+    var questions = form.questions;
+
+    res.json(questions)
+  })
+}//End showFormQuestions
+
+/**
+ * Create a new question in form
+ */
+export function createQuestion(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId,
+   newQuestion = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    var form = assessmentTemplate.assessment.id(formId);
+    form.questions.push(newQuestion);
+    var questions = form.questions;
+
+    user.save(function (err, clients) {
+      if (err) return handleError(err)
+      res.json(questions);
+    })
+  })
+}//End createQuestion
+
+/**
+ * Delete a question in the form
+ */
+export function destroyQuestion(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId,
+    questionId = req.params.questionId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    var form = assessmentTemplate.assessment.id(formId);
+    form.questions.id(questionId).remove();
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End destroyQuestion
+
+/**
+ * Update a question in the form
+ */
+export function upsertQuestion(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId,
+    questionId = req.params.questionId, questionEdit = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var assessmentTemplate = user.assessmentTemplates.id(assessmentId);
+    var form = assessmentTemplate.assessment.id(formId);
+    var question = form.questions.id(questionId);
+    Object.assign(question, questionEdit);
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End upsertQuestion

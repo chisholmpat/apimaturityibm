@@ -20,9 +20,7 @@ import {
 import _Auth from '../components/auth/auth.module';
 import account from './account';
 import admin from './admin';
-import forms from './forms/forms.component';
 import builder from './builder/builder.component';
-import assessments from './assessments/assessments.component';
 import clients from './clients/clients.component';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
@@ -34,7 +32,7 @@ import socket from '../components/socket/socket.service';
 import './app.scss';
 
 angular.module('apiLocalApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-    uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util, forms, assessments, clients, builder
+    uiBootstrap, _Auth, account, admin, navbar, footer, main, constants, socket, util, clients, builder
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
