@@ -16,6 +16,7 @@ mongoose.connection.on('error', function(err) {
   process.exit(-1); // eslint-disable-line no-process-exit
 });
 require('./api/forms');
+require('./api/assessments');
 require('./api/clients');
 require('./api/user');
 

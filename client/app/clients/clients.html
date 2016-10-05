@@ -3,22 +3,34 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Clients ({{clientsCtrl.clients.length}})</h4>
+					<h4>{{clientsCtrl.getCurrentUser().name}}'s Clients ({{clientsCtrl.clients.length}})</h4>
 				</div>
 				<div class="panel-body">
-					<table class="table table.responsive table-hover table-striped">
+					<div class="form-inline">
+						<label for="newClient">New Client: </label>
+						<input type="text"  width="240px" ng-model="clientsCtrl.newClient.name" placeholder="Client Name">
+						<button class="btn btn-default btn-md"  ng-click="clientsCtrl.saveClient(clientsCtrl.newClient)">
+							Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+						</button>	
+					</div>
+					<hr>
+					<table class="table table.responsive table-hover table-striped" >
 						<thead class="thead">
 							<tr>
 								<th>Clients</th>
-								<th style="text-align:center;">Assessments</th>
+								<th style="text-align:center;">Past Assessments</th>
 								<th style="text-align:right;"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="client in clientsCtrl.clients" ng-click="clientsCtrl.selectClient(client)">
-								<td><a ui-sref="single({_id: client._id})">{{client.name}}</a></td>
+							<tr ng-repeat="client in clientsCtrl.clients track by client._id" ng-click="clientsCtrl.selectClient(client)">
+								<td><a>{{client.name}}</a></td>
 
-								<td style="text-align:center;">{{clientsCtrl.assessmentCount(client)}}</td>
+								<td style="text-align:center;">
+									<button class="btn btn-default btn-md" ui-sref="viewAssessments({clientId: clientsCtrl.client._id,userId:clientsCtrl.user._id})">
+										View ({{clientsCtrl.assessmentCount(client)}}) <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+									</button>	
+								</td>
 
 								<td style="text-align:right;">
 									<button class="btn btn-danger btn-md" ng-click="clientsCtrl.deleteClient(client)">
@@ -33,26 +45,26 @@
 		</div>
 
 		<div class="col-md-6" ng-data="{{clientsCtrl.client}}">
-			<div class="panel panel-default" >
+			<div class="panel panel-default">
 				<div class="panel-heading">
-					<Strong>{{clientsCtrl.client.name}}</Strong>
+					<h4>{{clientsCtrl.nameCopy}}</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" ng-show="clientsCtrl.noClients">
 					<div>
-						<button type="button" class="btn btn-default btn-md" style="float:right;" ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.addNew(clientsCtrl.client)">
-							Add New <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						</button>
-						<button class="btn btn-default btn-md" style="float:right;" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.saveClient(clientsCtrl.client)">
-							Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-						</button>	
-
 						<button type="button" class="btn btn-default btn-md" ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
 							Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 						</button>
+						<button type="button" class="btn btn-default btn-md" ui-sref="newAssessment({clientId: clientsCtrl.client._id,userId:clientsCtrl.user._id})" ng-hide="clientsCtrl.client.edit" ">
+							New Assessment <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+						</button>						
 						<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
 							Cancel <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
 						</button>
+						<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.updateClient(clientsCtrl.client)">
+							Confirm <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+						</button>	
 					</div>
+					<hr>
 					<div>
 						<div class="card text-xs-center" style="margin-top:2%">
 							<div class="card-header">
@@ -108,6 +120,11 @@
 										<input type="text" class="form-control" ng-model="clientsCtrl.client.email">
 									</li>
 								</ul>
+								<div>
+								<button class="btn btn-default btn-md" style="float:right;" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(2)">
+									Details <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								</button>
+								</div>
 							</div>
 							<div class="card-block" ng-show="clientsCtrl.isSelected(2)">
 								<h4 class="card-title"></h4>
@@ -152,6 +169,12 @@
 										<input type="text" class="form-control" ng-model="clientsCtrl.client.market_capitalization">
 									</li>
 								</ul>
+								<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(1)">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Contact
+								</button>
+								<button class="btn btn-default btn-md" style="float:right;" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(3)">
+									Competitors <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								</button>								
 							</div>
 							<div class="card-block" ng-show="clientsCtrl.isSelected(3)">
 								<h4 class="card-title"></h4>
@@ -164,6 +187,9 @@
 										<input type="text" class="form-control" ng-model="clientsCtrl.client.competitors">
 									</li>
 								</ul>
+								<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(2)">
+									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Details
+								</button>
 							</div>
 						</div>
 					</div>

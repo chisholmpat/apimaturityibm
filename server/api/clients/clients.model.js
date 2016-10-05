@@ -1,15 +1,7 @@
 'use strict';
 
 import mongoose from 'mongoose';
-var Forms = mongoose.model('Forms').schema;
-
-var Assessments = new mongoose.Schema({
-	created: {
-		type: Date,
-		default: Date.now
-	},
-	assessment: [Forms]
-});
+var Assessments = mongoose.model('Assessments').schema;
 
 var ClientsSchema = new mongoose.Schema({
 	created: {

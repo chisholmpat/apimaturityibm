@@ -1,17 +1,17 @@
 /**
  * Using Rails-like standard naming convention for endpoints.
- * GET     /api/clients              ->  index
- * POST    /api/clients              ->  create
- * GET     /api/clients/:id          ->  show
- * PUT     /api/clients/:id          ->  upsert
- * PATCH   /api/clients/:id          ->  patch
- * DELETE  /api/clients/:id          ->  destroy
+ * GET     /api/assessments              ->  index
+ * POST    /api/assessments              ->  create
+ * GET     /api/assessments/:id          ->  show
+ * PUT     /api/assessments/:id          ->  upsert
+ * PATCH   /api/assessments/:id          ->  patch
+ * DELETE  /api/assessments/:id          ->  destroy
  */
 
 'use strict';
 
 import jsonpatch from 'fast-json-patch';
-import Clients from './clients.model';
+import Assessments from './assessments.model';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -63,54 +63,54 @@ function handleError(res, statusCode) {
   };
 }
 
-// Gets a list of Clientss
+// Gets a list of Assessmentss
 export function index(req, res) {
-  return Clients.find().exec()
+  return Assessments.find().exec()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Gets a single Clients from the DB
+// Gets a single Assessments from the DB
 export function show(req, res) {
-  return Clients.findById(req.params.id).exec()
+  return Assessments.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Creates a new Clients in the DB
+// Creates a new Assessments in the DB
 export function create(req, res) {
-  return Clients.create(req.body)
+  return Assessments.create(req.body)
     .then(respondWithResult(res, 201))
     .catch(handleError(res));
 }
 
-// Upserts the given Clients in the DB at the specified ID
+// Upserts the given Assessments in the DB at the specified ID
 export function upsert(req, res) {
   if(req.body._id) {
     delete req.body._id;
   }
-  return Clients.findByIdAndUpdate(req.params.id, req.body, {upsert: true, setDefaultsOnInsert: true, runValidators: true}).exec()
+  return Assessments.findOneAndUpdate(req.params.id, req.body, {upsert: true, setDefaultsOnInsert: true, runValidators: true}).exec()
 
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Updates an existing Clients in the DB
+// Updates an existing Assessments in the DB
 export function patch(req, res) {
   if(req.body._id) {
     delete req.body._id;
   }
-  return Clients.findById(req.params.id).exec()
+  return Assessments.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(patchUpdates(req.body))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
 
-// Deletes a Clients from the DB
+// Deletes a Assessments from the DB
 export function destroy(req, res) {
-  return Clients.findById(req.params.id).exec()
+  return Assessments.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));

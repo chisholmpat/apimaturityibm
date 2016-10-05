@@ -4,6 +4,16 @@ import User from './user.model';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 
+function respondWithResult(res, statusCode) {
+  statusCode = statusCode || 200;
+  return function(entity) {
+    if(entity) {
+      return res.status(statusCode).json(entity);
+    }
+    return null;
+  };
+}
+
 function validationError(res, statusCode) {
   statusCode = statusCode || 422;
   return function(err) {
@@ -120,3 +130,102 @@ export function me(req, res, next) {
 export function authCallback(req, res) {
   res.redirect('/');
 }
+
+/**
+ * CRUD for Client sub-documents
+ */
+
+/**
+ * Get a list of clients
+ */
+export function showClient(req, res) {
+  var userId = req.params.id, clientId = req.params.clientId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var client = user.clients.id(clientId);
+    res.json(client);
+  })//End UserFind
+}//End indexClients
+
+/**
+ * Save a new client
+ */
+export function createClient(req, res) { 
+  var userId = req.params.id, newClient = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var clients = user.clients.push(newClient);
+
+    user.save(function (err, clients) {
+      if (err) return handleError(err)
+      res.json(clients);
+    })
+  })
+}//End createClient
+
+/**
+ * Delete a client
+ */
+export function destroyClient(req, res) {
+  var userId = req.params.id, clientId = req.params.clientId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    user.clients.id(clientId).remove();
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End destroyClient
+
+/**
+ * Delete a client
+ */
+ export function upsertClient(req, res) {
+  var userId = req.params.id, clientId = req.params.clientId, clientEdit = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var client = user.clients.id(clientId);
+    Object.assign(client, clientEdit);
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })//End promise
+ }//End upsertClient
+
+/**
+ * Crud for a assessments
+ */
+
+export function showAssessment(req, res) {
+  var userId = req.params.id, clientId = req.params.clientId, assessmentId = req.params.assessmentId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var client = user.clients.id(clientId);
+    var assessment = client.assessments.id(assessmentId);
+    res.json(assessment);
+  })//End UserFind
+}//End indexClients
+
+export function createAssessment(req, res) { 
+  var userId = req.params.id, clientId = req.params.clientId, newAssessment = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var client = user.clients.id(clientId);
+    client.assessments.push(newAssessment);
+
+    user.save(function (err, clients) {
+      if (err) return handleError(err)
+      res.json(clients);
+    })
+  })
+}//End createClient

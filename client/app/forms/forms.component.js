@@ -8,13 +8,15 @@ import routes from './forms.routes';
 export class FormsComponent {
   $http;
   socket;
-
   /*@ngInject*/
-  constructor($http, $scope, socket) {
+  constructor($http, $scope, socket, Auth) {
     this.$http = $http;
+    this.getCurrentUser = Auth.getCurrentUserSync;
     this.$scope = $scope;
     this.socket = socket;
+    this.user = {};
     this.forms = [];
+    this.formsCopy = [];
     this.name = 'Forms';
     this.count = 0;
 
@@ -24,21 +26,44 @@ export class FormsComponent {
   }//Constructor
 
   $onInit() {
-    this.$http.get('/api/forms').then(response => {
-      this.forms = response.data;
-      this.socket.syncUpdates('form', this.forms);
-    });
+    // this.$http.get('/api/forms').then(response => {
+    //   this.forms = response.data;
+    //   this.socket.syncUpdates('form', this.forms);
+    // });
+
+
+    // this.$http.get('/api/users/me').then(response => {
+    //   this.user = response;
+    //   // var i = 0, a = 0, f = 0, q = 0;
+    //   this.clients = [], this.assessments = [], this.formsCopy = [];
+    //   console.log(this.user.data.clients[0]._id);
+
+    //   this.$http.get('/api/users/clientList/' + this.user.data._id + '/' + this.user.data.clients[0]._id).then(response => {
+    //     console.log(response);
+    //     console.log('hello');
+    //   });
+
+    //   this.$http.get('/api/users/forms/' + this.user.data._id).then(response => {
+    //     console.log(response.data);
+    //     this.formsCopy = response.data;
+
+    //   });
+    // });//End get me
   }//End onInit
 
-  addForm(form) {
-    this.$http.post('/api/forms', form).then(response => {
-      form = response.data;
-      this.forms.push(form);
-      this.form = null;
+  saveForm(form) {
+    this.user.data.clients[0].assessments[0].assessment.push(form);
+    this.$http.put('/api/users/forms/' + this.user.data._id, this.user.data).then(response => {
+      this.user = response;
+      var l = response.data.clients[0].assessments[0].assessment.length;
+      console.log(response.data.clients[0].assessments[0].assessment[l]);
+      // this.formsCopy.push(response.data.clients[0].assessments[0].assessment[assessment.length - 1]);
+      console.log(this.user);
     });
+
   }//End addForm
 
-  editForm(form) {
+  updateForm(form) {
     this.$http.put('/api/forms/' + form._id, form)
     .success(function() {
       form.edit = false;
@@ -81,9 +106,4 @@ export default angular.module('apiLocalApp.forms', [uiRouter])
     controller: FormsComponent,
     controllerAs: 'formsCtrl'
   })
-  // .component('forms.single', {
-  //   template: require('./forms.single.html'),
-  //   controller: SingleFormComponent,
-  //   controllerAs: 'singleCtrl'
-  // })
   .name;
