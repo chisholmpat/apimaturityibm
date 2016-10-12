@@ -10,7 +10,19 @@ var Questions = new mongoose.Schema({
 	},
 	answerArray: [String],
 	category: String,
-	grouping: String
+	grouping: String,
+	weight: {
+		type: Number,
+		default: 0
+	},
+	answer: {
+		type: Number,
+		default: 0
+	},
+	response: {
+		type: String,
+		default: ''
+	}
 })
 
 var FormsSchema = new mongoose.Schema({

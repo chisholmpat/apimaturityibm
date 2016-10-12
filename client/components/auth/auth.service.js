@@ -43,6 +43,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
           return currentUser.$promise;
         })
         .then(user => {
+          $cookies.put('userId', user._id);
           safeCb(callback)(null, user);
           return user;
         })
@@ -72,6 +73,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
       return User.save(user, function(data) {
         $cookies.put('token', data.token);
         currentUser = User.get();
+        $cookies.put('userId', currentUser._id);
         return safeCb(callback)(null, user);
       }, function(err) {
         Auth.logout();

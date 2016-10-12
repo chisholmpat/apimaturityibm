@@ -4,16 +4,16 @@ const angular = require('angular');
 const uiRouter = require('angular-ui-router');
 
 import routes from './clients.routes';
-import NewAssessment from './new_assessment';
 
 export class ClientsComponent {
   $http;
   socket;
 
   /*@ngInject*/
-  constructor($http, $scope, socket, Auth) {
+  constructor($http, $scope, $cookies, socket, Auth) {
     this.$http = $http;
     this.socket = socket;
+    this.$cookies = $cookies;
     this.getCurrentUser = Auth.getCurrentUserSync;
     this.clients = {};
     this.client = {};
@@ -85,6 +85,11 @@ export class ClientsComponent {
     client.edit = !client.edit;
   }//End toggleEdit
 
+  setInfo() {
+    this.$cookies.put('clientId', this.client._id);
+    this.$cookies.put('clientName', this.client.name);
+  }
+
   select(item) {
     this.selected = item;
   }//End select
@@ -104,7 +109,7 @@ export class ClientsComponent {
   }//End assessmentCount
 }//End controller
 
-export default angular.module('apiLocalApp.clients', [uiRouter, NewAssessment])
+export default angular.module('apiLocalApp.clients', [uiRouter])
   .config(routes)
   .component('clients', {
     template: require('./clients.html'),

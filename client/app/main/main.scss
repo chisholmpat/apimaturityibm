@@ -2,6 +2,7 @@
   margin: 20px 0;
 }
 
+
 #banner {
   border-bottom: none;
   margin-top: -20px;
@@ -20,11 +21,21 @@
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
   background-image: linear-gradient(180deg, #1a66ff, #99bbff);
-
 }
 
 .navbar-text {
   margin-left: 15px;
+}
+
+body { 
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+44,99bbff+100,99bbff+100 */
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 44%, rgba(153,187,255,1) 100%, rgba(153,187,255,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 44%,rgba(153,187,255,1) 100%,rgba(153,187,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 44%,rgba(153,187,255,1) 100%,rgba(153,187,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#99bbff',GradientType=0 ); /* IE6-9 */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 

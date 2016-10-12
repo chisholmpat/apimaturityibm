@@ -5,13 +5,14 @@ export default class FormEditorComponent {
   socket;
 
   /*@ngInject*/
-  constructor($http, $scope, socket, Auth) {
+  constructor($http, $scope, $cookies, socket, Auth) {
     this.$http = $http;
     this.socket = socket;
+    this.$cookies = $cookies;
     this.getCurrentUser = Auth.getCurrentUserSync;
-    this.userId = $scope.$resolve.$stateParams.userId;
-    this.templateId = $scope.$resolve.$stateParams.templateId;
-    this.templateName = $scope.$resolve.$stateParams.templateName;
+    this.userId = this.$cookies.get('userId');
+    this.templateId = this.$cookies.get('templateId');
+    this.templateName = this.$cookies.get('templateName');
     this.forms = {};
     this.newform = {};
   }//End constructor
@@ -52,6 +53,11 @@ export default class FormEditorComponent {
   toggleEdit(form) {
     form.edit = !form.edit;
   }//End toggleEdit
+
+  setInfo(form) {
+    this.$cookies.put('formId', form._id);
+    this.$cookies.put('formName', form.name);
+  }//End setInfo
 
   questionCount(form) {
     this.count = 0;

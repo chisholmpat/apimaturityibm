@@ -10,9 +10,10 @@ export class BuilderComponent {
   socket;
 
   /*@ngInject*/
-  constructor($http, $scope, socket, Auth) {
+  constructor($http, $scope, $cookies, socket, Auth) {
     this.$http = $http;
     this.socket = socket;
+    this.$cookies = $cookies;
     this.getCurrentUser = Auth.getCurrentUserSync;
     this.templates = {};
     this.template = {};
@@ -48,6 +49,11 @@ export class BuilderComponent {
     this.template = template;
     this.detailCount(template);
   }//End selectTemplate
+
+  setInfo() {
+    this.$cookies.put('templateId', this.template._id);
+    this.$cookies.put('templateName', this.template.name);
+  }
 
   detailCount(template) { 
     this.fCount = 0, this.qCount = 0;

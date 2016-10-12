@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
   <ul class="list-group user-list">
     <li class="list-group-item" ng-repeat="user in admin.users">
@@ -9,4 +9,45 @@
         <a ng-click="admin.delete(user)" class="trash"><span class="fa fa-trash fa-2x"></span></a>
     </li>
   </ul>
+</div> -->
+
+<div class="container" style="margin-top:1%;">
+  <div class="panel panel-default">
+    <div class="panel-heading panel-grad-head">
+      <h4 class="h4-panel">Administrator Panel</h4>
+    </div>
+    <div class="panel-body">
+      <button type="button" class="btn btn-default btn-md">
+        New User <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      </button>
+    </div>
+    <table class="table table.responsive table-hover table-striped">
+      <thead class="thead">
+        <tr>
+          <th>Users</th>
+          <th>E-mail</th>
+          <th>Clients</th>
+          <th>Assessments</th>
+          <th style="text-align:right;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in admin.users">
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>{{admin.countClients(user)}}</td>
+          <td>{{admin.countAssessments(user)}}</td>
+
+          <td style="text-align:right;">
+            <button class="btn btn-default btn-md">
+            Edit <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-danger btn-md" ng-click="admin.delete(user)">
+              Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

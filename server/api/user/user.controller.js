@@ -204,6 +204,24 @@ export function upsertClient(req, res) {
  * CRD for user assessment sub-documents
  */
 
+/**
+ * Get assessment sub-documents
+ */
+export function showAssessments(req, res) {
+  var userId = req.params.id, clientId = req.params.clientId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var client = user.clients.id(clientId);
+    var assessments = client.assessments;
+
+    res.json(assessments);
+  })
+}//End showAssessment
+
+/**
+ * Get an instance of an assessment sub-document
+ */
 export function showAssessment(req, res) {
   var userId = req.params.id, clientId = req.params.clientId, assessmentId = req.params.assessmentId;
 
@@ -216,24 +234,68 @@ export function showAssessment(req, res) {
   })
 }//End indexClients
 
+/**
+ * Create an assessment sub-document
+ */
 export function createAssessment(req, res) { 
-  var userId = req.params.id, clientId = req.params.clientId, newAssessment = req.body;
+  var userId = req.params.id, clientId = req.params.clientId, newAssessment = req.body, client;
 
   User.findById(userId).exec()
   .then(user => {
-    var client = user.clients.id(clientId);
+    client = user.clients.id(clientId);
     client.assessments.push(newAssessment);
 
     user.save(function (err, clients) {
       if (err) return handleError(err)
-      res.json(clients);
+      var savedAssessment;
+
+      for (var i = 0; i < client.assessments.length; i++) {
+        if (client.assessments[i].name === newAssessment.name) {
+          savedAssessment = client.assessments[i];
+        }
+      }
+
+      res.json(savedAssessment);
     })
   })
-}//End createClient
+}//End createAssessment
+
+/**
+ * Delete an assessment sub-document
+ */
+export function destroyAssessment(req, res) { 
+  var userId = req.params.id, clientId = req.params.clientId, assessmentId = req.params.assessmentId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var client = user.clients.id(clientId);
+    client.assessments.id(assessmentId).remove();
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End destroyAssessment
 
 /**
  * CRD for user assessmentTemplate sub-documents
  */
+
+ /**
+ * Show an instance of a template object
+ */
+export function showTemplate(req, res) {
+  var userId = req.params.id, assessmentId = req.params.assessmentId;
+
+  User.findById(userId).exec()
+  .then(user => {
+    console.log(user);
+    var template = user.assessmentTemplates.id(assessmentId);
+
+    res.json(template);
+  })
+}//End showTemplate
 
 /**
  * Show a list of templates

@@ -1,4 +1,4 @@
-<div class="navbar navbar-default">
+<div class="navbar navbar-default navbar-shadow">
   <div class="container.fluid">
     <div class="navbar-header">
 
@@ -19,7 +19,7 @@
         </li>
         <li ng-show="$ctrl.isAdmin()" ui-sref-active="active"><a ui-sref="admin">Admin</a></li>
         <li ng-show="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="builder">Survey Builder</a></li>
-        <li ng-show="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="clients">Clients</a></li>
+        <li ng-show="$ctrl.isLoggedIn()" ui-sref-active="active"><a ui-sref="clients">My Clients</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
@@ -33,3 +33,7 @@
     </div>
   </div>
 </div>
+
+
+
+

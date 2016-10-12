@@ -5,9 +5,10 @@ import routing from './main.routes';
 export class MainController {
 
   /*@ngInject*/
-  constructor($http, $scope, socket) {
+  constructor($http, $scope, Auth, socket) {
     this.$http = $http;
     this.socket = socket;
+    this.getCurrentUser = Auth.getCurrentUserSync;
   }
 
   $onInit() {
