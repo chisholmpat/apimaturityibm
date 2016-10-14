@@ -5,30 +5,59 @@
 			<small class="h4-panel">Client: {{selCtrl.clientName}}</small><br/>
 		</div>
 		<div class="panel-body">
-			<div class="well">
-				<strong>{{selCtrl.getCurrentUser().name}}'s Templates</strong><hr>
-				<strong>Client:</strong> {{selCtrl.clientName}}<br/>
-				<strong>Date:</strong> {{selCtrl.date | date: short}}<br/>
-				<strong>Assessment Name:</strong> {{selCtrl.assessmentName}}<br/><br/>
-				<form>
-					<div class="form-group">
-						<label for="templateSelect"> Select a template: </label><br/>
-						<select name="templateSelect" id="templateSelect" ng-model="selCtrl.selection">
-							<option ng-repeat="template in selCtrl.templates" value="{{template._id}}">{{template.name}}</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="nameInput">Enter Name:</label><br/>
-						<input type="text" style="width:240px" class="form-control input-small" id="nameInput" ng-model="selCtrl.assessmentName" placeholder="Enter a name...">
-					</div>
-				</form>
+			<div class="col-md-12">
+				<div uib-alert ng-show="selCtrl.alertTrigger" ng-repeat="alert in selCtrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="selCtrl.closeAlert($index)">{{alert.msg}}</div>
+			</div>
+			<div class="col-md-6">
+				<div class="well">
+					<strong>{{selCtrl.getCurrentUser().name}}'s Templates</strong><hr>
+					<strong>Client:</strong> {{selCtrl.clientName}}<br/>
+					<strong>Date:</strong> {{selCtrl.date | date: short}}<br/>
+					<strong>Assessment Name:</strong> {{selCtrl.assessmentName}}<br/><br/>
+					<form name="selectForm">
+						<div class="form-group" ng-class="{ 'has-error': selectForm.templateSelect.$touched && selectForm.templateSelect.$invalid }">
+							<label for="templateSelect"> Select a template: </label><br/>
+							<select class="form-control" name="templateSelect" ng-model="selCtrl.selection" required>
+								<option ng-repeat="template in selCtrl.templates" value="{{template._id}}" ng-click="selCtrl.copyTemplate(template)">{{template.name}}</option>
+							</select>
+
+							<div class="help-block" ng-messages="selectForm.templateSelect.$error" ng-if="selectForm.templateSelect.$touched">
+								<div ng-message="required" class="error">You must select a template.</div>
+							</div>
+						</div>
+						<div class="form-group" ng-class="{ 'has-error': selectForm.nameInput.$touched && selectForm.nameInput.$invalid }">
+							<label for="nameInput">Assessment Name:</label><br/>
+							<input type="text" class="form-control" name="nameInput" ng-model="selCtrl.assessmentName" placeholder="Enter a name..." required>
+
+							<div class="help-block" ng-messages="selectForm.nameInput.$error" ng-if="selectForm.nameInput.$touched">
+								<div ng-message="required" class="error">Please enter a name.</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-md-6">	
+				<ul class="list-group">
+					<li class="list-group-item">
+						<strong>Created on:</strong> {{selCtrl.copy.created | date: format: short}}
+					</li>
+					<li class="list-group-item">
+						<strong>Form Groups:</strong> {{selCtrl.fCount}}
+					</li>
+					<li class="list-group-item">
+						<strong>Questions:</strong> {{selCtrl.qCount}}
+					</li>
+					<li class="list-group-item">
+						<strong>Description:</strong> This is the default survey designed by the creators of Api-Maturity!
+					</li>
+				</ul>
 			</div>
 		</div>
 		<div class="panel-footer">
 			<button type="button" class="btn btn-default btn-md" ui-sref="clients">
 				Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 			</button>
-			<button type="button" class="btn btn-default btn-md" style="float:right" ng-click="selCtrl.setInfo()" ui-sref="newAssessment" ng-disabled="selCtrl.checkTemplate()">
+			<button type="button" class="btn btn-default btn-md" style="float:right" ng-click="selCtrl.checkTemplate(selectForm)">
 				Start Assessment <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
 			</button>
 		</div>

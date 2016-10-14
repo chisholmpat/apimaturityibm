@@ -11,12 +11,11 @@
 						<div class="user-info">
 							<h4>Form: {{form.name}}</h4>
 							<hr>
-							<div class="list group">
+							<div class="list group user-list">
 								<div class="text-primary"><h4>Self Assessment</h4></div>
 								<ul class="list-group-item" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'selfAssessment' || form.questions[question].category === 'Self Assessment'">
 									<li class="list-group-item" style="margin-top:1%;padding: 0%">
 										<div style="width:100%">
-											<label>Question:</label>
 											<div class="well well-sm">{{q.question}}</div>
 											<label class="custom-control custom-radio" style="margin-right:1%">
 												<input id="noviceRadio" value="1" ng-model="q.answer" name="noviceRadio" type="radio" class="custom-control-input">
@@ -36,6 +35,7 @@
 										</div>
 									</li>
 								</ul>
+								<hr>
 							</div>
 							<div class="list group user-list" style="margin-top:1.5%">
 								<div class="text-primary"><h4>Quantitative Assessment</h4></div>

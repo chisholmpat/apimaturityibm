@@ -146,7 +146,21 @@ export function showClient(req, res) {
     var client = user.clients.id(clientId);
     res.json(client);
   })
-}//End indexClients
+}//End showClient
+
+/**
+ * Get a list of client objects
+ */
+export function showClients(req, res) {
+  var userId = req.params.id;
+
+  User.findById(userId).exec()
+  .then(user => {
+    var clients = user.clients;
+
+    res.json(clients);
+  })
+}//End showClients
 
 /**
  * Save a new client
@@ -156,11 +170,12 @@ export function createClient(req, res) {
 
   User.findById(userId).exec()
   .then(user => {
-    var clients = user.clients.push(newClient);
+    user.clients.push(newClient);
+    var clientsCopy = user.clients;
 
-    user.save(function (err, clients) {
+    user.save(function (err) {
       if (err) return handleError(err)
-      res.json(clients);
+      res.json(clientsCopy);
     })
   })
 }//End createClient
@@ -245,7 +260,7 @@ export function createAssessment(req, res) {
     client = user.clients.id(clientId);
     client.assessments.push(newAssessment);
 
-    user.save(function (err, clients) {
+    user.save(function (err) {
       if (err) return handleError(err)
       var savedAssessment;
 
@@ -322,7 +337,7 @@ export function createTemplate(req, res) {
     user.assessmentTemplates.push(newTemplate);
     var assessmentTemplates = user.assessmentTemplates; 
 
-    user.save(function (err, clients) {
+    user.save(function (err) {
       if (err) return handleError(err)
       res.json(assessmentTemplates);
     })
@@ -353,7 +368,7 @@ export function destroyTemplate(req, res) {
 /**
  * Show all form groups in the assessment template
  */
-export function showTemplateForms(req, res) {
+export function showForms(req, res) {
   var userId = req.params.id, assessmentId = req.params.assessmentId;
 
   User.findById(userId).exec()
@@ -362,7 +377,7 @@ export function showTemplateForms(req, res) {
     var forms = assessmentTemplate.assessment;
     res.json(forms); 
   })
- }//End showTemplate forms
+ }//End showForms
 
 /**
  * Create a form group in the assessment template
@@ -376,7 +391,7 @@ export function createForm(req, res) {
     assessmentTemplate.assessment.push(newForm);
     var forms = assessmentTemplate.assessment; 
 
-    user.save(function (err, clients) {
+    user.save(function (err) {
       if (err) return handleError(err)
       res.json(forms);
     })
@@ -399,7 +414,7 @@ export function destroyForm(req, res) {
       res.status(204).end();
     })
   })
-}//End destroyTemplate
+}//End destroyForm
 
 /**
  * Update a form in the assessment template
@@ -428,7 +443,7 @@ export function upsertForm(req, res) {
 /**
  * Show questions in form
  */
-export function showFormQuestions(req, res) {
+export function showQuestions(req, res) {
   var userId = req.params.id, assessmentId = req.params.assessmentId, formId = req.params.formId;
 
   User.findById(userId).exec()
@@ -439,7 +454,7 @@ export function showFormQuestions(req, res) {
 
     res.json(questions)
   })
-}//End showFormQuestions
+}//End showQuestions
 
 /**
  * Create a new question in form
@@ -455,7 +470,7 @@ export function createQuestion(req, res) {
     form.questions.push(newQuestion);
     var questions = form.questions;
 
-    user.save(function (err, clients) {
+    user.save(function (err) {
       if (err) return handleError(err)
       res.json(questions);
     })

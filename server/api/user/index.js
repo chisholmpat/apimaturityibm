@@ -20,6 +20,7 @@ router.post('/', controller.create);
  * Client CRUD routes
  */
 router.get('/client/:id/:clientId', controller.showClient);
+router.get('/client/:id', controller.showClients);
 router.put('/clientUpdate/:id/:clientId', controller.upsertClient);
 router.delete('/clientDelete/:id/:clientId', controller.destroyClient);
 router.post('/clientNew/:id', controller.createClient);
@@ -39,11 +40,19 @@ router.get('/template/:id', controller.showTemplates);
 router.get('/template/:id/:assessmentId', controller.showTemplate)
 router.delete('/templateDelete/:id/:assessmentId', controller.destroyTemplate);
 router.post('/templateNew/:id', controller.createTemplate);
-router.get('/template/form/:id/:assessmentId', controller.showTemplateForms);
+
+/**
+ * Assessment template->forms CRUD routes
+ */
+router.get('/template/form/:id/:assessmentId', controller.showForms);
 router.put('/template/formUpdate/:id/:assessmentId/:formId', controller.upsertForm);
 router.delete('/template/formDelete/:id/:assessmentId/:formId', controller.destroyForm);
 router.post('/template/formNew/:id/:assessmentId/', controller.createForm);
-router.get('/template/question/:id/:assessmentId/:formId', controller.showFormQuestions);
+
+/**
+ * Assessment template->forms->questions CRUD routes
+ */
+router.get('/template/question/:id/:assessmentId/:formId', controller.showQuestions);
 router.put('/template/questionUpdate/:id/:assessmentId/:formId/:questionId', controller.upsertQuestion);
 router.delete('/template/questionDelete/:id/:assessmentId/:formId/:questionId', controller.destroyQuestion);
 router.post('/template/questionNew/:id/:assessmentId/:formId', controller.createQuestion);

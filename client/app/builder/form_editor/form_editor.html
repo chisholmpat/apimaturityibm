@@ -5,13 +5,9 @@
 			<small class="h4-panel">Template: {{editCtrl.templateName}}</small><br/>
 		</div>
 		<div class="panel-body">
-			<div class="form-group">
-				<label for="newName">Add Form Group:</label>
-				<input type="text" id="newName" placeholder="Form name..." ng-model="newForm.name">
-				<button type="button" class="btn btn-default btn-md" ng-click="editCtrl.saveForm(newForm)">
-					Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-				</button>
-			</div>
+			<button class="btn btn-default btn-md"  ng-click="editCtrl.toggleModal()">
+				Add Form <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+			</button>
 		</div>
 		<table class="table table.responsive table-hover table-striped">
 			<thead class="thead">

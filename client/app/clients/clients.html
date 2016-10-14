@@ -6,13 +6,10 @@
 					<h4 class="h4-panel">{{clientsCtrl.getCurrentUser().name}}'s Clients ({{clientsCtrl.clients.length}})</h4>
 				</div>
 				<div class="panel-body">
-					<div class="form-inline">
-						<label for="newClient">New Client: </label>
-						<input type="text"  width="240px" ng-model="clientsCtrl.newClient.name" placeholder="Client Name">
-						<button class="btn btn-default btn-md"  ng-click="clientsCtrl.saveClient(clientsCtrl.newClient)">
-							Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-						</button>	
-					</div>
+					<button class="btn btn-default btn-md"  ng-click="clientsCtrl.toggleModal()">
+					Add Client <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+					</button>	
+					<hr>
 					<hr>
 					<table class="table table.responsive table-hover table-striped" >
 						<thead class="thead">

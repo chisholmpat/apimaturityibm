@@ -34,7 +34,8 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 }
 
 .navbar-shadow {
-  -webkit-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
-  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.6);
+  box-shadow: 0px 1px 2px 0px rgba(0,0,5,0.6);
+  border-radius:0px;
 }

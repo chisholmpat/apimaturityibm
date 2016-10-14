@@ -19,7 +19,6 @@ export default class PreviewComponent {
     this.$http.get('/api/users/template/' + this.userId + '/' + this.templateId)
     .then(response => {
       this.template = response.data;
-      console.log(this.template);
     })
   }//End onInit
 } //End AssessmentsComponent

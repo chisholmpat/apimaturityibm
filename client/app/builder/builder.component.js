@@ -5,37 +5,34 @@ const uiRouter = require('angular-ui-router');
 
 import routes from './builder.routes';
 
+import AddTemplateController from './modal_components/modal_add.controller'
+
 export class BuilderComponent {
   $http;
   socket;
 
   /*@ngInject*/
-  constructor($http, $scope, $cookies, socket, Auth) {
+  constructor($http, $scope, $cookies, socket, $uibModal, $document, Auth) {
     this.$http = $http;
     this.socket = socket;
     this.$cookies = $cookies;
+    this.$uibModal = $uibModal;
+    this.$document = $document;
     this.getCurrentUser = Auth.getCurrentUserSync;
-    this.templates = {};
-    this.template = {};
-    this.newTemplate = {};
+    this.userId = this.$cookies.get('userId');
+    this.templates = null;
+    this.template = null;
+    this.animationEnabled = true;
   }//End constructor
 
   $onInit() {
-    this.$http.get('api/users/me').then(response => {
-      this.userId = response.data._id;
-      this.templates = response.data.assessmentTemplates;
+    this.$http.get('api/users/template/' + this.userId)
+    .then(response => {
+      this.templates = response.data;
       this.template = this.templates[0];
       this.detailCount(this.template);
     })//End get
   }//End onInit
-
-  saveTemplate(template) {
-    this.$http.post('/api/users/templateNew/' + this.userId, template).then(response => {
-      this.templates.push(response.data[response.data.length - 1]);
-      this.template = this.templates[this.templates.length - 1];
-      this.newTemplate = {};
-    });
-  }//End addForm
 
   deleteTemplate(template) {
     this.$http.delete('api/users/templateDelete/' + this.userId + '/' + template._id)
@@ -53,7 +50,7 @@ export class BuilderComponent {
   setInfo() {
     this.$cookies.put('templateId', this.template._id);
     this.$cookies.put('templateName', this.template.name);
-  }
+  }//End setInfo
 
   detailCount(template) { 
     this.fCount = 0, this.qCount = 0;
@@ -64,9 +61,28 @@ export class BuilderComponent {
         ++this.qCount;
       }
     }
-
-    return this.count;
   }//End detailCount
+
+  toggleModal() {
+    angular.element(this.$document[0].querySelector('.modal-demo'));
+    var templates = this.templates, userId = this.userId;
+
+    var modalInstance = this.$uibModal.open({
+      animation: this.animationEnabled, 
+      ariaLabelledBy: 'modal-title',
+      template: require('./modal_components/modal_add.html'),
+      controller: AddTemplateController,
+      controllerAs: 'addCtrl',
+      resolve: {
+        templates: function() {
+          return templates;
+        },
+        userId: function() {
+          return userId;
+        }
+      }
+    })//End open
+  }//End toggleModal
 }//End BuilderComponent
 
 export default angular.module('apiLocalApp.builder', [uiRouter])

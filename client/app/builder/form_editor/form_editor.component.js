@@ -1,20 +1,23 @@
 'use strict';
+import AddFormController from './modal_components/modal_add_form.controller'
 
 export default class FormEditorComponent {
   $http;
   socket;
 
   /*@ngInject*/
-  constructor($http, $scope, $cookies, socket, Auth) {
+  constructor($http, $scope, $cookies, socket, $uibModal, $document, Auth) {
     this.$http = $http;
     this.socket = socket;
     this.$cookies = $cookies;
+    this.$uibModal = $uibModal;
+    this.$document = $document;
     this.getCurrentUser = Auth.getCurrentUserSync;
     this.userId = this.$cookies.get('userId');
     this.templateId = this.$cookies.get('templateId');
     this.templateName = this.$cookies.get('templateName');
-    this.forms = {};
-    this.newform = {};
+    this.forms = null;
+    this.animationEnabled = true;
   }//End constructor
 
   $onInit() {     
@@ -23,14 +26,6 @@ export default class FormEditorComponent {
       this.forms = response.data;
     })
   }//End onInit
-
-  saveForm(form) {
-    this.$http.post('/api/users/template/formNew/' + this.userId + '/' + this.templateId, form)
-    .then(response => {
-      this.forms = response.data;
-      this.newForm = {};
-    })
-  }//End saveForm
 
   deleteForm(form) {
     this.$http.delete('/api/users/template/formDelete/' + this.userId + '/' + this.templateId + '/' + form._id)
@@ -68,4 +63,27 @@ export default class FormEditorComponent {
 
     return this.count;
   }//End questionCount
+
+  toggleModal() {
+    var forms = this.forms, userId = this.userId, templateId = this.templateId;
+
+    var modalInstance = this.$uibModal.open({
+      animation: this.animationEnabled, 
+      ariaLabelledBy: 'modal-title',
+      template: require('./modal_components/modal_add_form.html'),
+      controller: AddFormController,
+      controllerAs: 'addCtrl',
+      resolve: {
+        forms: function() {
+          return forms;
+        },
+        userId: function() {
+          return userId;
+        },
+        templateId: function() {
+          return templateId;
+        }
+      }
+    })//End open
+  }//End toggleModal
 } //End AssessmentsComponent
