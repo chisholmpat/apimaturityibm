@@ -10,8 +10,9 @@ import 'angular-socket-io';
 
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
-
+import ngAside from 'angular-aside';
 import ngMessages from 'angular-messages';
+import ngMaterial from 'angular-material';
 // import ngValidationMatch from 'angular-validation-match';
 
 
@@ -30,11 +31,11 @@ import main from './main/main.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
 import socket from '../components/socket/socket.service';
-
 import './app.scss';
 
 angular.module('apiLocalApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-    uiBootstrap, ngMessages, _Auth, account, admin, navbar, footer, main, constants, socket, util, clients, builder
+    uiBootstrap, ngMessages, ngAside, _Auth, account, admin, navbar, footer, main, constants, 
+    socket, util, clients, builder
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

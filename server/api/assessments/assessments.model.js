@@ -5,6 +5,7 @@ var Forms = mongoose.model('Forms').schema;
 
 var AssessmentsSchema = new mongoose.Schema({
   	name: String,
+  	description: String,
 	created: {
 		type: Date,
 		default: Date.now

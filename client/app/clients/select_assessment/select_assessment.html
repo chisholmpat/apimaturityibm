@@ -36,7 +36,8 @@
 					</form>
 				</div>
 			</div>
-			<div class="col-md-6">	
+			<div class="col-md-6">
+				<h5>{{selCtrl.copy.name}} Information:</h5>	
 				<ul class="list-group">
 					<li class="list-group-item">
 						<strong>Created on:</strong> {{selCtrl.copy.created | date: format: short}}
@@ -48,7 +49,7 @@
 						<strong>Questions:</strong> {{selCtrl.qCount}}
 					</li>
 					<li class="list-group-item">
-						<strong>Description:</strong> This is the default survey designed by the creators of Api-Maturity!
+						<strong>Description:</strong> {{selCtrl.copy.description}}
 					</li>
 				</ul>
 			</div>

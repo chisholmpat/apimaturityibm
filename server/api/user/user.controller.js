@@ -58,6 +58,20 @@ export function create(req, res) {
 }
 
 /**
+ * Creates a new user
+ */
+export function adminCreate(req, res) {
+  var newUser = new User(req.body);
+  newUser.provider = 'local';
+  newUser.role = 'user';
+  newUser.save()
+    .then(function(user) {
+      res.json(user);
+    })
+    .catch(validationError(res));
+}//End adminCreate
+
+/**
  * Get a single user
  */
 export function show(req, res, next) {

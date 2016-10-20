@@ -14,3 +14,5 @@ module.exports = {
   seedDB: true
 
 };
+ // localdb: mongodb://localhost/apilocal-dev
+ // clouddb: mongodb://169.46.159.89/27017

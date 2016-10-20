@@ -56,10 +56,10 @@
                                             'has-error': form.confirmPassword.$invalid && vm.submitted }">
           <label>Confirm Password</label>
           <input type="password" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword"
-                 match="vm.user.password"
+                 ng-pattern="vm.user.password"
                  ng-minlength="3" required/>
           <p class="help-block"
-             ng-show="form.confirmPassword.$error.match && vm.submitted">
+             ng-show="form.confirmPassword.$error.pattern && vm.submitted">
             Passwords must match.
           </p>
         </div>

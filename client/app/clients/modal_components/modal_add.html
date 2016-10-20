@@ -17,7 +17,7 @@
 			<form name="one" novalidate>
 				<div class="form-group" ng-class="{ 'has-error': one.nameInput.$touched && one.nameInput.$invalid }">
 					<label for="nameInput">Client Name:</label>
-					<input type="text" class="form-control" name="nameInput" ng-model="addCtrl.newClient.name" placeholder="Enter a question..." required>
+					<input type="text" class="form-control" name="nameInput" ng-model="addCtrl.newClient.name" placeholder="Enter a name..." required>
 
 					<div class="help-block" ng-messages="one.nameInput.$error" ng-if="one.nameInput.$touched">
 						<div ng-message="required" class="error">Required</div>

@@ -19,8 +19,13 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 
 // Component styles are injected through gulp
 /* inject:scss */
-@import 'admin/admin.scss';
-@import 'main/main.scss';
+@import 'admin/admin';
+@import 'builder/builder';
+@import 'clients/clients';
+@import 'main/main';
+@import '../components/footer/footer';
+@import '../components/modal/modal';
+@import '../components/oauth-buttons/oauth-buttons';
 /* endinject */
 
 .h4-panel {
@@ -34,8 +39,8 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 }
 
 .navbar-shadow {
-  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.6);
-  box-shadow: 0px 1px 2px 0px rgba(0,0,5,0.6);
+  -webkit-box-shadow: 1px 0px 6px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 1px 0px 6px 0px rgba(0,0,0,0.75);
+  box-shadow: 1px 0px 6px 0px rgba(0,0,0,0.75);
   border-radius:0px;
 }

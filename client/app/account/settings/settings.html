@@ -33,11 +33,11 @@
         <label>Confirm New Password</label>
 
         <input type="password" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword"
-        match="vm.user.newPassword"
+        pattern="vm.user.newPassword"
         ng-minlength="3"
         required=""/>
         <p class="help-block"
-        ng-show="form.confirmPassword.$error.match && vm.submitted">
+        ng-show="form.confirmPassword.$error.pattern && vm.submitted">
         Passwords must match.
       </p>
 
@@ -49,7 +49,7 @@
   </form>
   </div>
   <div class="col-md-6">
-    hellohledlkamdkdmawddkwjdnwjkn
+    User details go here.
   </div>
 </div>
 <div class="panel-footer">

@@ -10,6 +10,7 @@ import Clients from '../api/clients/clients.model';
 
 var demoTemplate = [{
     name: 'Default Template',
+    description: 'This is the default API-Maturity survey.',
     assessment: [{
       name: 'Business',
       questions: [{
@@ -99,6 +100,7 @@ var demoTemplate = [{
 
 var demoAssessment = [{
     name: 'TestAssessment',
+    description: 'This is the default API-Maturity survey.',
     assessment: [{
       name: 'Business',
       questions: [{
@@ -201,95 +203,6 @@ var demoClient = [{
   active: false,
   assessments: demoAssessment
 }];
-
-Forms.find({}).remove()
-  .then(() => {
-    Forms.create({
-      name: 'Business',
-      questions: [{
-        question: 'TestQuestionOne',
-        answerArray: ['1','2','3'],
-        category: 'selfAssessment',
-        grouping: 'ad-hoc'
-      },
-      {
-        question: 'TestQuestionTwo',
-        answerArray: ['1','2','3'],
-        category: 'quantitativeAssessment',
-        grouping: 'business'
-      }]
-    }, {
-      name: 'Governance',
-      questions: [{
-        question: 'TestQuestionOne',
-        answerArray: ['1','2','3'],
-        category: 'selfAssessment',
-        grouping: 'ad-hoc'
-      },
-      {
-        question: 'TestQuestionTwo',
-        answerArray: ['1','2','3'],
-        category: 'quantitativeAssessment',
-        grouping: 'business'
-      }]
-    }, {
-      name: 'Architecture',
-      questions: [{
-        question: 'TestQuestionOne',
-        answerArray: ['1','2','3'],
-        category: 'selfAssessment',
-        grouping: 'ad-hoc'
-      },
-      {
-        question: 'TestQuestionTwo',
-        answerArray: ['1','2','3'],
-        category: 'quantitativeAssessment',
-        grouping: 'business'
-      }]
-    }, {
-      name: 'Information and Content',
-      questions: [{
-        question: 'TestQuestionOne',
-        answerArray: ['1','2','3'],
-        category: 'selfAssessment',
-        grouping: 'ad-hoc'
-      },
-      {
-        question: 'TestQuestionTwo',
-        answerArray: ['1','2','3'],
-        category: 'quantitativeAssessment',
-        grouping: 'business'
-      }]
-    }, {
-      name: 'Dev Ops',
-      questions: [{
-        question: 'TestQuestionOne',
-        answerArray: ['1','2','3'],
-        category: 'selfAssessment',
-        grouping: 'ad-hoc'
-      },
-      {
-        question: 'TestQuestionTwo',
-        answerArray: ['1','2','3'],
-        category: 'quantitativeAssessment',
-        grouping: 'business'
-      }]  
-    }, {
-      name: 'Infrastructure',
-      questions: [{
-        question: 'TestQuestionOne',
-        answerArray: ['1','2','3'],
-        category: 'selfAssessment',
-        grouping: 'ad-hoc'
-      },
-      {
-        question: 'TestQuestionTwo',
-        answerArray: ['1','2','3'],
-        category: 'quantitativeAssessment',
-        grouping: 'business'
-      }]
-    });
-  });
 
 Clients.find({}).remove()
   .then(() => {

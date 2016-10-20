@@ -20,7 +20,6 @@ require('./api/assessments');
 require('./api/clients');
 require('./api/user');
 
-
 // Populate databases with sample data
 if(config.seedDB) {
   require('./config/seed');
