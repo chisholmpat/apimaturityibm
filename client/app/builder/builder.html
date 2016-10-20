@@ -1,6 +1,6 @@
 <div class="container" style="margin-top:1%;">
 	<div class=row>
-		<div class="col-md-8">
+		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading panel-grad-head">
 					<h4 class="h4-panel">{{builderCtrl.getCurrentUser().name}}'s Templates ({{builderCtrl.templates.length}})</h4>
@@ -21,11 +21,8 @@
 							<tr ng-repeat="template in builderCtrl.templates" ng-click="builderCtrl.selectTemplate(template)">
 								<td><a>{{template.name}}</a></td>
 								<td style="text-align:right;">
-									<button class="btn btn-default btn-md" ng-click="builderCtrl.selectTemplate(template); builderCtrl.setInfo();" ui-sref="formEditor">
-										Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-									</button>	
 									<button class="btn btn-danger btn-md" ng-click="builderCtrl.deleteTemplate(template)">
-										Delete <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 									</button>
 								</td>
 							</tr>
@@ -35,13 +32,16 @@
 			</div>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-8">
 			<div class="panel panel-default">
 				<div class="panel-heading panel-grad-head">
 					<h4 class="h4-panel">{{builderCtrl.template.name}}</h4>
 				</div>
 				<div class="panel-body">
 					<div>
+						<button class="btn btn-default btn-md" ng-click="builderCtrl.selectTemplate(builderCtrl.template); builderCtrl.setInfo();" ui-sref="formEditor">
+							Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						</button>	
 						<button type="button" class="btn btn-default btn-md" ng-click="builderCtrl.setInfo()" ui-sref="preview">
 							Preview <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
 						</button>

@@ -8,25 +8,23 @@
 			<div class="user-info">
 				<div class="well">
 					<div class="text-primary" ng-click="sasHide = !sasHide">
-						<h4>Self Assessment Scores</h4>
+						<h4>Self Assessment Questions</h4>
 					</div>
-					<table class="table table.responsive table-hover table-striped" ng-show="sasHide">
+					<table class="table table.responsive table-hover table-striped" ng-hide="sasHide">
 						<thead class="thead">
 							<tr>
 								<th>Category</th>
-								<th>Response</th>
+								<th>Question</th>	
 								<th>Value</th>
 								<th>Weight</th>
-								<th>Score</th>
 							</tr>
 						</thead>
 						<tbody  ng-repeat="form in preCtrl.template.assessment">
-							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'selfAssessment' || form.questions[question].category === 'Self Assessment'">
-								<td>{{form.name}}</td>
-								<td>Mature</td>
+							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
+								<td><strong>{{form.name}}</strong></td>
+								<td>{{q.question}}</td>
 								<td>{{q.answer}}</td>
 								<td>{{q.weight}}</td>
-								<td>2</td>
 							</tr>
 						</tbody>
 					</table>
@@ -35,23 +33,21 @@
 					<div class="text-primary" ng-click="qasHide = !qasHide">
 						<h4>Quantitative Assessment Scores</h4>
 					</div>
-					<table class="table table.responsive table-hover table-striped" ng-show="qasHide">
+					<table class="table table.responsive table-hover table-striped" ng-hide="qasHide">
 						<thead class="thead">
 							<tr>
+								<th>Category</th>
 								<th>Question</th>
-								<th>Response</th>
 								<th>Value</th>
 								<th>Weight</th>
-								<th>Score</th>
 							</tr>
 						</thead>
 						<tbody ng-repeat="form in preCtrl.template.assessment">
-							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'quantitativeAssessment' || form.questions[question].category === 'Quantitative Assessment'">
+							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
+								<td><strong>{{form.name}}</strong></td>
 								<td>{{q.question}}</td>
-								<td>Mature</td>
 								<td>{{q.answer}}</td>
 								<td>{{q.weight}}</td>
-								<td>1</td>
 							</tr>
 						</tbody>
 					</table>

@@ -22,4 +22,28 @@ export default class ViewAssessmentComponent {
       this.assessment = response.data;
     })
   }//End onInit
+
+  setSAResponse(q) {
+    if (q.answer == 1) {
+      return 'Novice'; 
+    } else if (q.answer == 2) {
+      return 'Progressing'
+    } else if (q.answer == 3) {
+      return 'Mature'
+    }
+  }
+
+  setQAResponse(q) {
+        if (q.answer == 1) {
+      return "Don't do it"; 
+    } else if (q.answer == 2) {
+      return 'Planned'
+    } else if (q.answer == 3) {
+      return 'In progress'
+    } else if (q.answer == 4) {
+      return 'Partially Implemented'
+    } else if (q.answer == 5) {
+      return 'Mature'
+    }
+  }
 } //End AssessmentsComponent

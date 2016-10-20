@@ -11,9 +11,9 @@ export default function AddQuestionController($uibModalInstance, $http, userId, 
   $ctrl.newQuestion = null;
 
   $ctrl.submit = function () {
-    $ctrl.$http.post('/api/users/client/clientNew/' + $ctrl.userId, $ctrl.newClient)
+    $ctrl.$http.post('/api/users/template/questionNew/' + $ctrl.userId + '/' + $ctrl.templateId + '/' + $ctrl.formId, $ctrl.newQuestion)
     .then(response => {
-      $ctrl.clients.push(response.data[response.data.length - 1]);
+      $ctrl.questions.push(response.data[response.data.length - 1]);
       $ctrl.$uibModalInstance.close();
     });
   };

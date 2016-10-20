@@ -8,16 +8,14 @@ var Questions = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
-	answerArray: [String],
 	category: String,
-	grouping: String,
 	weight: {
 		type: Number,
 		default: 0
 	},
 	answer: {
 		type: Number,
-		default: 0
+		default: 1
 	},
 	response: {
 		type: String,

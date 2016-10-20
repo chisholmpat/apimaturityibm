@@ -10,7 +10,7 @@
 					<div class="text-primary" ng-click="sasHide = !sasHide">
 						<h4>Self Assessment Scores</h4>
 					</div>
-					<table class="table table.responsive table-hover table-striped" ng-show="sasHide">
+					<table class="table table.responsive table-hover table-striped" ng-hide="sasHide">
 						<thead class="thead">
 							<tr>
 								<th>Category</th>
@@ -21,12 +21,12 @@
 							</tr>
 						</thead>
 						<tbody  ng-repeat="form in vasCtrl.assessment.assessment">
-							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'selfAssessment' || form.questions[question].category === 'Self Assessment'">
+							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
 								<td>{{form.name}}</td>
-								<td>Mature</td>
+								<td>{{vasCtrl.setSAResponse(q)}}</td>
 								<td>{{q.answer}}</td>
 								<td>{{q.weight}}</td>
-								<td>2</td>
+								<td>To be implemented</td>
 							</tr>
 						</tbody>
 					</table>
@@ -35,7 +35,7 @@
 					<div class="text-primary" ng-click="qasHide = !qasHide">
 						<h4>Quantitative Assessment Scores</h4>
 					</div>
-					<table class="table table.responsive table-hover table-striped" ng-show="qasHide">
+					<table class="table table.responsive table-hover table-striped" ng-hide="qasHide">
 						<thead class="thead">
 							<tr>
 								<th>Question</th>
@@ -46,12 +46,12 @@
 							</tr>
 						</thead>
 						<tbody ng-repeat="form in vasCtrl.assessment.assessment">
-							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'quantitativeAssessment' || form.questions[question].category === 'Quantitative Assessment'">
+							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
 								<td>{{q.question}}</td>
-								<td>Mature</td>
+								<td>{{vasCtrl.setQAResponse(q)}}</td>
 								<td>{{q.answer}}</td>
 								<td>{{q.weight}}</td>
-								<td>1</td>
+								<td>To be implemented</td>
 							</tr>
 						</tbody>
 					</table>
@@ -60,7 +60,7 @@
 		</div>
 		<div class="panel-footer">
 			<button class="btn btn-default btn-md"  ui-sref="clients">
-				Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				Clients <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
 			</button>
 			<button class="btn btn-default btn-md" ui-sref="assessmentHistory">
 				History <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>

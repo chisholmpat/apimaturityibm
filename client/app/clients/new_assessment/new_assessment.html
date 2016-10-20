@@ -13,7 +13,7 @@
 							<hr>
 							<div class="list group user-list">
 								<div class="text-primary"><h4>Self Assessment</h4></div>
-								<ul class="list-group-item" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'selfAssessment' || form.questions[question].category === 'Self Assessment'">
+								<ul class="list-group-item" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
 									<li class="list-group-item" style="margin-top:1%;padding: 0%">
 										<div style="width:100%">
 											<div class="well well-sm">{{q.question}}</div>
@@ -39,7 +39,7 @@
 							</div>
 							<div class="list group user-list" style="margin-top:1.5%">
 								<div class="text-primary"><h4>Quantitative Assessment</h4></div>
-								<ul class="list-group-item" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'quantitativeAssessment' || form.questions[question].category === 'Quantitative Assessment'">
+								<ul class="list-group-item" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
 									<li class="list-group-item" style="margin-top:1%;padding: 0%">
 										<div style="width:100%">
 											<div class="well well-sm">{{q.question}}</div>

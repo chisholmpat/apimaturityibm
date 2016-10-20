@@ -40,6 +40,7 @@ export class BuilderComponent {
       alert('An error occured while deleting. Please try again.');
     });
     this.templates.splice(this.templates.indexOf(template), 1);
+    this.template = this.templates[0];
   }//End deleteTemplate
 
   selectTemplate(template) {
