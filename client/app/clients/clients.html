@@ -1,188 +1,216 @@
-<div class="container" style="margin-top:1%;">
-	<div class=row>
-		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading panel-grad-head">
-					<h4 class="h4-panel">{{clientsCtrl.getCurrentUser().name}}'s Clients ({{clientsCtrl.clients.length}})</h4>
-				</div>
-				<div class="panel-body">
-					<button class="btn btn-default btn-md"  ng-click="clientsCtrl.toggleModal()">
-						Add Client <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-					</button>	
-					<hr>
-					<table class="table table.responsive table-hover table-striped" >
-						<thead class="thead">
-							<tr>
-								<th>Clients</th>
-								<th style="text-align:right;"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="client in clientsCtrl.clients track by client._id" ng-click="clientsCtrl.selectClient(client)">
-								<td><a>{{client.name}}</a></td>
-
-								<td style="text-align:right;">
-									<button class="btn btn-danger btn-md" ng-click="clientsCtrl.deleteClient(client)">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-									</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+<div class="row special-row">
+	<div class="col-md-4" >
+		<div class="panel panel-default">
+			<div class="panel-heading panel-grad-head">
+				<h4 class="h4-panel">My Clients</h4>
+			</div>
+			<div class="panel-body">
+				<table st-table="displayedCollection" st-safe-src="clientsCtrl.clients" class="table table.responsive table-hover">
+					<thead class="thead">
+						<tr colspan="1" >
+							<th st-sort="name" style="width:20%">Clients ({{clientsCtrl.clients.length}})</th>
+							<th>
+								<input st-search placeholder="Search" class="input-sm form-control" type="search"/>
+							</th>
+							<th style="width:5%">
+								<button type="button" class="btn btn-default btn-sm" ng-click="clientsCtrl.toggleModal()">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="client in displayedCollection" ng-click="clientsCtrl.selectClient(client)">
+							<td>{{client.name}}</td>
+							<td></td>
+							<td style="text-align:right;">
+								<button class="btn btn-danger btn-sm" ng-click="admin.delete(user)">
+									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3">
+								<div st-pagination="" st-items-by-page="10" st-displayed-pages="5"></div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 		</div>
+	</div>
 
-		<div class="col-md-8" ng-data="{{clientsCtrl.client}}">
-			<div class="panel panel-default">
-				<div class="panel-heading panel-grad-head">
-					<h4 class="h4-panel">{{clientsCtrl.nameCopy}}</h4>
+	<div class="col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-heading panel-grad-head">
+				<h4 class="h4-panel">Client Details</h4>
+			</div>
+			<div class="panel-body">
+				<div>
+					<button type="button" class="btn btn-default btn-sm" ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
+						Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					</button>
+					<button class="btn btn-default btn-sm" ng-click="clientsCtrl.toggleModalTwo()" ng-hide="clientsCtrl.client.edit">
+						Assessment History <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+					</button>	
+					<button type="button" class="btn btn-default btn-sm" ng-click="clientsCtrl.toggleModalThree()" ng-hide="clientsCtrl.client.edit" " style="float:right">
+						New Assessment <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+					</button>						
+					<button class="btn btn-default btn-sm" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
+						Cancel <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
+					</button>
+					<button class="btn btn-default btn-sm" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.checkForm(editForm)">
+						Confirm <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+					</button>	
 				</div>
-				<div class="panel-body" ng-show="clientsCtrl.noClients">
-					<div>
-						<button type="button" class="btn btn-default btn-md" ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
-							Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-						</button>
-						<button class="btn btn-default btn-md" ng-click="clientsCtrl.selectClient(clientsCtrl.client); clientsCtrl.setInfo()" ui-sref="assessmentHistory" ng-hide="clientsCtrl.client.edit">
-							Assessment History <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-						</button>
-						<button type="button" class="btn btn-default btn-md" ng-click="clientsCtrl.setInfo()" ui-sref="selectAssessment" ng-hide="clientsCtrl.client.edit" " style="float:right">
-							New Assessment <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-						</button>							
-						<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)">
-							Cancel <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
-						</button>
-						<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.updateClient(clientsCtrl.client)">
-							Confirm <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-						</button>	
+				<hr/>
+				<h4 class="text-primary"><strong>{{clientsCtrl.client.name}}</strong></h4>
+				<div class="col-md-12 content-shadow" ng-hide="clientsCtrl.client.edit">
+				<strong class="text-muted">Details</strong>
+					<ul class="list-group list-special">
+						<li class="list-group-item">
+							<strong>Contact:</strong> {{clientsCtrl.client.contact}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Country:</strong> {{clientsCtrl.client.country}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Phone:</strong> {{clientsCtrl.client.phone}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>E-mail:</strong> {{clientsCtrl.client.email}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Industry:</strong> {{clientsCtrl.client.industry}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Industry Segment:</strong> {{clientsCtrl.client.industry_segment}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Revenue:</strong> {{clientsCtrl.client.revenue}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Market Share:</strong> {{clientsCtrl.client.market_share}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Market Capitalization:</strong> {{clientsCtrl.client.market_capitalization}}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Competitors:</strong> {{clientsCtrl.client.competitors}}
+						</li>
+					</ul>
 					</div>
-					<hr>
-					<div>
-						<div class="card text-xs-center" style="margin-top:2%">
-							<div class="card-header">
-								<ul class="nav nav-tabs card-header-tabs pull-xs-left">
-									<li class="nav-item">
-										<a class="nav-link active" href="#" ng-click="clientsCtrl.select(1)">Contact</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#" ng-click="clientsCtrl.select(2)">Details</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link disabled" href="#" ng-click="clientsCtrl.select(3)">Competitors</a>
-									</li>
-								</ul>
-							</div>
-							<div class="card-block" ng-show="clientsCtrl.isSelected(1)">
-								<h4 class="card-title"></h4>
-								<ul class="list-group">
+					<div class="col-md-12 content-shadow" ng-show="clientsCtrl.client.edit">
+						<div uib-alert ng-show="clientsCtrl.alertTrigger" ng-repeat="alert in clientsCtrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="clientsCtrl.closeAlert($index)">{{alert.msg}}</div>
+						<strong class="text-muted">Edit</strong>
+						<form name="editForm" novalidate>
+							<div class="form-group" ng-class="{ 'has-error': editForm.contactInput.$invalid }">
+								<label for="contactInput">Contact:</label>
+								<input type="text" class="form-control" name="contactInput" ng-model="clientsCtrl.client.contact" placeholder="Enter a contact..." required>
 
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Contact:</strong> {{clientsCtrl.client.contact}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Contact</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.contact">
-									</li>
-
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Country:</strong> {{clientsCtrl.client.country}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Country</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.country">
-									</li>
-
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Phone:</strong> {{clientsCtrl.client.phone}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Phone</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.phone">
-									</li>
-
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>E-mail:</strong> {{clientsCtrl.client.email}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">E-mail</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.email">
-									</li>
-								</ul>
-								<div>
-									<button class="btn btn-default btn-md" style="float:right;" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(2)">
-										Details <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-									</button>
+								<div class="help-block" ng-messages="editForm.contactInput.$error" ng-if="editForm.contactInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
 								</div>
 							</div>
-							<div class="card-block" ng-show="clientsCtrl.isSelected(2)">
-								<h4 class="card-title"></h4>
-								<ul class="list-group">
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Industry:</strong> {{clientsCtrl.client.industry}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Industry</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.industry">
-									</li>
 
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Industry Segment:</strong> {{clientsCtrl.client.industry_segment}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Industry Segment</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.industry_segment">
-									</li>
+							<div class="form-group" ng-class="{ 'has-error': editForm.countryInput.$invalid }">
+								<label for="countryInput">Country:</label>
+								<input type="text" class="form-control" name="countryInput" ng-model="clientsCtrl.client.country" placeholder="Enter a country..." required>
 
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Revenue:</strong> {{clientsCtrl.client.revenue}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Revenue</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.revenue">
-									</li>
-
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Market Share:</strong> {{clientsCtrl.client.market_share}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Market Share</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.market_share">
-									</li>
-
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Market Capitalization:</strong> {{clientsCtrl.client.market_capitalization}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Market Capitalization</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.market_capitalization">
-									</li>
-								</ul>
-								<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(1)">
-									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Contact
-								</button>
-								<button class="btn btn-default btn-md" style="float:right;" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(3)">
-									Competitors <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-								</button>								
+								<div class="help-block" ng-messages="editForm.countryInput.$error" ng-if="editForm.countryInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+								</div>
 							</div>
-							<div class="card-block" ng-show="clientsCtrl.isSelected(3)">
-								<h4 class="card-title"></h4>
-								<ul class="list-group">
-									<li class="list-group-item" ng-hide="clientsCtrl.client.edit">
-										<strong>Competitors:</strong> {{clientsCtrl.client.competitors}}
-									</li>
-									<li class="list-group-item" ng-show="clientsCtrl.client.edit">
-										<label for="contactInput">Competitors</label>
-										<input type="text" class="form-control" ng-model="clientsCtrl.client.competitors">
-									</li>
-								</ul>
-								<button class="btn btn-default btn-md" ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.select(2)">
-									<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Details
-								</button>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.phoneInput.$invalid }">
+								<label for="phoneInput">Phone:</label>
+								<input type="text" class="form-control" name="phoneInput" ng-model="clientsCtrl.client.phone" placeholder="Enter a phone number..." required>
+
+								<div class="help-block" ng-messages="editForm.phoneInput.$error" ng-if="editForm.phoneInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+								</div>
 							</div>
-						</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.emailInput.$invalid }">
+								<label for="emailInput">E-mail:</label>
+								<input type="email" class="form-control" name="emailInput" ng-model="clientsCtrl.client.email" placeholder="Enter an e-mail..." required>
+
+								<div class="help-block" ng-messages="editForm.emailInput.$error" ng-if="editForm.emailInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+									<div ng-message="email" class="error">Please enter a valid e-mail</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.industryInput.$invalid }">
+								<label for="industryInput">Industry:</label>
+								<input type="text" class="form-control" name="industryInput" ng-model="clientsCtrl.client.industry" placeholder="Enter an industry..." required>
+
+								<div class="help-block" ng-messages="editForm.industryInput.$error" ng-if="editForm.industryInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.segmentInput.$invalid }">
+								<label for="segmentInput">Industry Segment:</label>
+								<input type="text" class="form-control" name="segmentInput" ng-model="clientsCtrl.client.industry_segment" placeholder="Enter an industry segment..." required>
+
+								<div class="help-block" ng-messages="editForm.segmentInput.$error" ng-if="editForm.segmentInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.revenueInput.$invalid }">
+								<label for="revenueInput">Revenue:</label>
+								<input type="number" class="form-control" name="revenueInput" ng-model="clientsCtrl.client.revenue" placeholder="Enter client revenue..." min="0" required>
+
+								<div class="help-block" ng-messages="editForm.revenueInput.$error" ng-if="editForm.revenueInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+									<div ng-message="number">Please enter a valid number</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.shareInput.$invalid }">
+								<label for="shareInput">Market Share:</label>
+								<input type="number" class="form-control" name="shareInput" ng-model="clientsCtrl.client.market_share" placeholder="Enter client market share value..." min="0" required>
+								<div class="help-block" ng-messages="editForm.shareInput.$error" ng-if="editForm.shareInput.$invalid">
+									<div ng-message="required">Required</div>
+									<div ng-message="number">Please enter a valid number</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.capitalInput.$invalid }">
+								<label for="capitalInput">Market Capitalization:</label>
+								<input type="number" class="form-control" name="capitalInput" ng-model="clientsCtrl.client.market_capitalization" placeholder="Enter client market capitalization value..." min="0" required>
+								<div class="help-block" ng-messages="editForm.capitalInput.$error" ng-if="editForm.capitalInput.$invalid">
+									<div ng-message="required">Required</div>
+									<div ng-message="number">Please enter a valid number</div>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{ 'has-error': editForm.competitorInput.$invalid }">
+								<label for="competitorInput">Competitors:</label>
+								<input type="text" class="form-control" name="competitorInput" ng-model="clientsCtrl.client.competitors" placeholder="Enter client competitors..." required>
+
+								<div class="help-block" ng-messages="editForm.competitorInput.$error" ng-if="editForm.competitorInput.$invalid">
+									<div ng-message="required" class="error">Required</div>
+								</div>
+							</div>	
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 </div>

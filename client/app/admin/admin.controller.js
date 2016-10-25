@@ -13,6 +13,9 @@ export default class AdminController {
     this.user = null;
     this.count = 0;
     this.animationEnabled = true;
+    this.total = null;
+    this.currentPage = 1;
+    this.usersPerPage = 1;
   }
 
   $onInit() {
@@ -20,6 +23,7 @@ export default class AdminController {
     .then(response => {
       this.users = response.data;
       this.user = this.users[0];
+      this.total = this.users.length;
     })
   }//End onInit
 
@@ -30,7 +34,16 @@ export default class AdminController {
     })
     this.users.splice(this.users.indexOf(user), 1);
     this.user = this.users[0];
+    this.total = this.users.length;
   }//End delete
+
+  paginate(val) {
+    var begin, end, index;
+    begin = (this.currentPage - 1) * this.usersPerPage;
+    end = begin + this.usersPerPage;
+    index = this.users.indexOf(val);
+    return (begin <= index && index < end);
+  }//End paginate
 
   selectUser(user) {
     this.user = user;

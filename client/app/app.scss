@@ -7,14 +7,14 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 // @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
 
 /**
- * App-wide Styles
- */
+* App-wide Styles
+*/
 
 .browserupgrade {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+margin: 0.2em 0;
+background: #ccc;
+color: #000;
+padding: 0.2em 0;
 }
 
 // Component styles are injected through gulp
@@ -28,19 +28,159 @@ $fa-font-path: '/assets/fonts/font-awesome/';
 @import '../components/oauth-buttons/oauth-buttons';
 /* endinject */
 
-.h4-panel {
-	color: #ffffff;
+html {
+height: 100%;
+box-sizing: border-box;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
 }
 
-.panel-grad-head {
-  color: #ffffff;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  background-image: linear-gradient(180deg, #1a66ff, #99bbff);
+body {
+font-family: 'Open Sans', sans-serif;
+background-color: #E5E5E5;
+height: 100%;
+min-height: 100%;
+margin: 0 auto -100px;
+padding: 0px 0 100px;
+}
+
+.ng-scope {
+  min-height: 100%;
+  margin-bottom: -52px;
+}
+
+.modal {
+  margin-bottom: 15px;
+}
+
+.modal-form-select {
+  margin-top:55px;
+}
+
+.ng-untouched { 
+  margin-bottom: 5px;
+}
+
+.modal-form.has-error {
+  margin-bottom: 60px;
+}
+
+.form-group {
+  margin-top: 15px;
+}
+
+.help-block {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.alert {
+  margin-bottom: 5px;
+}
+
+.list-group {
+  margin-bottom: 1px;
+}
+
+.special-row {
+  margin-left:0.1%;
+  margin-right:0.1%;
+  margin-bottom: 52px;
+  margin-top: 20px;
+}
+
+.login-row {
+margin-left: 0.1%;
+margin-right: 0.1%;
+padding-bottom: 75px;
+padding-top: 23px;
+}
+
+.modal-wrap {
+  margin-bottom: 0;
+}
+
+*,
+*:before,
+*:after {
+box-sizing: inherit;
+}
+
+* {
+border-radius: 0 !important;
+}
+
+.logo-font {
+font-family: 'Lato', sans-serif;
+}
+
+.navbar {
+  margin-bottom:0;
 }
 
 .navbar-shadow {
-  -webkit-box-shadow: 1px 0px 6px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 1px 0px 6px 0px rgba(0,0,0,0.75);
-  box-shadow: 1px 0px 6px 0px rgba(0,0,0,0.75);
-  border-radius:0px;
+-webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+-moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+border-radius:0px;
+}
+
+.h4-panel {
+color: #ffffff;
+}
+
+.panel-grad-head {
+color: #ffffff;
+text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+background-image: linear-gradient(180deg, #1a66ff, #99bbff);
+border-radius:0px;
+font-family: 'Lato', sans-serif;
+}
+
+.split-form {
+  padding-top: 2%;
+}
+
+.list-group-item-survey {
+  padding: 45px 15px;
+}
+
+.list-special .list-group-item {
+border-right:0px;
+border-left:0px;
+}
+
+.list-survey .list-group-item {
+border:0px;
+}
+
+.question-text {
+font-family: 'Lato', sans-serif;
+font-size:18px;
+font-weight: bold;
+}
+
+.content-header {
+-webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+-moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+margin-bottom: 0.5%;
+padding: 0.2%;
+}
+
+.content-shadow {
+-webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+-moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.44);
+border-radius:0px;
+padding: 2%;
+}
+
+.footer {
+position:relative;
+padding: 3rem;
+text-align:center;
+height:100px;
+color: #FFFFFF;
+background-color: #222222;
 }

@@ -1,0 +1,43 @@
+<div class="modal-wrap">
+<div class="modal-header panel-grad-head">
+	<h3 class="modal-title" id="modal-title">{{newCtrl.client.name}}: New Assessment</h3>
+</div>
+<div class="modal-body" id="modal-body" style="overflow-y:auto">
+	<h4 class="text-primary"><strong>{{newCtrl.getCurrentUser().name}}'s Templates</strong></h4>
+	<div class="col-md-12 content-shadow">
+		<div uib-alert ng-show="newCtrl.alertTrigger" ng-repeat="alert in newCtrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="newCtrl.closeAlert($index)">{{alert.msg}}</div>
+		<p><strong>Date:</strong> {{newCtrl.date | date: short}}</p>
+		<form name="selectForm">
+			<div class="form-group modal-form" ng-class="{ 'has-error': selectForm.nameInput.$touched && selectForm.nameInput.$invalid }">
+				<label for="nameInput">Assessment Name:</label><br/>
+				<input type="text" class="form-control" name="nameInput" ng-model="newCtrl.assessmentName" placeholder="Enter a name..." required>
+
+				<div class="help-block" ng-messages="selectForm.nameInput.$error" ng-if="selectForm.nameInput.$touched">
+					<div ng-message="required" class="error">Please enter a name.</div>
+				</div>
+			</div>
+			<div class="form-group modal-form" ng-class="{ 'has-error': selectForm.templateSelect.$touched && selectForm.templateSelect.$invalid }">
+				<label for="templateSelect"> Select a template: </label><br/>
+				<select class="form-control" name="templateSelect" ng-model="newCtrl.selection" required>
+					<option class="modal-wrap" ng-repeat="template in newCtrl.templates" value="{{template._id}}" ng-click="newCtrl.copyTemplate(template)">{{template.name}}</option>
+				</select>
+
+				<div class="help-block" ng-messages="selectForm.templateSelect.$error" ng-if="selectForm.templateSelect.$touched && selectForm.templateSelect.$invalid">
+					<div ng-message="required" class="error">You must select a template.</div>
+				</div>
+			</div>
+		</form>
+		<div>
+			<pre ng-show="newCtrl.showDesc">{{newCtrl.copy.description}}</pre>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default btn-sm" type="button" ng-click="newCtrl.cancel()">
+		Close <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	</button>
+	<button type="button" class="btn btn-default btn-sm" ng-click="newCtrl.checkTemplate(selectForm)">
+		Start Assessment <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+	</button>
+</div>
+</div>

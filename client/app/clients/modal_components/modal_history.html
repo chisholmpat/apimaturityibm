@@ -1,0 +1,39 @@
+<div class="modal-wrap">
+<div class="modal-header panel-grad-head">
+	<h3 class="modal-title" id="modal-title">{{histCtrl.client.name}}: Assessment History</h3>
+</div>
+<div class="modal-body" id="modal-body" style="overflow-y:auto">
+<table st-table="displayedCollection" st-safe-src="histCtrl.client.assessments" class="table table.responsive table-hover">
+		<thead class="thead">
+			<tr colspan="1" >
+				<th st-sort="name" style="width:50%">Assessments ({{histCtrl.client.assessments.length}})</th>
+				<th>
+					<input st-search placeholder="Search" class="input-sm form-control" type="search"/>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="assessment in displayedCollection">
+				<td>{{assessment.name}}</td>
+				<td style="text-align:right;">
+					<button class="btn btn-default btn-sm" ng-click="histCtrl.view(assessment)">
+						View <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">
+					<div st-pagination="" st-items-by-page="10" st-displayed-pages="5"></div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default btn-sm" type="button" ng-click="histCtrl.cancel()">
+		Close <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	</button>
+</div>
+</div>

@@ -7,6 +7,10 @@ import routes from './clients.routes';
 
 import AddClientController from './modal_components/modal_add.controller'
 
+import ClientHistoryController from './modal_components/modal_history.controller'
+
+import NewAssessmentController from './modal_components/modal_new.controller'
+
 export class ClientsComponent {
   $http;
   socket;
@@ -22,6 +26,7 @@ export class ClientsComponent {
     this.userId = this.$cookies.get('userId');
     this.clients = null;
     this.client = null;
+    this.templates = null;
     this.selected = 1;
     this.count = 0;
     this.update = false;
@@ -39,18 +44,32 @@ export class ClientsComponent {
       } else {
         this.noClients = false;
       }
-    })
+    })//End get
+
+    this.$http.get('api/users/template/' + this.userId)
+    .then(response => {
+      this.templates = response.data;
+    })//End get
   }//End onInit
 
-  updateClient(client) {
-    this.$http.put('/api/users/clientUpdate/' + this.userId + '/' + client._id, client)
-    .success(function() {
-      client.edit = false;
-    })
-    .error(function(err) {
-      alert('An error occured while saving your changes. Please try again.');
-    });
-  }//End updateClient
+   checkForm(f) {
+    if (f.$valid) {
+      this.$http.put('/api/users/clientUpdate/' + this.userId + '/' + this.client._id, this.client)
+      .error(function(err) {
+        alert('An error occured while saving your changes. Please try again.');
+      });
+      this.client.edit = false;
+      this.alertTrigger = false;
+    } else {
+      this.alertTrigger = true;
+      this.alerts = [
+        { type: 'danger', msg: 'Some details were incorrect. Please review the errors and try again.' }
+      ];
+      angular.forEach(f.$error.required, function(field) {
+        field.$setTouched();
+      });    
+    }//End if
+  }//End checkForm
 
   deleteClient(client) {
     this.$http.delete('/api/users/clientDelete/' + this.userId + '/' + client._id)
@@ -82,14 +101,6 @@ export class ClientsComponent {
     this.$cookies.put('clientName', this.client.name);
   }//End setInfo
 
-  select(item) {
-    this.selected = item;
-  }//End select
-
-  isSelected(item) {
-    return this.selected == item;
-  }//End isSelected
-
   assessmentCount(client) {
     this.count = 0;
   
@@ -99,6 +110,10 @@ export class ClientsComponent {
 
     return this.count;
   }//End assessmentCount
+
+  closeAlert(index) {
+    this.alerts.splice(index, 1);
+  };//End closeAlert
 
   toggleModal() {
     var clients = this.clients, userId = this.userId;
@@ -119,6 +134,43 @@ export class ClientsComponent {
       }
     })//End open
   }//End toggleModal
+
+  toggleModalTwo() {
+    var client = this.client;
+
+    var modalInstance = this.$uibModal.open({
+      animation: this.animationEnabled, 
+      ariaLabelledBy: 'modal-title',
+      template: require('./modal_components/modal_history.html'),
+      controller: ClientHistoryController,
+      controllerAs: 'histCtrl',
+      resolve: {
+        client: function() {
+          return client;
+        }
+      }
+    })//End open
+  }//End toggleModalTwo
+
+  toggleModalThree() {
+    var client = this.client, templates = this.templates;
+
+    var modalInstance = this.$uibModal.open({
+      animation: this.animationEnabled, 
+      ariaLabelledBy: 'modal-title',
+      template: require('./modal_components/modal_new.html'),
+      controller: NewAssessmentController,
+      controllerAs: 'newCtrl',
+      resolve: {
+        client: function() {
+          return client;
+        },
+        templates: function() {
+          return templates;
+        }
+      }
+    })//End open
+  }//End toggleModalTwo
 }//End controller
 
 export default angular.module('apiLocalApp.clients', [uiRouter])

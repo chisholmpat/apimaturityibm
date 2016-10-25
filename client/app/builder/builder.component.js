@@ -23,6 +23,10 @@ export class BuilderComponent {
     this.templates = null;
     this.template = null;
     this.animationEnabled = true;
+    this.idCopies = [];
+    this.formIndex = 0;
+    this.max = 0;
+    this.currentId = '';
   }//End constructor
 
   $onInit() {
@@ -31,6 +35,12 @@ export class BuilderComponent {
       this.templates = response.data;
       this.template = this.templates[0];
       this.detailCount(this.template);
+      this.max = this.template.assessment.length;
+
+      for (var i = 0; i < this.template.assessment.length; i++) {
+        this.idCopies[i] = this.template.assessment[i]._id;
+      }
+      this.currentId = this.idCopies[0];
     })//End get
   }//End onInit
 
@@ -63,6 +73,40 @@ export class BuilderComponent {
       }
     }
   }//End detailCount
+
+  next() { 
+    if (this.formIndex >= this.max - 1) {
+      this.formIndex = 0;
+      this.currentId = this.idCopies[this.formIndex];
+    } else {
+      this.formIndex++;
+      this.currentId = this.idCopies[this.formIndex];
+    }
+  }//End next
+
+  prev() { 
+    if (this.formIndex <= 0) {
+      this.formIndex = this.max - 1;
+      this.currentId = this.idCopies[this.formIndex];
+    } else {
+      this.formIndex--;
+      this.currentId = this.idCopies[this.formIndex];
+    }
+  }//End next
+
+  checkMax() {
+    if (this.formIndex >= this.max - 1) {
+      return true;
+    }   
+    return false;
+  }//End checkMax
+
+  checkMin() {
+    if (this.formIndex <= 0) {
+      return true;
+    }
+    return false;
+  }//End checkMin
 
   toggleModal() {
     angular.element(this.$document[0].querySelector('.modal-demo'));
