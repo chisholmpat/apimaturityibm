@@ -10,12 +10,21 @@ export default function ClientHistoryController($uibModalInstance, $cookies, $st
 
   $ctrl.view = function(assessment) {
     $ctrl.$cookies.put('assessmentId', assessment._id);
+    $ctrl.$cookies.put('assessmentName', assessment.name);
     $ctrl.$cookies.put('clientId', client._id);
     $ctrl.$cookies.put('clientName', client.name);
-    $ctrl.$cookies.put('assessmentName', assessment.name);
     $ctrl.$uibModalInstance.close(); 
     $ctrl.$state.go('finishedAssessment');
   }//End view
+
+  $ctrl.edit = function(assessment) {
+    $ctrl.$cookies.put('assessmentId', assessment._id);
+    $ctrl.$cookies.put('assessmentName', assessment.name);
+    $ctrl.$cookies.put('clientId', client._id);
+    $ctrl.$cookies.put('clientName', client.name);
+    $ctrl.$uibModalInstance.close(); 
+    $ctrl.$state.go('newAssessment')
+  }
 
   $ctrl.cancel = function () {
     $ctrl.$uibModalInstance.dismiss('cancel');

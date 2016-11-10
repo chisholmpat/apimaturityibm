@@ -60,23 +60,15 @@ export default class NewAssessmentComponent {
   }//End decWeight
 
   next() { 
-    if (this.formIndex >= this.max - 1) {
-      this.formIndex = 0;
-      this.currentId = this.idCopies[this.formIndex];
-    } else {
-      this.formIndex++;
-      this.currentId = this.idCopies[this.formIndex];
-    }
+    this.formIndex++;
+    this.currentId = this.idCopies[this.formIndex];
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }//End next
 
   prev() { 
-    if (this.formIndex <= 0) {
-      this.formIndex = this.max - 1;
-      this.currentId = this.idCopies[this.formIndex];
-    } else {
-      this.formIndex--;
-      this.currentId = this.idCopies[this.formIndex];
-    }
+    this.formIndex--;
+    this.currentId = this.idCopies[this.formIndex];
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }//End next
 
   checkMax() {

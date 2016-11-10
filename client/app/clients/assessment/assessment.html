@@ -5,14 +5,14 @@
 				<h4 class="h4-panel">{{vasCtrl.assessmentName}}</h4>
 				<small class="h4-panel">Client: {{vasCtrl.clientName}}</small><br/>	
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" id="top">
 			<div ng-hide="vasCtrl.dataLoaded" style="text-align:center;">
 			<h4>Loading Results...</h4>
 			<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
 			<span class="sr-only">Loading...</span>
 			</div>
 			<div ng-show="vasCtrl.dataLoaded">
-				<button style="margin-bottom:5px" ng-disabled="vasCtrl.lineRdy" class="btn btn-default btn-md"  ng-click="vasCtrl.convertToPdf()">
+				<button style="margin-bottom:5px" ng-disabled="vasCtrl.lineRdy" class="btn btn-default btn-md"  ng-click="vasCtrl.savePDF()">
 					Save PDF <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
 				</button>
 				<div class="content-shadow">
@@ -34,11 +34,11 @@
 									<div class="media">
 										<div class="media-left">
 											<strong class="text-muted">Score</strong>
-											<strong class="score-text text-success">{{vasCtrl.calcScore(q.answer, q.weight)}}</strong>
+											<strong class="score-text text-success">{{vasCtrl.scores.calcScore(q.answer, q.weight)}}</strong>
 										</div>
 										<div class="media-body" style="padding-bottom:10px;">
 											<p class="media-heading question-text">Question {{$index+1}}: {{q.question}}</p>
-											<strong class="text-primary">Response:</strong> {{vasCtrl.setSAResponse(q)}}<br/>
+											<strong class="text-primary">Response:</strong> {{vasCtrl.scores.setSAResponse(q)}}<br/>
 											<strong class="text-primary">Response Value:</strong> {{q.answer}}
 											<br/>
 											<strong class="text-primary">Weight:</strong> {{q.weight}}
@@ -65,11 +65,11 @@
 									<div class="media">
 										<div class="media-left">
 											<strong class="text-muted">Score</strong>
-											<strong class="score-text text-success">{{vasCtrl.calcScore(q.answer, q.weight)}}</strong>
+											<strong class="score-text text-success">{{vasCtrl.scores.calcScore(q.answer, q.weight)}}</strong>
 										</div>
 										<div class="media-body" style="padding-bottom:10px;">
 											<p class="media-heading question-text">Question {{($index+1) - vasCtrl.saLength}}: {{q.question}}</p>
-											<strong class="text-primary">Response:</strong> {{vasCtrl.setQAResponse(q)}}<br/>
+											<strong class="text-primary">Response:</strong> {{vasCtrl.scores.setQAResponse(q)}}<br/>
 											<strong class="text-primary">Response Value:</strong> {{q.answer}}
 											<br/>
 											<strong class="text-primary">Weight:</strong> {{q.weight}}

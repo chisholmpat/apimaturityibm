@@ -89,25 +89,17 @@ export class BuilderComponent {
   }//End detailCount
 
   next() { 
-    if (this.formIndex >= this.max - 1) {
-      this.formIndex = 0;
-    } else {
-      this.formIndex++;
-      this.form = this.template.assessment[this.formIndex];
-      var pre = document.getElementById('preview');
-      pre.scrollTop = 0;
-    }
+    this.formIndex++;
+    this.form = this.template.assessment[this.formIndex];
+    var pre = document.getElementById('preview');
+    pre.scrollTop = 0;
   }//End next
 
   prev() { 
-    if (this.formIndex <= 0) {
-      this.formIndex = this.max - 1;
-    } else {
-      this.formIndex--;
-      this.form = this.template.assessment[this.formIndex];
-      var pre = document.getElementById('preview');
-      pre.scrollTop = 0;
-    }
+    this.formIndex--;
+    this.form = this.template.assessment[this.formIndex];
+    var pre = document.getElementById('preview');
+    pre.scrollTop = 0;
   }//End next
 
   checkMax() {

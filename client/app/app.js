@@ -28,6 +28,9 @@ import how_to from './how-to/how-to.component';
 import builder from './builder/builder.component';
 import clients from './clients/clients.component';
 import assessment from './assessment/assessment.component';
+import graph from './graph/graph.service';
+import scores from './scores/scores.service';
+import pdf from './pdf/pdf.service';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
@@ -38,7 +41,7 @@ import './app.scss';
 
 angular.module('apiLocalApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
     uiBootstrap, ngMessages, ngAnimate, smartTable, _Auth, account, admin, navbar, footer, main, constants, 
-    socket, util, clients, builder, assessment, how_to
+    socket, util, clients, builder, assessment, how_to, graph, scores, pdf
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {
