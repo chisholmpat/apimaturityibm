@@ -44,6 +44,7 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
         })
         .then(user => {
           $cookies.put('userId', user._id);
+          $cookies.put('currentRole', user.role);
           safeCb(callback)(null, user);
           return user;
         })
@@ -145,8 +146,19 @@ export function AuthService($location, $http, $cookies, $q, appConfig, Util, Use
           safeCb(callback)(is);
           return is;
         });
-    },
+    },  
 
+    isUserLoggedIn() {
+      return Auth.getCurrentUser(undefined)
+        .then(user => {
+          var is = user.role;
+          if (is == 'user') {
+            // safeCb(callback)(is);
+            return true;
+          }
+          return false;
+        });
+    },
     /**
      * Check if a user is logged in
      *

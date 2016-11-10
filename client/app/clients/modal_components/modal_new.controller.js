@@ -1,4 +1,5 @@
 'user strict'
+const angular = require('angular');
 
 export default function NewAssessmentController($uibModalInstance, $http, Auth, $cookies, $state, client, templates) {
   var $ctrl = this;
@@ -8,53 +9,42 @@ export default function NewAssessmentController($uibModalInstance, $http, Auth, 
   $ctrl.$cookies = $cookies;
   $ctrl.$state = $state;
   $ctrl.getCurrentUser = Auth.getCurrentUserSync;
+  $ctrl.userId = $ctrl.$cookies.get('userId');
   $ctrl.client = client;
   $ctrl.templates = templates;
+  $ctrl.newAssessment = null;
   $ctrl.date = Date.now();
   $ctrl.selection = null;
   $ctrl.copy = null;
-  $ctrl.templateId = null;
   $ctrl.assessmentName = '';
-  $ctrl.alertTrigger = false;
   $ctrl.showDesc = false;
 
   $ctrl.copyTemplate = function(template) {
     $ctrl.copy = template;
     $ctrl.showDesc = true;
-    $ctrl.detailCount();
   }//End copyTemplate
-
-  $ctrl.detailCount = function() {
-    $ctrl.fCount = 0, $ctrl.qCount = 0;
-
-    for (var i = 0; i < $ctrl.copy.assessment.length; i++) {
-      ++$ctrl.fCount;
-      for (var j = 0; j < $ctrl.copy.assessment[i].questions.length; j++) {
-        ++$ctrl.qCount;
-      }
-    }
-  }//End detailCount
 
   $ctrl.checkTemplate = function(f) {
     if (f.$valid) {
-      $ctrl.$cookies.put('templateId', $ctrl.selection);
-      $ctrl.$cookies.put('newAssessmentName', $ctrl.assessmentName);
-      $ctrl.$uibModalInstance.close(); 
-      $ctrl.$state.go('newAssessment')
+      $ctrl.savingData = true;
+      $ctrl.newAssessment = angular.copy($ctrl.copy);
+      $ctrl.newAssessment.name = $ctrl.assessmentName;
+
+      $ctrl.$http.post('/api/users/assessmentNew/' + this.userId + '/' + $ctrl.client._id, $ctrl.newAssessment)
+      .then(response => {
+        $ctrl.$cookies.put('clientId', $ctrl.client._id);
+        $ctrl.$cookies.put('clientName', $ctrl.client.name);
+        $ctrl.$cookies.put('assessmentId', response.data._id);
+        $ctrl.$cookies.put('assessmentName', response.data.name);
+        $ctrl.$uibModalInstance.close(); 
+        $ctrl.$state.go('newAssessment')
+      });
     } else {
-      $ctrl.alerts = [
-      { type: 'danger', msg: 'Please review the assessment details.' }
-      ];
-      $ctrl.alertTrigger = true;
       angular.forEach(f.$error.required, function(field) {
         field.$setTouched();
       });
     }
   }//End checkTemplate
-
-  $ctrl.closeAlert = function(index) {
-    $ctrl.alerts.splice(index, 1);
-  };//End closeAlert
 
   $ctrl.cancel = function () {
     $ctrl.$uibModalInstance.dismiss('cancel');

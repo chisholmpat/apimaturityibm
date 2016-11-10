@@ -1,12 +1,21 @@
-<header class="hero-unit" id="banner" style="margin-top:0;">
+<header class="hero-unit" id="banner" style="margin-top:0;" ng-cloak>
 	<div class="container">
 		<h1 class="logo-font">API Maturity</h1>
-		<p class="lead">Get Started Today!</p>	
+		<p ng-hide="mainCtrl.isLoggedIn()" class="lead">Get Started Today!</p>
+		<p ng-show="mainCtrl.isLoggedIn()" class="lead">Welcome back, {{mainCtrl.getCurrentUser().name}}!</p>	
 	</div>
 </header>
-<div class="col-md-12 text-center" style="width:100%">
-<button class="btn btn-success btn-lg">
+
+<div ng-hide="mainCtrl.isLoggedIn()" class="col-md-12 text-center" style="width:100%">
+<button class="btn btn-success btn-lg" ui-sref="assessment">
 	Take the Assessment <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 </button>
 <h5 class="text-primary"><a ui-sref="login">Already a member?</a></h5>
+</div>
+
+<div ng-show="mainCtrl.isLoggedIn()" class="col-md-12 text-center" style="width:100%;margin-top:15px">
+
+<button class="btn btn-success btn-lg" ng-click="mainCtrl.newAssessment()" style="width:260px">
+	Start a new assessment <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+</button><br/>
 </div>

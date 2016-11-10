@@ -9,9 +9,9 @@ export default function ClientHistoryController($uibModalInstance, $cookies, $st
   $ctrl.assessment = null;
 
   $ctrl.view = function(assessment) {
-  	console.log(assessment);
     $ctrl.$cookies.put('assessmentId', assessment._id);
     $ctrl.$cookies.put('clientId', client._id);
+    $ctrl.$cookies.put('clientName', client.name);
     $ctrl.$cookies.put('assessmentName', assessment.name);
     $ctrl.$uibModalInstance.close(); 
     $ctrl.$state.go('finishedAssessment');

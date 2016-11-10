@@ -6,7 +6,7 @@
 </header>
 <div class="row login-row">
   <div class="col-lg-4 col-lg-offset-4" style="padding-top:15px">
-    <code style="text-align:center">Currently under development</code>
+    <code class="text-center">Currently under development</code>
     <form class="form" name="form" ng-submit="vm.login(form)" novalidate>
 
       <div class="form-group">
@@ -29,7 +29,7 @@
          Please enter a valid email.
        </p>
 
-       <p class="help-block">{{ vm.errors.login }}</p>
+       <p class="help-block">{{ vm.loginErr }}</p>
      </div>
 
      <div>

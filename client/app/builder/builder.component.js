@@ -22,11 +22,11 @@ export class BuilderComponent {
     this.userId = this.$cookies.get('userId');
     this.templates = null;
     this.template = null;
+    this.form = null;
+    this.formsExist = true;
     this.animationEnabled = true;
     this.idCopies = [];
-    this.formIndex = 0;
-    this.max = 0;
-    this.currentId = '';
+    this.max = 0, this.formIndex = 0;
   }//End constructor
 
   $onInit() {
@@ -36,12 +36,9 @@ export class BuilderComponent {
       this.template = this.templates[0];
       this.detailCount(this.template);
       this.max = this.template.assessment.length;
-
-      for (var i = 0; i < this.template.assessment.length; i++) {
-        this.idCopies[i] = this.template.assessment[i]._id;
-      }
-      this.currentId = this.idCopies[0];
-    })//End get
+      this.form = this.template.assessment[0];
+      this.dataLoaded = true;
+    });
   }//End onInit
 
   deleteTemplate(template) {
@@ -51,11 +48,28 @@ export class BuilderComponent {
     });
     this.templates.splice(this.templates.indexOf(template), 1);
     this.template = this.templates[0];
+    this.detailCount(template);
+    if (this.template.assessment.length > 0) {
+      this.formsExist = true;
+      this.form = this.template.assessment[0];
+      this.max = this.template.assessment.length;
+      this.formIndex = 0;
+    } else {
+      this.formsExist = false;
+    }//End if
   }//End deleteTemplate
 
   selectTemplate(template) {
     this.template = template;
     this.detailCount(template);
+    if (this.template.assessment.length > 0) {
+      this.formsExist = true;
+      this.form = this.template.assessment[0];
+      this.max = this.template.assessment.length;
+      this.formIndex = 0;
+    } else {
+      this.formsExist = false;
+    }//End if
   }//End selectTemplate
 
   setInfo() {
@@ -77,20 +91,22 @@ export class BuilderComponent {
   next() { 
     if (this.formIndex >= this.max - 1) {
       this.formIndex = 0;
-      this.currentId = this.idCopies[this.formIndex];
     } else {
       this.formIndex++;
-      this.currentId = this.idCopies[this.formIndex];
+      this.form = this.template.assessment[this.formIndex];
+      var pre = document.getElementById('preview');
+      pre.scrollTop = 0;
     }
   }//End next
 
   prev() { 
     if (this.formIndex <= 0) {
       this.formIndex = this.max - 1;
-      this.currentId = this.idCopies[this.formIndex];
     } else {
       this.formIndex--;
-      this.currentId = this.idCopies[this.formIndex];
+      this.form = this.template.assessment[this.formIndex];
+      var pre = document.getElementById('preview');
+      pre.scrollTop = 0;
     }
   }//End next
 

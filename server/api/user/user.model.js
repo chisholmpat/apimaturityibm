@@ -9,6 +9,10 @@ var Assessments = mongoose.model('Assessments').schema;
 const authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
+  created: {
+    type: Date,
+    default: Date.now
+  },
   name: String,
   firstName: String,
   lastName: String,

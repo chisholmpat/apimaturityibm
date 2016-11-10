@@ -1,70 +1,101 @@
-<div class="container" style="margin-top:1%;">
-	<div class="panel panel-default">
-		<div class="panel-heading panel-grad-head">
-			<h4 class="h4-panel">{{vasCtrl.assessmentName}}</h4>
-			<small class="h4-panel">Client: {{vasCtrl.clientName}}</small><br/>
-		</div>
-		<div class="panel-body">
-			<div class="user-info">
-				<div class="well">
-					<div class="text-primary" ng-click="sasHide = !sasHide">
-						<h4>Self Assessment Scores</h4>
+<div class="row special-row">
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading panel-grad-head">
+				<h4 class="h4-panel">{{vasCtrl.assessmentName}}</h4>
+				<small class="h4-panel">Client: {{vasCtrl.clientName}}</small><br/>	
+			</div>
+			<div class="panel-body">
+			<div ng-hide="vasCtrl.dataLoaded" style="text-align:center;">
+			<h4>Loading Results...</h4>
+			<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Loading...</span>
+			</div>
+			<div ng-show="vasCtrl.dataLoaded">
+				<button style="margin-bottom:5px" ng-disabled="vasCtrl.lineRdy" class="btn btn-default btn-md"  ng-click="vasCtrl.convertToPdf()">
+					Save PDF <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+				</button>
+				<div class="content-shadow">
+					<h4>Form: {{vasCtrl.form.name}}</h4>
+					<div style="padding:2%">
+						<h4 class="text-primary">Self Assessment Results</h4>
+						<hr/>
+						<div id="gsa" class="col-md-4">
+						<canvas id="saBar" class="graph-padding-one"></canvas>
+						</div>
+						<div class="col-md-8" id="lsa">
+						<canvas id="saLine" class="graph-padding-two"></canvas>
+						</div>
+						<h4 class="text-primary">Questions</h4>
+						<hr/>
+						<ul class="list-group list-survey" ng-repeat="form in vasCtrl.assessment.assessment" ng-if="vasCtrl.form._id==form._id" >
+							<ul class="list-group list-survey" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
+								<li class="list-group-item list-group-item-survey" style="margin-top:1%;padding: 0%;">
+									<div class="media">
+										<div class="media-left">
+											<strong class="text-muted">Score</strong>
+											<strong class="score-text text-success">{{vasCtrl.calcScore(q.answer, q.weight)}}</strong>
+										</div>
+										<div class="media-body" style="padding-bottom:10px;">
+											<p class="media-heading question-text">Question {{$index+1}}: {{q.question}}</p>
+											<strong class="text-primary">Response:</strong> {{vasCtrl.setSAResponse(q)}}<br/>
+											<strong class="text-primary">Response Value:</strong> {{q.answer}}
+											<br/>
+											<strong class="text-primary">Weight:</strong> {{q.weight}}
+											<br/>
+											<strong ng-if="q.note.length>0" class="text-primary">Note:</strong> {{q.note}}
+										</div>
+									</div>
+								</li>
+							</ul>
+						</ul>
+						
+						<h4 class="text-primary" style="margin-top:20px">Quality Assessment Results</h4>
+						<hr/>
+						<div id="gqa" class="col-md-4">
+						<canvas id="qaBar" class="graph-padding-one"></canvas>
+						</div>
+						<div class="col-md-8" id="lqa">
+						<canvas id="qaLine" class="graph-padding-two"></canvas>
+						</div>
+						<h4 class="text-primary" style="margin-bottom:20px;">Questions</h4>
+						<ul class="list-group list-survey" ng-repeat="form in vasCtrl.assessment.assessment" ng-if="vasCtrl.form._id==form._id" >
+							<ul class="list-group list-survey" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
+								<li class="list-group-item list-group-item-survey" style="margin-top:1%;padding: 0%;">
+									<div class="media">
+										<div class="media-left">
+											<strong class="text-muted">Score</strong>
+											<strong class="score-text text-success">{{vasCtrl.calcScore(q.answer, q.weight)}}</strong>
+										</div>
+										<div class="media-body" style="padding-bottom:10px;">
+											<p class="media-heading question-text">Question {{($index+1) - vasCtrl.saLength}}: {{q.question}}</p>
+											<strong class="text-primary">Response:</strong> {{vasCtrl.setQAResponse(q)}}<br/>
+											<strong class="text-primary">Response Value:</strong> {{q.answer}}
+											<br/>
+											<strong class="text-primary">Weight:</strong> {{q.weight}}
+											<br/>
+											<strong ng-if="q.note.length>0" class="text-primary">Note:</strong> {{q.note}}
+										</div>
+									</div>
+								</li>
+							</ul>
+						</ul>
+						<div style="margin-top:40px">
+							<button class="btn btn-default btn-md"  ng-click="vasCtrl.prev()" ng-disabled="vasCtrl.checkMin()">
+								<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous 
+							</button>	
+							<button class="btn btn-default btn-md"  ng-click="vasCtrl.next()" ng-disabled="vasCtrl.checkMax()" style="float:right">
+								Next <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+							</button>	
+						</div>
+						<div>
+							<hr>
+							<uib-progressbar max="vasCtrl.max" value="vasCtrl.formIndex+1"><span style="color:white; white-space:nowrap;">Form: {{vasCtrl.formIndex+1}} / {{vasCtrl.max}}</span></uib-progressbar>
+						</div>
 					</div>
-					<table class="table table.responsive table-hover table-striped" ng-hide="sasHide">
-						<thead class="thead">
-							<tr>
-								<th>Category</th>
-								<th>Response</th>
-								<th>Value</th>
-								<th>Weight</th>
-								<th>Score</th>
-							</tr>
-						</thead>
-						<tbody  ng-repeat="form in vasCtrl.assessment.assessment">
-							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
-								<td>{{form.name}}</td>
-								<td>{{vasCtrl.setSAResponse(q)}}</td>
-								<td>{{q.answer}}</td>
-								<td>{{q.weight}}</td>
-								<td>To be implemented</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="well">
-					<div class="text-primary" ng-click="qasHide = !qasHide">
-						<h4>Quantitative Assessment Scores</h4>
-					</div>
-					<table class="table table.responsive table-hover table-striped" ng-hide="qasHide">
-						<thead class="thead">
-							<tr>
-								<th>Question</th>
-								<th>Response</th>
-								<th>Value</th>
-								<th>Weight</th>
-								<th>Score</th>
-							</tr>
-						</thead>
-						<tbody ng-repeat="form in vasCtrl.assessment.assessment">
-							<tr ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
-								<td>{{q.question}}</td>
-								<td>{{vasCtrl.setQAResponse(q)}}</td>
-								<td>{{q.answer}}</td>
-								<td>{{q.weight}}</td>
-								<td>To be implemented</td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 			</div>
-		</div>
-		<div class="panel-footer">
-			<button class="btn btn-default btn-md"  ui-sref="clients">
-				Clients <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-			</button>
-			<button class="btn btn-default btn-md" ui-sref="assessmentHistory">
-				History <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-			</button>
+			</div>
 		</div>
 	</div>
 </div>

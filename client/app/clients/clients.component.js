@@ -26,24 +26,30 @@ export class ClientsComponent {
     this.userId = this.$cookies.get('userId');
     this.clients = null;
     this.client = null;
+    this.editCopy = null;
     this.templates = null;
     this.selected = 1;
     this.count = 0;
     this.update = false;
-    this.nameCopy = 'Start adding clients!';
+    this.animationEnabled = true;
+    this.alerts = [
+      { type: 'danger', msg: "You haven't added any clients, please add a client to begin." }
+    ];
   }//End constructor
 
   $onInit() {
-    this.$http.get('/api/users/client/' + this.userId).then(response => {
+    this.$http.get('/api/users/client/' + this.userId)
+    .then(response => {
       this.clients = response.data;
 
       if (this.clients.length > 0) {
         this.noClients = true;
         this.client = this.clients[0]; 
-        this.nameCopy = this.client.name;
       } else {
         this.noClients = false;
+        this.alertTrigger = true;
       }
+      this.dataLoaded = true;
     })//End get
 
     this.$http.get('api/users/template/' + this.userId)
@@ -53,18 +59,15 @@ export class ClientsComponent {
   }//End onInit
 
    checkForm(f) {
+    this.submitted = true;
+
     if (f.$valid) {
       this.$http.put('/api/users/clientUpdate/' + this.userId + '/' + this.client._id, this.client)
       .error(function(err) {
         alert('An error occured while saving your changes. Please try again.');
       });
       this.client.edit = false;
-      this.alertTrigger = false;
     } else {
-      this.alertTrigger = true;
-      this.alerts = [
-        { type: 'danger', msg: 'Some details were incorrect. Please review the errors and try again.' }
-      ];
       angular.forEach(f.$error.required, function(field) {
         field.$setTouched();
       });    
@@ -78,23 +81,30 @@ export class ClientsComponent {
     });
     this.clients.splice(this.clients.indexOf(client), 1);
 
-    if (this.clients.length == 0) {
+    if (this.clients.length <= 0) {
       this.nameCopy = 'Start adding clients!';
       this.noClients = false;
+      this.client = null;
     } else {
       this.client = this.clients[0]; 
-    }
+    }//End if
   }//End deleteClient
 
   selectClient(client) {
     this.noClients = true;
-    this.nameCopy = client.name;
     this.client = client;
   }//End selectClient
 
   toggleEdit(client) {
     client.edit = !client.edit;
+    this.editCopy = angular.copy(client);
   }//End toggleEdit
+
+  cancelEdit(client) {
+    this.client = angular.copy(this.editCopy);
+    this.client.edit = !this.client.edit;
+    this.submitted = false;
+  }//End cancelEdit
 
   setInfo() {
     this.$cookies.put('clientId', this.client._id);
@@ -111,12 +121,9 @@ export class ClientsComponent {
     return this.count;
   }//End assessmentCount
 
-  closeAlert(index) {
-    this.alerts.splice(index, 1);
-  };//End closeAlert
-
   toggleModal() {
-    var clients = this.clients, userId = this.userId;
+    var clients = this.clients, client = this.client, userId = this.userId,
+      noClients = this.noClients, thisCtrl = this;
 
     var modalInstance = this.$uibModal.open({
       animation: this.animationEnabled, 
@@ -133,6 +140,13 @@ export class ClientsComponent {
         }
       }
     })//End open
+
+    modalInstance.result.then(function (saved) {
+      if (saved) {
+        thisCtrl.client = thisCtrl.clients[thisCtrl.clients.length - 1];
+        thisCtrl.noClients = true;
+      }//End if
+    });
   }//End toggleModal
 
   toggleModalTwo() {

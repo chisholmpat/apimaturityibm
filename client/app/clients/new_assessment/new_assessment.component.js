@@ -13,12 +13,10 @@ export default class NewAssessmentComponent {
     this.userId = this.$cookies.get('userId');
     this.clientId = this.$cookies.get('clientId');
     this.clientName = this.$cookies.get('clientName');
-    this.templateId = this.$cookies.get('templateId');
-    this.assessmentName = this.$cookies.get('newAssessmentName');
-    this.idCopies = [];
-    this.formIndex = 0;
-    this.max = 0;
-    this.currentId = '';
+    this.assessmentId = this.$cookies.get('assessmentId');
+    this.assessmentName = this.$cookies.get('assessmentName');
+    this.idCopies = [], this.currentId = '';
+    this.formIndex = 0, this.max = 0;
   }//End constructor
 
   $onInit() {
@@ -27,7 +25,7 @@ export default class NewAssessmentComponent {
       assessment: [{}]
     };
     
-    this.$http.get('/api/users/template/' + this.userId + '/' + this.templateId)
+    this.$http.get('/api/users/assessment/' + this.userId + '/' + this.clientId + '/' + this.assessmentId)
     .then(response => {
       this.newAssessment.assessment = response.data.assessment;
       this.max = this.newAssessment.assessment.length;
@@ -36,6 +34,7 @@ export default class NewAssessmentComponent {
         this.idCopies[i] = this.newAssessment.assessment[i]._id;
       }
       this.currentId = this.idCopies[0];
+      this.dataLoaded = true;
     })
   }//End onInit
 
@@ -49,6 +48,16 @@ export default class NewAssessmentComponent {
     });
     // this.$window.location.href = '/clients';
   }//End saveAssessment
+
+  incWeight(q) {
+    if (q.weight <= 2)
+      ++q.weight;
+  }//End incWeight
+
+  decWeight(q) {
+    if (q.weight >= 1)
+      --q.weight;
+  }//End decWeight
 
   next() { 
     if (this.formIndex >= this.max - 1) {

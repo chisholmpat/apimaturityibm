@@ -1,25 +1,51 @@
-<div class="modal-header panel-grad-head">
-	<h3 class="modal-title" id="modal-title">New Template</h3>
-</div>
-<div class="modal-body" id="modal-body">
-	<form>
-		<div class="form-group">
-			<label for="nameInput">Template name:</label>
-			<input type="text" class="form-control" id="nameInput" ng-model="addCtrl.newTemplate.name" placeholder="Enter a name...">
-		</div>
-	</form>
-	<form>
-		<div class="form-group">
-			<label for="descInput">Template description:</label>
-			<input type="text" class="form-control" id="descInput" ng-model="addCtrl.newTemplate.description" placeholder="Enter a description...">
-		</div>
-	</form>
-</div>
-<div class="modal-footer">
-	<button class="btn btn-default" type="button btn-default" ng-click="addCtrl.submit()">
-	Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-	</button>
-	<button class="btn btn-default" type="button" ng-click="addCtrl.cancel()">
-	Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-	</button>
+<div class="modal-wrap">
+  <div class="modal-header panel-grad-head">
+    <h3 class="modal-title" id="modal-title">New Template</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <form class="form" name="form" ng-submit="addCtrl.checkForm(form)" novalidate>
+    
+      <div class="form-group" ng-class="{ 'has-success': form.name.$valid && addCtrl.submitted,
+                                            'has-error': form.name.$invalid && addCtrl.submitted }">
+        <label for="name">Template name:</label>
+        <input type="text" class="form-control" name="name" ng-model="addCtrl.newTemplate.name" required>
+        <p class="help-block" ng-show="form.name.$error.required && addCtrl.submitted">
+          Please give the template a name.
+        </p>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-success': form.description.$valid && addCtrl.submitted,
+                                            'has-error': form.description.$invalid && addCtrl.submitted }">
+        <label for="description">Template description:</label>
+        <input type="text" class="form-control" name="description" ng-model="addCtrl.newTemplate.description" required>
+        <p class="help-block" ng-show="form.description.$error.required && addCtrl.submitted">
+          Please give the template a description.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="templateSelect">If you would like to copy existing forms, select a template:</label>
+        <select class="form-control" id="templateSelect">
+          <option ng-repeat="template in addCtrl.templates" style="margin-bottom:0px" value="{{template}}" ng-click="addCtrl.copyTemplate(template)">{{template.name}}</option>
+        </select>
+      </div>
+    </form>
+    
+    <button class="btn btn-default btn-sm" ng-click="addCtrl.confirmForms()" ng-disabled="addCtrl.checkSelection()">
+      Confirm <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+    </button>
+    <button class="btn btn-default btn-sm" ng-click="addCtrl.undoForms()" ng-show="addCtrl.formsAdded" style="float:right">
+      Start Over <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+    </button>
+    <div class="content-shadow" style="margin-top:15px" ng-show="addCtrl.formsAdded"><strong>Forms added:</strong><span> {{addCtrl.formString}}</span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default btn-sm" ng-click="addCtrl.checkForm(form)">
+      Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+    </button>
+    <button class="btn btn-default btn-sm" ng-click="addCtrl.cancel()">
+      Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </button>
+  </div>
 </div>

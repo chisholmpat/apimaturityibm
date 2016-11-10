@@ -1,7 +1,7 @@
 $icon-font-path: '/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 @import '~bootstrap-social/bootstrap-social.scss';
-$fa-font-path: '/assets/fonts/font-awesome/';
+$fa-font-path: '/assets/fonts/font-awesome/fonts';
 @import '~font-awesome/scss/font-awesome';
 
 // @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
@@ -20,6 +20,7 @@ padding: 0.2em 0;
 // Component styles are injected through gulp
 /* inject:scss */
 @import 'admin/admin';
+@import 'assessment/assessment';
 @import 'builder/builder';
 @import 'clients/clients';
 @import 'main/main';
@@ -49,12 +50,24 @@ padding: 0px 0 100px;
   margin-bottom: -52px;
 }
 
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  .left-col-pad {
+  padding-right:3px;
+  }
+}
+
 .modal {
   margin-bottom: 15px;
 }
 
 .modal-form-select {
   margin-top:55px;
+}
+
+.modal-multi-margin {
+  margin-bottom: 0px;
+  min-height: 0%;
 }
 
 .ng-untouched { 
@@ -72,6 +85,10 @@ padding: 0px 0 100px;
 .help-block {
   margin-bottom: 0px;
   margin-top: 0px;
+}
+
+.help-block-edit {
+  margin-bottom: 60px;
 }
 
 .alert {
@@ -138,11 +155,15 @@ font-family: 'Lato', sans-serif;
 }
 
 .split-form {
-  padding-top: 2%;
+  padding-top: 0.5%;
 }
 
 .list-group-item-survey {
-  padding: 45px 15px;
+  padding: 1px 15px 45px 15px;
+}
+
+.list-group-item:last-child{
+  padding-bottom: 10px;
 }
 
 .list-special .list-group-item {

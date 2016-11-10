@@ -1,0 +1,145 @@
+<div class="row special-row">
+  <div class="col-md-4 left-col-pad">
+    <div class="panel panel-default panel-height">
+      <div class="panel-heading panel-grad-head">
+        <h4 class="h4-panel">Edit Template</h4>
+        <span class="h4-panel">{{editCtrl.template.name}}</span>
+      </div>
+      <div class="panel-body">
+                <div ng-hide="editCtrl.dataLoaded" style="text-align:center;">
+            <h4>Loading Forms...</h4>
+            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div ng-show="editCtrl.dataLoaded">
+        <table st-table="displayedCollection" st-safe-src="editCtrl.template.assessment" class="table table.responsive table-hover">
+          <thead class="thead">
+            <tr>
+              <th colspan="3">
+                <input st-search="name" placeholder="Search" class="input-sm form-control" type="search" />
+              </th>
+            </tr>
+            <tr>
+              <th st-sort="name" colspan="2">Forms ({{editCtrl.template.assessment.length}} / {{editCtrl.template.assessment.length}})</th>
+              <th style="text-align:right;">
+                <button type="button" class="btn btn-success btn-sm" ng-click="editCtrl.toggleFormModal()">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="form in displayedCollection" ng-click="editCtrl.selectForm(form)">
+              <td ng-hide="form.edit">{{form.name}}</td>
+              <td ng-show="form.edit">
+                <input class="form-control" type="text" ng-model="form.name">
+              </td>
+              <td></td>
+              <td ng-hide="form.edit" style="text-align:right;">
+                <button class="btn btn-warning btn-sm" ng-click="editCtrl.toggleEdit(form)">
+                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-danger btn-sm" ng-click="editCtrl.deleteForm(form)">
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+              </td>
+              <td ng-show="form.edit" style="text-align:right;">
+                <button class="btn btn-success btn-sm" ng-click="editCtrl.updateForm(form)">
+                  <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-danger btn-sm" ng-click="editCtrl.toggleEdit(form)">
+                  <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="5"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading panel-grad-head">
+        <h4 class="h4-panel">Form: {{editCtrl.form.name}}</h4>
+        <span class="h4-panel">Details</span>
+      </div>
+      <div class="panel-body">
+                <div ng-hide="editCtrl.dataLoaded" style="text-align:center;">
+            <h4>Loading Questions...</h4>
+            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div ng-show="editCtrl.dataLoaded">
+        <table st-table="questionCollection" st-safe-src="editCtrl.form.questions" class="table table.responsive table-hover">
+          <thead class="thead">
+            <tr>
+              <th colspan="3">
+                <input st-search placeholder="Search" class="input-sm form-control" type="search" />
+              </th>
+            </tr>
+            <tr>
+              <th st-sort="question">Questions ({{questionCollection.length}} / {{editCtrl.form.questions.length}})</th>
+              <th st-sort="weight">Weight</th>
+              <th style="text-align:right">
+                <button type="button" class="btn btn-success btn-sm pull-right" ng-click="editCtrl.toggleQuestionModal()">
+                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="question in questionCollection">
+              <td ng-hide="question.edit"><span class="text-warning">{{question.category}}:</span> {{question.question}}</td>
+              <td ng-show="question.edit">
+                <input type="text" class="form-control" ng-model="question.question">
+              </td>
+              <td ng-hide="question.edit">{{question.weight}}</td>
+              <td ng-show="question.edit" style="width:100px;">
+                {{question.weight}}
+                <button class="btn btn-default btn-xs" ng-click="editCtrl.incWeight(question)">
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-default btn-xs" ng-click="editCtrl.decWeight(question)">
+                  <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </button>
+              </td>
+              <td ng-hide="question.edit" style="text-align:right;width:100px">
+                <button class="btn btn-warning btn-sm" ng-click="editCtrl.toggleEdit(question)">
+                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-danger btn-sm" ng-click="editCtrl.deleteQuestion(question)">
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+              </td>
+              <td ng-show="question.edit" style="text-align:right;">
+                <button class="btn btn-success btn-sm" ng-click="editCtrl.updateQuestion(question)">
+                  <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                </button>
+                <button class="btn btn-danger btn-sm" ng-click="editCtrl.toggleEdit(question)">
+                  <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="5"></div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

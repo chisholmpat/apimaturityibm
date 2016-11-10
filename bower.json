@@ -1,0 +1,14 @@
+{
+  "name": "api-local",
+  "description": "api mat app",
+  "main": "server/app.js",
+  "authors": [
+    "John Patrick Chisholm"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/chisholmpat/apimaturityibm",
+  "private": true,
+  "dependencies": {
+    "chart.js": "chartjs#^2.3.0"
+  }
+}

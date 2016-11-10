@@ -9,6 +9,7 @@ var Questions = new mongoose.Schema({
 		default: Date.now
 	},
 	category: String,
+	note: String,
 	weight: {
 		type: Number,
 		default: 0

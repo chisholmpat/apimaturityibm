@@ -1,8 +1,6 @@
 'use strict';
 
-import FormEditorComponent from './form_editor/form_editor.component'
-import QuestionEditorComponent from './question_editor/question_editor.component'
-import PreviewComponent from './preview/preview.component'
+import EditorComponent from './editor/editor.component'
 
 export default function($stateProvider) {
   'ngInject';
@@ -13,25 +11,11 @@ export default function($stateProvider) {
       template: '<builder></builder>',
       authenticate: true
     })
-    .state('formEditor', {
-    	url: '/builder/form-editor',
-    	template: require('./form_editor/form_editor.html'),
-    	controller: FormEditorComponent,
-    	controllerAs: 'editCtrl',
-      authenticate: true
-    })
-    .state('questionEditor', {
-      url: '/builder/question-editor',
-      template: require('./question_editor/question_editor.html'),
-      controller: QuestionEditorComponent,
+    .state('templateEditor', {
+      url: '/builder/editor',
+      template: require('./editor/editor.html'),
+      controller: EditorComponent,
       controllerAs: 'editCtrl',
-      authenticate: true
-    })
-    .state('preview', {
-      url: '/builder/preview',
-      template: require('./preview/preview.html'),
-      controller: PreviewComponent,
-      controllerAs: 'preCtrl',
       authenticate: true
     });
 }//End state function

@@ -1,143 +1,130 @@
 <div class="modal-wrap">
-<div class="modal-header panel-grad-head">
-	<h3 class="modal-title" id="modal-title">New Client</h3>
-</div>
-<div class="modal-body" id="modal-body" style="overflow-y:auto">
-	<div class="card text-xs-center">
-		<div class="card-header">
-			<ul class="nav nav-tabs card-header-tabs pull-xs-left">
-				<li class="nav-item">
-					<a class="nav-link active" href="#" ng-click="addCtrl.select(1)">Contact</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#" ng-click="addCtrl.select(2)">Details</a>
-				</li>
-			</ul>
-		</div>
-		<div class="card-block" ng-show="addCtrl.isSelected(1)" style="margin-top: 2%">
-			<form name="one" novalidate>
-				<div class="form-group modal-form" ng-class="{ 'has-error': one.nameInput.$touched && one.nameInput.$invalid }">
-					<label for="nameInput">Client Name:</label>
-					<input type="text" class="form-control modal-form" name="nameInput" ng-model="addCtrl.newClient.name" placeholder="Enter a name..." required>
+  <div class="modal-header panel-grad-head">
+    <h3 class="modal-title" id="modal-title">New Client</h3>
+  </div>
+  <div class="modal-body" id="modal-body" style="max-height: calc(100vh - 200px);
+    overflow-y: auto;">
+    <form class="form" name="form" ng-submit="addCtrl.checkForm(form)" novalidate>
 
-					<div class="help-block" ng-messages="one.nameInput.$error" ng-if="one.nameInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.name.$valid && addCtrl.submitted,
+                                            'has-error': form.name.$invalid && addCtrl.submitted }">
+        <label>Name:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': one.contactInput.$touched && one.contactInput.$invalid }">
-					<label for="contactInput">Contact:</label>
-					<input type="text" class="form-control modal-form" name="contactInput" ng-model="addCtrl.newClient.contact" placeholder="Enter a contact..." required>
+        <input type="text" name="name" class="form-control" ng-model="addCtrl.newClient.name" required/>
+        <p class="help-block" ng-show="form.name.$error.required && addCtrl.submitted">
+          Please provide a client name.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="one.contactInput.$error" ng-if="one.contactInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.contact.$valid && addCtrl.submitted,
+                                            'has-error': form.contact.$invalid && addCtrl.submitted }">
+        <label>Contact:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': one.countryInput.$touched && one.countryInput.$invalid }">
-					<label for="countryInput">Country:</label>
-					<input type="text" class="form-control modal-form" name="countryInput" ng-model="addCtrl.newClient.country" placeholder="Enter a country..." required>
+        <input type="text" name="contact" class="form-control" ng-model="addCtrl.newClient.contact" required/>
+        <p class="help-block" ng-show="form.contact.$error.required && addCtrl.submitted">
+          Please provide a client contact name.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="one.countryInput.$error" ng-if="one.countryInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.phone.$valid && addCtrl.submitted,
+                                            'has-error': form.phone.$invalid && addCtrl.submitted }">
+        <label>Phone:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': one.phoneInput.$touched && one.phoneInput.$invalid }">
-					<label for="phoneInput">Phone:</label>
-					<input type="text" class="form-control modal-form" name="phoneInput" ng-model="addCtrl.newClient.phone" placeholder="Enter a phone number..." required>
+        <input type="text" name="phone" class="form-control" ng-model="addCtrl.newClient.phone" required/>
+        <p class="help-block" ng-show="form.phone.$error.required && addCtrl.submitted">
+          Please provide a phone number at which the client or contact can be reached.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="one.phoneInput.$error" ng-if="one.phoneInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.email.$valid && addCtrl.submitted,
+                                            'has-error': form.email.$invalid && addCtrl.submitted }">
+        <label>E-mail:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': one.emailInput.$touched && one.emailInput.$invalid }">
-					<label for="emailInput">E-mail:</label>
-					<input type="email" class="form-control modal-form" name="emailInput" ng-model="addCtrl.newClient.email" placeholder="Enter an e-mail..." required>
+        <input type="email" name="email" class="form-control" ng-model="addCtrl.newClient.email" required/>
+        <p class="help-block" ng-show="form.email.$error.email && addCtrl.submitted">
+          Doesn't look like a valid email.
+        </p>
+        <p class="help-block" ng-show="form.email.$error.required && addCtrl.submitted">
+          Please provide an e-mail address at which the client or contact can be reached.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="one.emailInput.$error" ng-if="one.emailInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-						<div ng-message="email" class="error">Please enter a valid e-mail</div>
-					</div>
-				</div>
-			</form>
-			<div class="form-group modal-form">
-				<button class="btn btn-default" type="button btn-default" ng-if="one.$valid || one.$pending" ng-click="addCtrl.select(2)">
-					Next <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-				</button>
-			</div>
-		</div>
-		<div class="card-block" ng-show="addCtrl.isSelected(2)" style="margin-top: 2%">
-			<form name="two" novalidate>
+      <div class="form-group" ng-class="{ 'has-success': form.industry.$valid && addCtrl.submitted,
+                                            'has-error': form.industry.$invalid && addCtrl.submitted }">
+        <label>Industry:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': two.industryInput.$touched && two.industryInput.$invalid }">
-					<label for="industryInput">Industry:</label>
-					<input type="text" class="form-control modal-form" name="industryInput" ng-model="addCtrl.newClient.industry" placeholder="Enter an industry..." required>
+        <input type="text" name="industry" class="form-control" ng-model="addCtrl.newClient.industry" required/>
+        <p class="help-block" ng-show="form.industry.$error.required && addCtrl.submitted">
+          Please provide the main industry this client operates in.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="two.industryInput.$error" ng-if="two.industryInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.segment.$valid && addCtrl.submitted,
+                                            'has-error': form.segment.$invalid && addCtrl.submitted }">
+        <label>Industry Segement:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': two.segmentInput.$touched && two.segmentInput.$invalid }">
-					<label for="segmentInput">Industry Segment:</label>
-					<input type="text" class="form-control modal-form" name="segmentInput" ng-model="addCtrl.newClient.industry_segment" placeholder="Enter an industry segment..." required>
+        <input type="text" name="segment" class="form-control" ng-model="addCtrl.newClient.industry_segment" required/>
+        <p class="help-block" ng-show="form.segment.$error.required && addCtrl.submitted">
+          Please describe an industry segment most applicable to the industry specified.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="two.segmentInput.$error" ng-if="two.segmentInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.revenue.$valid && addCtrl.submitted,
+                                            'has-error': form.revenue.$invalid && addCtrl.submitted }">
+        <label>Revenue:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': two.revenueInput.$touched && two.revenueInput.$invalid }">
-					<label for="revenueInput">Revenue:</label>
-					<input type="number" class="form-control modal-form" name="revenueInput" ng-model="addCtrl.newClient.revenue" placeholder="Enter client revenue..." min="0" required>
+        <input type="number" name="revenue" class="form-control" ng-model="addCtrl.newClient.revenue" number required/>
+        <p class="help-block" ng-show="form.revenue.$error.required && addCtrl.submitted">
+          Please provide the client's revenue.
+        </p>
+        <p class="help-block" ng-show="form.revenue.$error.number && addCtrl.submitted">
+          Please enter a numerical value.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="two.revenueInput.$error" ng-if="two.revenueInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-						<div ng-message="number">Please enter a valid number</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.share.$valid && addCtrl.submitted,
+                                            'has-error': form.share.$invalid && addCtrl.submitted }">
+        <label>Market Share:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': two.shareInput.$touched && two.shareInput.$invalid }">
-					<label for="shareInput">Market Share:</label>
-					<input type="number" class="form-control modal-form" name="shareInput" ng-model="addCtrl.newClient.market_share" placeholder="Enter client market share value..." min="0" required>
-					<div class="help-block" ng-messages="two.shareInput.$error" ng-if="two.shareInput.$touched">
-						<div ng-message="required">Required</div>
-						<div ng-message="number">Please enter a valid number</div>
-					</div>
-				</div>
+        <input type="number" name="share" class="form-control" ng-model="addCtrl.newClient.market_share" number required/>
+        <p class="help-block" ng-show="form.share.$error.required && addCtrl.submitted">
+          Please provide the client's market share.
+        </p>
+        <p class="help-block" ng-show="form.share.$error.number && addCtrl.submitted">
+          Please enter a numerical value.
+        </p>
+      </div>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': two.capitalInput.$touched && two.capitalInput.$invalid }">
-					<label for="capitalInput">Market Capitalization:</label>
-					<input type="number" class="form-control modal-form" name="capitalInput" ng-model="addCtrl.newClient.market_capitalization" placeholder="Enter client market capitalization value..." min="0" required>
-					<div class="help-block" ng-messages="two.capitalInput.$error" ng-if="two.capitalInput.$touched">
-						<div ng-message="required">Required</div>
-						<div ng-message="number">Please enter a valid number</div>
-					</div>
-				</div>
+      <div class="form-group" ng-class="{ 'has-success': form.capital.$valid && addCtrl.submitted,
+                                            'has-error': form.capital.$invalid && addCtrl.submitted }">
+        <label>Market Capitalization:</label>
 
-				<div class="form-group modal-form" ng-class="{ 'has-error': two.competitorInput.$touched && two.competitorInput.$invalid }">
-					<label for="competitorInput">Competitors:</label>
-					<input type="text" class="form-control modal-form" name="competitorInput" ng-model="addCtrl.newClient.competitors" placeholder="Enter client competitors..." required>
+        <input type="number" name="capital" class="form-control" ng-model="addCtrl.newClient.market_capitalization" number required/>
+        <p class="help-block" ng-show="form.capital.$error.required && addCtrl.submitted">
+          Please provide the client's market share..
+        </p>
+        <p class="help-block" ng-show="form.capital.$error.number && addCtrl.submitted">
+          Only numerical entries are allowed for this section.
+        </p>
+      </div>
 
-					<div class="help-block" ng-messages="two.competitorInput.$error" ng-if="two.competitorInput.$touched">
-						<div ng-message="required" class="error">Required</div>
-					</div>
-				</div>	
-			</form>
-		</div>
-	</div>
-	<div uib-alert ng-show="addCtrl.alertTrigger" ng-repeat="alert in addCtrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="addCtrl.closeAlert($index)">
-		{{alert.msg}}
-	</div>
-</div>
-<div class="modal-footer">
-	<button class="btn btn-default" type="button btn-default" ng-click="addCtrl.checkForm(one,two)">
-		Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-	</button>
-	<button class="btn btn-default" type="button" ng-click="addCtrl.cancel()">
-		Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-	</button>
-</div>
+      <div class="form-group" ng-class="{ 'has-success': form.competitors.$valid && addCtrl.submitted,
+                                            'has-error': form.competitors.$invalid && addCtrl.submitted }">
+        <label>Competitors:</label>
+
+        <input type="text" name="competitors" class="form-control" ng-model="addCtrl.newClient.competitors" required/>
+        <p class="help-block" ng-show="form.competitors.$error.required && addCtrl.submitted">
+          Please enter the names competitors in competition with the client.
+        </p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" type="button btn-default" ng-click="addCtrl.checkForm(form)">
+      Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+    </button>
+    <button class="btn btn-default" type="button" ng-click="addCtrl.cancel()">
+      Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    </button>
+  </div>
 </div>

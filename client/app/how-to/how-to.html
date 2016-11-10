@@ -1,0 +1,94 @@
+<div class="row special-row" style="margin-top:1%;">
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading panel-grad-head">
+                <h4 class="h4-panel">Help & How To</h4>
+            </div>
+            <div class="panel-body" id="start">
+                <div class="content-shadow" style="text-align:justify;">
+                    <h3 class="text-primary"> API Maturity Instructions</h3>
+                    <p>Before you can begin using this tool you must either <a ui-sref="clients"> create a new client </a> or be given access to another user's client(s). As a user you can <a ui-sref="builder">create custom templates</a> deriving from the default API Maturity survey or generate your own unique surveys that will be weighed according to the same metrics. </p>
+                    <hr/>
+
+                    <h4 class="text-primary">Managing Clients</h4>
+                    <p>Scenario: A client wants to assess existing or new API Strategy and whether it is ready to pursue an APIs as a provider, consumer, business, or market.</p>
+                    <p>The first step is to add a new client, to do this:
+                        <ol>
+                            <li>Navigate to the 'clients' page.</li>
+                            <li>Click on the plus (+) icon button, fill out the new client form and press save. Your new client will appear in the menu on the left side of the page (or top on mobile).</li>
+                            <li>Look to the right panel and notice there are three buttons at the top: Edit, Assessment History and New Assessment, press New Assessment.</li>
+                            <li>You will be prompted to name the assessment and select a template. You can name the assessment whatever you'd like, for instance 'Client's First Survey'. The list of templates will include the default survey and any custom templates you've designed yourself.</li>
+                            <li>Once you submit this form, you'll be redirected to the survey of your choice. To save it, go through and fill out all the questions then press the save button at the end. This will redirect you to the the results and score page for this survey.</li>
+                        </ol>
+                    </p>
+                    <br/>
+                    <h4 class="text-primary">Client Assessment History & Editing</h4>
+                    <p>
+                        To see the log of past assessments for a client, go to the 'clients' page and select a client from the left menu then press the Assessment History button. This will display a searchable table of past assessments for the client. To edit your client information after the initial save, simply click the edit button and a form will appear containing the clients current data. Once you make the correct adjustments, press confirm to persist the changes. If you would like to delete a record of your client from API Maturity, click the red button next to their name in the left menu.
+                    </p>
+                    <br/>
+                    <h4 class="text-primary">Taking an Assessment</h4>
+                    <p>On each tab there is a series of questions that help determine where a customer is on the maturity curve for that enterprise dimension. While you are taking the survey, all questions will default to the lowest score so make sure you revise your choices and check to see that you answered each question appropriately. While you are answering questions, you will see there is an 'Options' button below each question. Click this and you will be able to adjust the weight for the question and add a note pertaining to the question. One you save a survey, you will be redirected to the results page where you can see scores and graphical representations of where you score in each enterprise domain.</p>
+
+                    <p>First you will give the customers a series of API Characteristic questions along with some deeper interview questions to help them think about their current API dynamics and the customer responses should be documented. You will rate the customers response on a scale of 1 to 5 gaining consensus on the score of course. This score is primarily from the customers perspective advised by you the assessor but it is used as a quantitative measurement.
+                        <ol>
+                            <li>Don't do it</li>
+                            <li>Planned</li>
+                            <li>In progress</li>
+                            <li>Partially Implemented</li>
+                            <li>Complete (Mature)</li>
+                        </ol>
+                    </p>
+                    <p>Then you will give the customer a self assessment API Maturity for the enterprise dimension under discussion. This is the customers view only without any commentary or guideance other then to explain what it means to be mature in that API characteristic for that enterprise demension. The customer will rate themselves on a scale of 0 to 3 and it is their self-assessed rating.
+                        <ol>
+                            <li>Novice</li>
+                            <li>Progressing</li>
+                            <li>Mature</li>
+                        </ol>
+                    </p>
+                    <div>
+                        <h5 class="text-primary"> Legend (Click to Enlarge) </h5>
+                        <a href="../assets/images/API.png" target="_blank">
+                            <img width="400" height="250" border="0" align="center" src="../assets/images/API.png" />
+                        </a>
+                    </div>
+                    <hr/>
+
+                    <h4 class="text-primary">Managing Templates</h4>
+                    <p>Every user account will contain a copy of the original API Maturity survey template, which cannot be modified. However, you can make a copy of this survey and edit the questions and forms according to your or your client's needs. You can also generate a custom survey which does not reference the original. The basic structure of a template is made up of 'forms' or categories (enterprise dimensions in the default survey) which contain questions. When a user is presented with a survey the forms will be displayed individually. The 'Survey Builder' page contains a preview of the survey forms and questions when a template is selected so you can quickly check this to make sure there are no errors before using them.</p>
+                    <br/>
+                    <h4 class="text-primary">Copying Template Data</h4>
+                    <p>To make a new template that contains copies of forms from other templates, follow these steps:
+                        <ol>
+                            <li>Navigate to the 'Survey Builder' page.</li>
+                            <li>Click on the plus (+) icon and window containg a form will open.</li>
+                            <li>Give the template a name and a description.</li>
+                            <li>A list of existing templates will be populated below the form, select one that has forms you wish to copy.</li>
+                            <li>Select the forms from this template and confirm the selection by pressing 'Confirm'.</li>
+                            <li>If you need to undo the selections you made press 'Start Over'.</li>
+                            <li>Once you have made the appropriate selections, press save. Your new template will be generated.</li>
+                            <li>To learn how to add additional forms and questions, Please see the next section on this page.</li>
+                        </ol>
+                    </p>
+                    <br/>
+                    <h4 class="text-primary">Adding New Forms and Questions</h4>
+                    <p>If you would like to add new forms or questions to an existing template or to make an empty template and starting building it, follow these steps:
+                        <ol>
+                            <li>If you are making a new template, follow steps 1-3 in the previous section and press save.</li>
+                            <li>To begin editing a template, select one from the left menu in the 'Survey Builder' page.</li>
+                            <li>On the right of this menu, press the 'Edit' button. This will direct you to the editor for a template.</li>
+                            <li>The left menu on this page contains a searchable table of forms. The plus (+) button will prompt you to add a new form, the pencil button will allow you to edit the form name and the delete button will remove the form from this template.</li>
+                            <li>The right panel contains a searchable table of questions that have the same functions as those in the form menu.</li>
+                        </ol>
+                        Just remember, all changes you make are saved as you edit and you will not be prompted to confirm these changes when you leave the page.
+                    </p>
+                    <hr/>
+
+                    <div style="text-align:center">
+                        <strong class="text-primary"><a href="#start">Back to Top</a></strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

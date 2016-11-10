@@ -7,6 +7,7 @@
 import User from '../api/user/user.model';
 import Forms from '../api/forms/forms.model';
 import Clients from '../api/clients/clients.model';
+import Assessments from '../api/assessments/assessments.model'
 // import demoTemp from '../api/user/default_template.seed.js'
 
 var defaultTemplate = [{
@@ -759,11 +760,22 @@ var demoClient2 = {
 
 var clientArray = [demoClient, demoClient1, demoClient2];
 
+Assessments.find({}).remove()
+  .then(() => {
+    Assessments.create({
+      name: 'API-Maturity Template',
+      description: 'This is the default API-Maturity survey.',
+      assessment: defaultTemplate[0].assessment
+    });
+  });
+
 User.find({}).remove()
   .then(() => {
     User.create({
       provider: 'local',
       name: 'Test User',
+      firstName: 'Mike',
+      lastName: 'Smith',
       email: 'test@example.com',
       password: 'test',
       clients: clientArray, 
@@ -772,6 +784,8 @@ User.find({}).remove()
       provider: 'local',
       role: 'admin',
       name: 'Admin',
+      firstName: 'Patrick',
+      lastName: 'Chisholm',
       email: 'admin@example.com',
       password: 'admin',
       clients: clientArray, 

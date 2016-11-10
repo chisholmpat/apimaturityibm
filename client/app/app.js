@@ -14,6 +14,7 @@ import ngMessages from 'angular-messages';
 // import ngAria from 'angular-aria';
 import ngAnimate from 'angular-animate';
 import smartTable from 'angular-smart-table';
+import 'chart.js';
 // import ngValidationMatch from 'angular-validation-match';
 
 import {
@@ -23,8 +24,10 @@ import {
 import _Auth from '../components/auth/auth.module';
 import account from './account';
 import admin from './admin';
+import how_to from './how-to/how-to.component';
 import builder from './builder/builder.component';
 import clients from './clients/clients.component';
+import assessment from './assessment/assessment.component';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
@@ -35,7 +38,7 @@ import './app.scss';
 
 angular.module('apiLocalApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
     uiBootstrap, ngMessages, ngAnimate, smartTable, _Auth, account, admin, navbar, footer, main, constants, 
-    socket, util, clients, builder, 
+    socket, util, clients, builder, assessment, how_to
   ])
   .config(routeConfig)
   .run(function($rootScope, $location, Auth) {

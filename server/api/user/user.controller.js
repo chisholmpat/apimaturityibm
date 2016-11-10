@@ -71,6 +71,20 @@ export function adminCreate(req, res) {
     .catch(validationError(res));
 }//End adminCreate
 
+export function adminUpdate(req, res) {
+  var userId = req.params.id, userEdit = req.body;
+
+  User.findById(userId).exec()
+  .then(user => {
+    Object.assign(user, userEdit);
+
+    user.save(function (err) {
+      if (err) return handleError(err)
+      res.status(204).end();
+    })
+  })
+}//End upsertClient
+
 /**
  * Get a single user
  */

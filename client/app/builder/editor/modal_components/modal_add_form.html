@@ -1,0 +1,25 @@
+<div class="modal-wrap">
+	<div class="modal-header panel-grad-head">
+		<h3 class="modal-title" id="modal-title">New Form Group</h3>
+	</div>
+	<div name="form" class="modal-body" id="modal-body">
+	<form class="form" name="form" ng-submit="addCtrl.checkForm(form)" novalidate>
+			<div class="form-group" ng-class="{ 'has-success': form.name.$valid && addCtrl.submitted,
+                                            'has-error': form.name.$invalid && addCtrl.submitted }">
+				<label for="name">Form Group Name:</label>
+				<input name="name" type="text" class="form-control" ng-model="addCtrl.newForm.name" placeholder="Enter a name..." required>
+				<p class="help-block" ng-show="form.name.$error.required && addCtrl.submitted">
+          			Please give the form a name.
+        		</p>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-default btn-sm" ng-click="addCtrl.checkForm(form)">
+			Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+		</button>
+		<button class="btn btn-default btn-sm" ng-click="addCtrl.cancel()">
+			Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+	</div>
+</div>
