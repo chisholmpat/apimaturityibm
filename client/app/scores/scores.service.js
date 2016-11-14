@@ -150,6 +150,40 @@ export function scoresService() {
 
     return qaCounts;
   }//End countSAResponse
+
+  scores.averages = function(assessment) {
+    var self = this;
+    var labels = [], saScores = [], qaScores = [], dataObj = {};
+    var saIndex = 0, qaIndex = 0, saTotal = 0, qaTotal = 0;
+
+    assessment.forEach(function(f) {
+      labels.push(f.name);
+
+      f.questions.forEach(function(q) {
+        if (q.category === "Self-Assessment") {
+          var score = self.calcScore(q.answer, q.weight);
+          saTotal += score;
+          ++saIndex;
+        }
+        else if (q.category === "Quantitative-Assessment") {
+          var score = self.calcScore(q.answer, q.weight);
+          qaTotal += score;
+          ++qaIndex;
+        }
+      })
+
+      var saFormScore = saTotal / saIndex, qaFormScore = qaTotal / qaIndex;
+      saScores.push(saFormScore);
+      qaScores.push(qaFormScore);
+      saIndex = 0, qaIndex = 0, saTotal = 0, qaTotal = 0;
+    });
+
+    dataObj.labels = labels;
+    dataObj.saScores = saScores;
+    dataObj.qaScores = qaScores;
+
+    return dataObj;
+  }//End saAverages
 }//End service
 
 export default angular.module('apiLocalApp.scores', [])

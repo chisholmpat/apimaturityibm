@@ -29,6 +29,7 @@ export default function AddTemplateController($uibModalInstance, $http, userId, 
   }//End checkSelected
 
   $ctrl.confirmForms = function() {
+    console.log($ctrl.selectedForms);
     var formsDeepCopied = [], parsedForms = [];
 
     for (var i = 0; i < $ctrl.selectedForms.length; i++) {

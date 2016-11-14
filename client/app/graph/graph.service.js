@@ -5,7 +5,54 @@ const angular = require('angular');
 export function graphService() {
 	var graph = this;
 
-	graph.paintLineGraph = function(data, ctx) {
+  graph.paintRadarGraph = function(data, ctx) {
+    var ctxCopy = angular.element(document.getElementById(ctx));
+    var labels = data.labels, saScores = data.saScores, qaScores = data.qaScores;
+
+    var myRadarChart = new Chart(ctxCopy, {
+      type: "radar",
+      data: {
+        labels: labels,
+        datasets: [
+        {
+          label: "SA Scores",
+          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          pointBackgroundColor: "rgba(179,181,198,1)",
+          pointBorderColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(179,181,198,1)",
+          data: saScores
+        },
+        {
+          label: "QA Scores",
+          backgroundColor: "rgba(75,192,192,0.2)",
+          borderColor: "rgba(75,192,192,1)",
+          pointBackgroundColor: "rgba(179,181,198,1)",
+          pointBorderColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(179,181,198,1)",
+          data: qaScores
+        }
+        ]
+      },
+      options: {
+        maintainAspectRatio: true,
+        pointLabels: {
+          fontSize: 16,
+        },
+        scale: {
+          reverse: false,
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1,
+          }
+        }
+      }
+    });
+  }//End drawRadarGraph
+
+  graph.paintLineGraph = function(data, ctx) {
     var ctx = angular.element(document.getElementById(ctx));
     var uScores = data.uScores, scores = data.scores, labels = data.labels, maxScores = data.maxScores;
 
@@ -140,5 +187,5 @@ export function graphService() {
 }//End service
 
 export default angular.module('apiLocalApp.graph', [])
-  .service('graph', graphService)
-  .name;
+.service('graph', graphService)
+.name;

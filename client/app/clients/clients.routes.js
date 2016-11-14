@@ -4,6 +4,8 @@ import NewAssessmentComponent from './new_assessment/new_assessment.component'
 
 import ViewAssessmentComponent from './assessment/assessment.component'
 
+import CompareToolComponent from './compare/compare.component'
+
 export default function routes($stateProvider) {
   'ngInject';
   
@@ -24,6 +26,13 @@ export default function routes($stateProvider) {
       template: require('./assessment/assessment.html'),
       controller: ViewAssessmentComponent,
       controllerAs: 'vasCtrl',
+      authenticate: true
+    })
+    .state('compare', {
+      url: '/clients/compare',
+      template: require('./compare/compare.html'),
+      controller: CompareToolComponent,
+      controllerAs: 'comCtrl',
       authenticate: true
     });//End state declarations
 }//End routes

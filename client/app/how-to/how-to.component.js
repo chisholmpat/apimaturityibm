@@ -8,8 +8,12 @@ import routes from './how-to.routes';
 export class HowToComponent {
   /*@ngInject*/
   constructor() {
-    this.message = 'Hello';
+    
   }
+
+  scrollTop() {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }//End scrollTop
 }
 
 export default angular.module('apiLocalApp.how-to', [uiRouter])
@@ -17,6 +21,6 @@ export default angular.module('apiLocalApp.how-to', [uiRouter])
   .component('howTo', {
     template: require('./how-to.html'),
     controller: HowToComponent,
-    controllerAs: 'howToCtrl'
+    controllerAs: 'howCtrl'
   })
   .name;

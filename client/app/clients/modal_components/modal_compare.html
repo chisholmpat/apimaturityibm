@@ -1,0 +1,54 @@
+<div class="modal-wrap">
+	<div class="modal-header panel-grad-head">
+		<h3 class="modal-title" id="modal-title">Comparison Tool</h3>
+	</div>
+	<div class="modal-body" id="modal-body" style="overflow-y:auto">
+		<div ng-show="newCtrl.savingData" style="text-align:center;">
+			<h4>Saving your settings...</h4>
+			<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+			<span class="sr-only">Saving...</span>
+		</div>
+		<div ng-hide="newCtrl.savingData">
+			<h4 class="text-primary"><strong>Please make a selection</h4>
+			<div class="col-md-12 content-shadow">
+				<form name="form">
+
+					<div class="form-group" ng-class="{ 'has-error': comCtrl.submitted && form.clientOne.$invalid }">
+						<label for="clientOne"> Select the first client: </label>
+						<br/>
+						<select class="form-control" name="clientOne" ng-model="newCtrl.selectionOne" required>
+							<option class="modal-wrap" ng-repeat="client in comCtrl.clients" value="{{client._id}}" ng-click="comCtrl.copyClientOne(client)">{{client.name}}</option>
+						</select>
+
+						<div class="help-block" ng-messages="form.clientOne.$error" ng-if="comCtrl.submitted &&form.templateSelect.$invalid">
+							<div ng-message="required" class="error">Please select a client.</div>
+						</div>
+					</div>
+
+					<div class="form-group" ng-class="{ 'has-error': comCtrl.submitted && form.clientTwo.$invalid }">
+						<label for="clientOne"> Select the second client: </label>
+						<br/>
+						<select class="form-control" name="clientTwo" ng-model="newCtrl.selectionTwo" required>
+							<option class="modal-wrap" ng-repeat="client in comCtrl.clients" value="{{client._id}}" ng-click="comCtrl.copyClientTwo(client)">{{client.name}}</option>
+						</select>
+
+						<div class="help-block" ng-messages="form.clientTwo.$error" ng-if="comCtrl.submitted && form.clientTwo.$invalid">
+							<div ng-message="required" class="error">Please select a client.</div>
+						</div>
+					</div>
+
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-default btn-sm" ng-click="comCtrl.cancel()" ng-disabled="newCtrl.savingData">
+			Close <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+		<button type="button" class="btn btn-default btn-sm" ng-click="newCtrl.checkTemplate(form)" ng-disabled="newCtrl.savingData">
+			Compare Results <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+		</button>
+	</div>
+</div>

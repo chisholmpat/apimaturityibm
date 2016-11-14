@@ -11,6 +11,8 @@ import ClientHistoryController from './modal_components/modal_history.controller
 
 import NewAssessmentController from './modal_components/modal_new.controller'
 
+import StartCompareController from './modal_components/modal_compare.controller'
+
 export class ClientsComponent {
   $http;
   socket;
@@ -184,7 +186,24 @@ export class ClientsComponent {
         }
       }
     })//End open
-  }//End toggleModalTwo
+  }//End toggleModalThree
+
+  toggleModalFour() {
+    var clients = this.clients;
+
+    var modalInstance = this.$uibModal.open({
+      animation: this.animationEnabled, 
+      ariaLabelledBy: 'modal-title',
+      template: require('./modal_components/modal_compare.html'),
+      controller: StartCompareController,
+      controllerAs: 'comCtrl',
+      resolve: {
+        clients: function() {
+          return clients;
+        }
+      }
+    })//End open
+  }//End toggleModalThree
 }//End controller
 
 export default angular.module('apiLocalApp.clients', [uiRouter])

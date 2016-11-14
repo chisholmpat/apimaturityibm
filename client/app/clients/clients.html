@@ -1,237 +1,205 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title></title>
-</head>
-<body>
-  <div class="row special-row">
+<div class="row special-row">
     <div class="col-md-4 left-col-pad">
-      <div class="panel panel-default">
-        <div class="panel-heading panel-grad-head">
-          <h4 class="h4-panel">My Clients</h4>
+        <div class="panel panel-default">
+            <div class="panel-heading panel-grad-head">
+                <h4 class="h4-panel">My Clients</h4>
+            </div>
+            <div class="panel-body">
+                <div ng-hide="clientsCtrl.dataLoaded" style="text-align:center;">
+                    <h4>Loading Clients...</h4>
+                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div ng-show="clientsCtrl.dataLoaded">
+                    <table st-table="displayedCollection" st-safe-src="clientsCtrl.clients" class="table table.responsive table-hover">
+                        <thead class="thead">
+                            <tr>
+                                <th colspan="3">
+                                    <input st-search class="input-sm form-control" placeholder="Search" type="search">
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Clients ({{displayedCollection.length}} / {{clientsCtrl.clients.length}})</th>
+                                <th style="text-align:right">
+                                    <button class="btn btn-success btn-sm" type="button" ng-click="clientsCtrl.toggleModal()">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="client in displayedCollection" ng-click="clientsCtrl.selectClient(client)">
+                                <td>{{client.name}}</td>
+                                <td></td>
+                                <td style="text-align:right;">
+                                    <button class="btn btn-danger btn-sm" ng-click="clientsCtrl.deleteClient(client)">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">
+                                    <div></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-          <div ng-hide="clientsCtrl.dataLoaded" style="text-align:center;">
-            <h4>Loading Clients...</h4>
-            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span class="sr-only">Loading...</span>
-          </div>
-          <div ng-show="clientsCtrl.dataLoaded">
-            <table st-table="displayedCollection" st-safe-src="clientsCtrl.clients" class="table table.responsive table-hover">
-              <thead class="thead">
-                <tr>
-                  <th colspan="3">
-                    <input st-search class="input-sm form-control" placeholder="Search" type="search">
-                  </th>
-                </tr>
-                <tr>
-                  <th colspan="2">Clients ({{displayedCollection.length}} / {{clientsCtrl.clients.length}})</th>
-                  <th style="text-align:right">
-                    <button class="btn btn-success btn-sm" type="button" ng-click="clientsCtrl.toggleModal()">
-                      <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-                    </button>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="client in displayedCollection" ng-click="clientsCtrl.selectClient(client)">
-                  <td>{{client.name}}</td>
-                  <td></td>
-                  <td style="text-align:right;">
-                    <button class="btn btn-danger btn-sm"  ng-click="clientsCtrl.deleteClient(client)">
-                      <span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colspan="3">
-                    <div></div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="col-md-8">
-      <div class="panel panel-default">
-        <div class="panel-heading panel-grad-head">
-          <h4 class="h4-panel">Client Details</h4>
+        <div class="panel panel-default">
+            <div class="panel-heading panel-grad-head">
+                <h4 class="h4-panel">Client Details</h4>
+            </div>
+            <div class="panel-body">
+                <div ng-hide="clientsCtrl.dataLoaded" style="text-align:center;">
+                    <h4>Please wait...</h4>
+                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div ng-show="clientsCtrl.dataLoaded">
+                    <div>
+                        <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)" class="btn btn-default btn-sm" type="button">
+                            Edit <span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleModalThree()" class="btn btn-default btn-sm" type="button">
+                            New Assessment <span aria-hidden="true" class="glyphicon glyphicon-file"></span>
+                        </button>
+                        <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleModalTwo()" class="btn btn-default btn-sm">
+                            Assessment History <span aria-hidden="true" class="glyphicon glyphicon-eye-open"></span>
+                        </button>
+                        <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleModalFour()" class="btn btn-default btn-sm" type="button">
+                            Comparison Tool <span aria-hidden="true" class="glyphicon glyphicon-stats"></span>
+                        </button>
+                        <button ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.cancelEdit(clientsCtrl.client)" class="btn btn-default btn-sm">
+                            Cancel <span aria-hidden="true" class="glyphicon glyphicon-floppy-remove"></span>
+                        </button>
+                        <button ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.checkForm(form)" class="btn btn-default btn-sm">
+                            Confirm <span aria-hidden="true" class="glyphicon glyphicon-floppy-disk"></span>
+                        </button>
+                    </div>
+                    <hr>
+                    <h4 class="text-primary"><strong>{{clientsCtrl.client.name}}</strong></h4>
+                    <div ng-hide="clientsCtrl.client.edit" class="col-md-12 content-shadow">
+                        <strong class="text-muted">Details</strong>
+                        <ul class="list-group list-special">
+                            <li class="list-group-item"><strong>Contact:</strong> {{clientsCtrl.client.contact}}</li>
+                            <li class="list-group-item"><strong>Country:</strong> {{clientsCtrl.client.country}}</li>
+                            <li class="list-group-item"><strong>Phone:</strong> {{clientsCtrl.client.phone}}</li>
+                            <li class="list-group-item"><strong>E-mail:</strong> {{clientsCtrl.client.email}}</li>
+                            <li class="list-group-item"><strong>Industry:</strong> {{clientsCtrl.client.industry}}</li>
+                            <li class="list-group-item"><strong>Industry Segment:</strong> {{clientsCtrl.client.industry_segment}}</li>
+                            <li class="list-group-item"><strong>Revenue:</strong> {{clientsCtrl.client.revenue}}</li>
+                            <li class="list-group-item"><strong>Market Share:</strong> {{clientsCtrl.client.market_share}}</li>
+                            <li class="list-group-item"><strong>Market Capitalization:</strong> {{clientsCtrl.client.market_capitalization}}</li>
+                            <li class="list-group-item"><strong>Competitors:</strong> {{clientsCtrl.client.competitors}}</li>
+                        </ul>
+                    </div>
+                    <div ng-show="clientsCtrl.client.edit" class="col-md-12 content-shadow">
+                        <strong class="text-muted">Edit</strong>
+                        <form class="form" name="form" ng-submit="clientsCtrl.checkForm(form)" novalidate>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.contact.$valid && clientsCtrl.submitted,'has-error': form.contact.$invalid && clientsCtrl.submitted }">
+                                <label>Contact:</label>
+
+                                <input type="text" name="contact" class="form-control" ng-model="clientsCtrl.client.contact" required/>
+                                <p class="help-block" ng-show="form.contact.$error.required && clientsCtrl.submitted">
+                                    Please provide a client contact name.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.phone.$valid && clientsCtrl.submitted,'has-error': form.phone.$invalid && clientsCtrl.submitted }">
+                                <label>Phone:</label>
+
+                                <input type="text" name="phone" class="form-control" ng-model="clientsCtrl.client.phone" required/>
+                                <p class="help-block" ng-show="form.phone.$error.required && clientsCtrl.submitted">
+                                    Please provide a phone number at which the client or contact can be reached.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.email.$valid && clientsCtrl.submitted,'has-error': form.email.$invalid && clientsCtrl.submitted }">
+                                <label>E-mail:</label>
+
+                                <input type="email" name="email" class="form-control" ng-model="clientsCtrl.client.email" required/>
+                                <p class="help-block" ng-show="form.email.$error.email && clientsCtrl.submitted">
+                                    Doesn't look like a valid email.
+                                </p>
+                                <p class="help-block" ng-show="form.email.$error.required && clientsCtrl.submitted">
+                                    Please provide an e-mail address at which the client or contact can be reached.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.industry.$valid && clientsCtrl.submitted,'has-error': form.industry.$invalid && clientsCtrl.submitted }">
+                                <label>Industry:</label>
+
+                                <input type="text" name="industry" class="form-control" ng-model="clientsCtrl.client.industry" required/>
+                                <p class="help-block" ng-show="form.industry.$error.required && clientsCtrl.submitted">
+                                    Please provide the main industry this client operates in.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.segment.$valid && clientsCtrl.submitted,'has-error': form.segment.$invalid && clientsCtrl.submitted }">
+                                <label>Industry Segement:</label>
+
+                                <input type="text" name="segment" class="form-control" ng-model="clientsCtrl.client.industry_segment" required/>
+                                <p class="help-block" ng-show="form.segment.$error.required && clientsCtrl.submitted">
+                                    Please describe an industry segment most applicable to the industry specified.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.revenue.$valid && clientsCtrl.submitted,'has-error': form.revenue.$invalid && clientsCtrl.submitted }">
+                                <label>Revenue:</label>
+
+                                <input type="number" name="revenue" class="form-control" ng-model="clientsCtrl.client.revenue" number required/>
+                                <p class="help-block" ng-show="form.revenue.$error.required && clientsCtrl.submitted">
+                                    Please provide the client's revenue.
+                                </p>
+                                <p class="help-block" ng-show="form.revenue.$error.number && clientsCtrl.submitted">
+                                    Please enter a numerical value.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.share.$valid && clientsCtrl.submitted,'has-error': form.share.$invalid && clientsCtrl.submitted }">
+                                <label>Market Share:</label>
+
+                                <input type="number" name="share" class="form-control" ng-model="clientsCtrl.client.market_share" number required/>
+                                <p class="help-block" ng-show="form.share.$error.required && clientsCtrl.submitted">
+                                    Please provide the client's market share.
+                                </p>
+                                <p class="help-block" ng-show="form.share.$error.number && clientsCtrl.submitted">
+                                    Please enter a numerical value.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.capital.$valid && clientsCtrl.submitted,'has-error': form.capital.$invalid && clientsCtrl.submitted }">
+                                <label>Market Capitalization:</label>
+
+                                <input type="number" name="capital" class="form-control" ng-model="clientsCtrl.client.market_capitalization" number required/>
+                                <p class="help-block" ng-show="form.capital.$error.required && clientsCtrl.submitted">
+                                    Please provide the client's market share..
+                                </p>
+                                <p class="help-block" ng-show="form.capital.$error.number && clientsCtrl.submitted">
+                                    Only numerical entries are allowed for this section.
+                                </p>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-success': form.competitors.$valid && clientsCtrl.submitted, 'has-error': form.competitors.$invalid && clientsCtrl.submitted }">
+                                <label>Competitors:</label>
+
+                                <input type="text" name="competitors" class="form-control" ng-model="clientsCtrl.client.competitors" required/>
+                                <p class="help-block" ng-show="form.competitors.$error.required && clientsCtrl.submitted">
+                                    Please enter the names competitors in competition with the client.
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-          <div ng-hide="clientsCtrl.dataLoaded" style="text-align:center;">
-          <h4>Please wait...</h4>
-            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-            <span class="sr-only">Loading...</span>
-          </div>
-          <div ng-show="clientsCtrl.dataLoaded">
-            <div>
-              <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleEdit(clientsCtrl.client)" class="btn btn-default btn-sm" type="button">
-                Edit <span aria-hidden="true" class="glyphicon glyphicon-pencil"></span>
-              </button> 
-              <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleModalTwo()" class="btn btn-default btn-sm">
-                Assessment History <span aria-hidden="true" class="glyphicon glyphicon-eye-open"></span>
-              </button> 
-              <button ng-hide="clientsCtrl.client.edit" ng-click="clientsCtrl.toggleModalThree()" class="btn btn-default btn-sm" type="button">
-                New Assessment <span aria-hidden="true" class="glyphicon glyphicon-file"></span>
-              </button> 
-              <button ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.cancelEdit(clientsCtrl.client)" class="btn btn-default btn-sm">
-                Cancel <span aria-hidden="true" class="glyphicon glyphicon-floppy-remove"></span>
-              </button> 
-              <button ng-show="clientsCtrl.client.edit" ng-click="clientsCtrl.checkForm(form)" class="btn btn-default btn-sm">
-                Confirm <span aria-hidden="true" class="glyphicon glyphicon-floppy-disk"></span>
-              </button>
-            </div>
-            <hr>
-            <h4 class="text-primary"><strong>{{clientsCtrl.client.name}}</strong></h4>
-            <div ng-hide="clientsCtrl.client.edit" class="col-md-12 content-shadow">
-              <strong class="text-muted">Details</strong>
-              <ul class="list-group list-special">
-                <li class="list-group-item"><strong>Contact:</strong> {{clientsCtrl.client.contact}}</li>
-                <li class="list-group-item"><strong>Country:</strong> {{clientsCtrl.client.country}}</li>
-                <li class="list-group-item"><strong>Phone:</strong> {{clientsCtrl.client.phone}}</li>
-                <li class="list-group-item"><strong>E-mail:</strong> {{clientsCtrl.client.email}}</li>
-                <li class="list-group-item"><strong>Industry:</strong> {{clientsCtrl.client.industry}}</li>
-                <li class="list-group-item"><strong>Industry Segment:</strong> {{clientsCtrl.client.industry_segment}}</li>
-                <li class="list-group-item"><strong>Revenue:</strong> {{clientsCtrl.client.revenue}}</li>
-                <li class="list-group-item"><strong>Market Share:</strong> {{clientsCtrl.client.market_share}}</li>
-                <li class="list-group-item"><strong>Market Capitalization:</strong> {{clientsCtrl.client.market_capitalization}}</li>
-                <li class="list-group-item"><strong>Competitors:</strong> {{clientsCtrl.client.competitors}}</li>
-              </ul>
-            </div>
-            <div ng-show="clientsCtrl.client.edit" class="col-md-12 content-shadow">
-              <strong class="text-muted">Edit</strong>
-              <form class="form" name="form" ng-submit="clientsCtrl.checkForm(form)" novalidate>
-
-                <div class="form-group" ng-class="{ 'has-success': form.contact.$valid && clientsCtrl.submitted,
-                'has-error': form.contact.$invalid && clientsCtrl.submitted }">
-                <label>Contact:</label>
-
-                <input type="text" name="contact" class="form-control" ng-model="clientsCtrl.client.contact"
-                required/>
-                <p class="help-block" ng-show="form.contact.$error.required && clientsCtrl.submitted">
-                  Please provide a client contact name.
-                </p>
-              </div>
-
-              <div class="form-group" ng-class="{ 'has-success': form.phone.$valid && clientsCtrl.submitted,
-              'has-error': form.phone.$invalid && clientsCtrl.submitted }">
-              <label>Phone:</label>
-
-              <input type="text" name="phone" class="form-control" ng-model="clientsCtrl.client.phone"
-              required/>
-              <p class="help-block" ng-show="form.phone.$error.required && clientsCtrl.submitted">
-                Please provide a phone number at which the client or contact can be reached.
-              </p>
-            </div>
-
-            <div class="form-group" ng-class="{ 'has-success': form.email.$valid && clientsCtrl.submitted,
-            'has-error': form.email.$invalid && clientsCtrl.submitted }">
-            <label>E-mail:</label>
-
-            <input type="email" name="email" class="form-control" ng-model="clientsCtrl.client.email"
-            required/>
-            <p class="help-block" ng-show="form.email.$error.email && clientsCtrl.submitted">
-              Doesn't look like a valid email.
-            </p>
-            <p class="help-block" ng-show="form.email.$error.required && clientsCtrl.submitted">
-              Please provide an e-mail address at which the client or contact can be reached.
-            </p>
-          </div>
-
-          <div class="form-group" ng-class="{ 'has-success': form.industry.$valid && clientsCtrl.submitted,
-          'has-error': form.industry.$invalid && clientsCtrl.submitted }">
-          <label>Industry:</label>
-
-          <input type="text" name="industry" class="form-control" ng-model="clientsCtrl.client.industry"
-          required/>
-          <p class="help-block" ng-show="form.industry.$error.required && clientsCtrl.submitted">
-            Please provide the main industry this client operates in.
-          </p>
-        </div>
-
-        <div class="form-group" ng-class="{ 'has-success': form.segment.$valid && clientsCtrl.submitted,
-        'has-error': form.segment.$invalid && clientsCtrl.submitted }">
-        <label>Industry Segement:</label>
-
-        <input type="text" name="segment" class="form-control" ng-model="clientsCtrl.client.industry_segment"
-        required/>
-        <p class="help-block" ng-show="form.segment.$error.required && clientsCtrl.submitted">
-          Please describe an industry segment most applicable to the industry specified.
-        </p>
-      </div>
-
-      <div class="form-group" ng-class="{ 'has-success': form.revenue.$valid && clientsCtrl.submitted,
-      'has-error': form.revenue.$invalid && clientsCtrl.submitted }">
-      <label>Revenue:</label>
-
-      <input type="number" name="revenue" class="form-control" ng-model="clientsCtrl.client.revenue" 
-      number
-      required/>
-      <p class="help-block"
-      ng-show="form.revenue.$error.required && clientsCtrl.submitted">
-      Please provide the client's revenue.
-    </p>
-    <p class="help-block"
-    ng-show="form.revenue.$error.number && clientsCtrl.submitted">
-    Please enter a numerical value.
-  </p>
+    </div>
 </div>
-
-<div class="form-group" ng-class="{ 'has-success': form.share.$valid && clientsCtrl.submitted,
-'has-error': form.share.$invalid && clientsCtrl.submitted }">
-<label>Market Share:</label>
-
-<input type="number" name="share" class="form-control" ng-model="clientsCtrl.client.market_share"
-number
-required/>
-<p class="help-block"
-ng-show="form.share.$error.required && clientsCtrl.submitted">
-Please provide the client's market share.
-</p>
-<p class="help-block"
-ng-show="form.share.$error.number && clientsCtrl.submitted">
-Please enter a numerical value.
-</p>
-</div>
-
-<div class="form-group" ng-class="{ 'has-success': form.capital.$valid && clientsCtrl.submitted,
-'has-error': form.capital.$invalid && clientsCtrl.submitted }">
-<label>Market Capitalization:</label>
-
-<input type="number" name="capital" class="form-control" ng-model="clientsCtrl.client.market_capitalization" 
-number
-required/>
-<p class="help-block"
-ng-show="form.capital.$error.required && clientsCtrl.submitted">
-Please provide the client's market share..
-</p>
-<p class="help-block"
-ng-show="form.capital.$error.number && clientsCtrl.submitted">
-Only numerical entries are allowed for this section.
-</p>
-</div>
-
-<div class="form-group" ng-class="{ 'has-success': form.competitors.$valid && clientsCtrl.submitted,
-'has-error': form.competitors.$invalid && clientsCtrl.submitted }">
-<label>Competitors:</label>
-
-<input type="text" name="competitors" class="form-control" ng-model="clientsCtrl.client.competitors"
-required/>
-<p class="help-block" ng-show="form.competitors.$error.required && clientsCtrl.submitted">
-  Please enter the names competitors in competition with the client.
-</p>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
