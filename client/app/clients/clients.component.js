@@ -13,6 +13,8 @@ import NewAssessmentController from './modal_components/modal_new.controller'
 
 import StartCompareController from './modal_components/modal_compare.controller'
 
+import ShareClientController from './modal_components/modal_share.controller'
+
 export class ClientsComponent {
   $http;
   socket;
@@ -51,7 +53,12 @@ export class ClientsComponent {
         this.noClients = false;
         this.alertTrigger = true;
       }
-      this.dataLoaded = true;
+
+      this.$http.get('/api/users/sharedClients/' + this.userId)
+      .then(response => {
+        this.sharedClients = response.data;
+        this.dataLoaded = true;
+      })
     })//End get
 
     this.$http.get('api/users/template/' + this.userId)
@@ -77,25 +84,45 @@ export class ClientsComponent {
   }//End checkForm
 
   deleteClient(client) {
-    this.$http.delete('/api/users/clientDelete/' + this.userId + '/' + client._id)
-    .error(function(err) {
-      alert('An error occured while deleting. Please try again.');
-    });
-    this.clients.splice(this.clients.indexOf(client), 1);
+    if (confirm('Are you sure you want to delete ' + client.name + '?')) {
+      this.$http.delete('/api/users/clientDelete/' + this.userId + '/' + client._id)
+      .error(function(err) {
+        alert('An error occured while deleting. Please try again.');
+      });
+      this.clients.splice(this.clients.indexOf(client), 1);
 
-    if (this.clients.length <= 0) {
-      this.nameCopy = 'Start adding clients!';
-      this.noClients = false;
-      this.client = null;
-    } else {
-      this.client = this.clients[0]; 
+      if (this.clients.length <= 0) {
+        this.nameCopy = 'Start adding clients!';
+        this.noClients = false;
+        this.client = null;
+      } else {
+        this.client = this.clients[0]; 
+      }//End nested if
     }//End if
   }//End deleteClient
 
   selectClient(client) {
     this.noClients = true;
     this.client = client;
+    this.sharedSelected = false;
   }//End selectClient
+
+  removeSharedClient(shared) {
+    if (confirm('Are you sure you want to stop sharing this client?')) {
+      this.$http.delete('/api/users/removeSharedClient/' + this.userId + '/' + shared._id)
+      .error(function(err) {
+        alert('An error occured while deleting, please try again.');
+      });
+      this.sharedClients.splice(this.sharedClients.indexOf(shared), 1);
+    }
+  }//End removeSharedClient
+
+  selectSharedClient(obj) {
+    this.shared = obj;
+    this.noClients = true;
+    this.client = obj.client;
+    this.sharedSelected = true;
+  }//End selectSharedClient
 
   toggleEdit(client) {
     client.edit = !client.edit;
@@ -152,7 +179,9 @@ export class ClientsComponent {
   }//End toggleModal
 
   toggleModalTwo() {
-    var client = this.client;
+    var client = this.client, sharedSelected = this.sharedSelected; 
+    if (this.shared !== undefined)
+    var sharedUserId = this.shared.uid;
 
     var modalInstance = this.$uibModal.open({
       animation: this.animationEnabled, 
@@ -163,13 +192,21 @@ export class ClientsComponent {
       resolve: {
         client: function() {
           return client;
+        },
+        sharedSelected: function() {
+          return sharedSelected;
+        },
+        sharedUserId: function() {
+          return sharedUserId
         }
       }
     })//End open
   }//End toggleModalTwo
 
   toggleModalThree() {
-    var client = this.client, templates = this.templates;
+    var client = this.client, templates = this.templates, sharedSelected = this.sharedSelected; 
+    if (this.shared !== undefined)
+    var sharedUserId = this.shared.uid;
 
     var modalInstance = this.$uibModal.open({
       animation: this.animationEnabled, 
@@ -183,13 +220,21 @@ export class ClientsComponent {
         },
         templates: function() {
           return templates;
+        },
+        sharedSelected: function() {
+          return sharedSelected;
+        },
+        sharedUserId: function() {
+          return sharedUserId;
         }
       }
     })//End open
   }//End toggleModalThree
 
   toggleModalFour() {
-    var clients = this.clients;
+    var clients = this.clients, client = this.client, sharedSelected = this.sharedSelected; 
+    if (this.shared !== undefined)
+    var shared = this.shared;
 
     var modalInstance = this.$uibModal.open({
       animation: this.animationEnabled, 
@@ -200,10 +245,36 @@ export class ClientsComponent {
       resolve: {
         clients: function() {
           return clients;
+        },
+        client: function() {
+          return client;
+        },
+        sharedSelected: function() {
+          return sharedSelected;
+        },
+        shared: function() {
+          return shared;
         }
       }
     })//End open
   }//End toggleModalThree
+
+  toggleModalFive(client) {
+    var clientCopy = client;
+
+    var modalInstance = this.$uibModal.open({
+      animation: this.animationEnabled, 
+      ariaLabelledBy: 'modal-title',
+      template: require('./modal_components/modal_share.html'),
+      controller: ShareClientController,
+      controllerAs: 'shareCtrl',
+      resolve: {
+        clientCopy: function() {
+          return clientCopy;
+        }
+      }
+    })//End open
+  }
 }//End controller
 
 export default angular.module('apiLocalApp.clients', [uiRouter])

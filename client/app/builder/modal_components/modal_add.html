@@ -2,7 +2,8 @@
     <div class="modal-header panel-grad-head">
         <h3 class="modal-title" id="modal-title">New Template</h3>
     </div>
-    <div class="modal-body" id="modal-body">
+    <div class="modal-body" id="modal-body" style="max-height: calc(100vh - 200px);
+    overflow-y: auto;">
         <form class="form" name="form" ng-submit="addCtrl.checkForm(form)" novalidate>
 
             <div class="form-group" ng-class="{ 'has-success': form.name.$valid && addCtrl.submitted,

@@ -32,12 +32,14 @@ export default class EditorComponent {
   }//End onInit
 
   deleteForm(form) {
-    this.$http.delete('/api/users/template/formDelete/' + this.userId + '/' + this.templateId + '/' + form._id)
-    .error(function(err) {
-      alert('An error occured while deleting. Please try again.');
-    });
-    this.template.assessment.splice(this.template.assessment.indexOf(form), 1);
-    this.form = this.template.assessment[0];
+    if (confirm('Are you sure you want to delete ' + form.name + '?')) {
+      this.$http.delete('/api/users/template/formDelete/' + this.userId + '/' + this.templateId + '/' + form._id)
+      .error(function(err) {
+        alert('An error occured while deleting. Please try again.');
+      });
+      this.template.assessment.splice(this.template.assessment.indexOf(form), 1);
+      this.form = this.template.assessment[0];
+    }
   }//End deleteForm
 
   updateForm(form) {
@@ -51,12 +53,14 @@ export default class EditorComponent {
   }//End updateForm
 
   deleteQuestion(question) {
-    this.$http.delete('/api/users/template/questionDelete/' + this.userId + '/' + this.templateId + '/' + this.form._id + '/' + question._id)
-    .error(function(err) {
-      alert('An error occured while deleting. Please try again.');
-    });
-    this.form.questions.splice(this.form.questions.indexOf(question), 1);
-    this.question = this.form.questions[0];
+    if (confirm('Are you sure you want to delete ' + question.question + '?')) {
+      this.$http.delete('/api/users/template/questionDelete/' + this.userId + '/' + this.templateId + '/' + this.form._id + '/' + question._id)
+      .error(function(err) {
+        alert('An error occured while deleting. Please try again.');
+      });
+      this.form.questions.splice(this.form.questions.indexOf(question), 1);
+      this.question = this.form.questions[0];
+    }
   }//End deleteQuestion
 
   updateQuestion(question) {

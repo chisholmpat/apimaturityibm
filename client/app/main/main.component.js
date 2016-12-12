@@ -7,56 +7,38 @@ import NewAssessmentController from './modal_components/modal_assessment.control
 export class MainController {
 
   /*@ngInject*/
-  constructor($http, $scope, $cookies, Auth, socket, $uibModal, $document) {
+  constructor($http, $scope, $cookies, Auth, socket, $uibModal, $document, scores, graph) {
     this.$http = $http;
     this.socket = socket;
     this.$cookies = $cookies;
     this.$uibModal = $uibModal;
     this.$document = $document;
+    this.scores = scores;
+    this.graph = graph;
     this.getCurrentUser = Auth.getCurrentUserSync;
     this.isLoggedIn = Auth.isLoggedInSync;
-    this.userId = this.$cookies.get('userId');
     this.animationEnabled = true;
   }
 
   $onInit() {
-
-  }
-
-  newAssessment() { 
-    this.$http.get('/api/users/client/' + this.userId)
-    .then(response => { 
-      this.clients = response.data;
-      this.$http.get('api/users/template/' + this.userId)
+    this.$http.get('/api/users/me')
+    .then(response => {
+      this.$cookies.put('userId', response.data._id);
+      this.userId = this.$cookies.get('userId');
+      this.$http.get('/api/users/compare/' + 'API-Maturity Template')
       .then(response => {
-        this.templates = response.data;
-        this.toggleModalOne();
-      });
-    });
-  }
-
-  toggleModalOne() {
-    var clients = this.clients, templates = this.templates, userId = this.userId;
-
-    var modalInstance = this.$uibModal.open({
-      animation: this.animationEnabled, 
-      ariaLabelledBy: 'modal-title',
-      template: require('./modal_components/modal_assessment.html'),
-      controller: NewAssessmentController,
-      controllerAs: 'nasCtrl',
-      resolve: {
-        clients: function() {
-          return clients;
-        },  
-        templates: function() {
-          return templates;
-        },
-        userId: function() {
-          return userId;
-        }
-      }
-    })//End open
-  }//End toggleModalOne
+        var dataObj = response.data;
+        this.results = this.scores.allAverages(dataObj);
+        this.graph.paintRadarGraph(this.results, 'globalScores');
+        this.$http.get('/api/users/recentActivity/' + this.userId)
+        .then(response => {
+          this.dataObj = response.data;
+          this.graph.paintActivityGraph(this.dataObj, 'activityGraph');
+          this.dataLoaded = true;
+        })
+      })
+    })
+  }//End onInit
 }//End controller
 
 export default angular.module('apiLocalApp.main', [uiRouter])

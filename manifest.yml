@@ -1,3 +1,4 @@
 applications:
-- name: apimaturity
+- name: apimaturitydev
   command: gulp serve:dist
+  timeout: 180

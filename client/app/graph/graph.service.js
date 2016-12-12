@@ -46,6 +46,7 @@ export function graphService() {
           ticks: {
             beginAtZero: true,
             stepSize: 1,
+            max: 5
           }
         }
       }
@@ -138,7 +139,7 @@ export function graphService() {
           }],
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
             }
           }]
         },
@@ -148,6 +149,58 @@ export function graphService() {
       }
     });
   }//End paintLineGraph
+
+  graph.paintActivityGraph = function(data, ctx) {
+    var ctx = angular.element(document.getElementById(ctx));
+    var labels = data.labels, counts = data.counts;
+
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+        {
+          label: "Surveys Taken",
+          fill: true,
+          lineTension: 0.2,
+          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: "rgba(75,192,192,1)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: counts,
+          spanGaps: false,
+        }]
+      },
+      options: {
+        maintainAspectRatio: true,
+        scales: {
+          xAxes: [{
+            display: true,
+            cornerRadius: 0,
+          }],
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        tooltips: {
+          bodyFontSize: 10
+        }
+      }
+    });
+  }//End paintActivityGraph
 
   graph.paintPieChart = function(data, labels, title, ctxId) {
     var ctx = angular.element(document.getElementById(ctxId));

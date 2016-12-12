@@ -32,13 +32,15 @@ export default class AdminController {
   }//End onInit
 
   delete(user) {
-    this.$http.delete('api/users/' + user._id)
-    .error(function(err) {
-      alert('Something went wrong while deleting. Please try again later.');
-    })
-    this.users.splice(this.users.indexOf(user), 1);
-    this.user = this.users[0];
-    this.total = this.users.length;
+    if (confirm('Are you sure you want to deactivate ' + user.name + '?')) {
+      this.$http.put('api/users/setActive/' + user._id)
+      .error(function(err) {
+        alert('Something went wrong while deleting. Please try again later.');
+      })
+      this.users.splice(this.users.indexOf(user), 1);
+      this.user = this.users[0];
+      this.total = this.users.length;
+    }
   }//End delete
 
   checkForm(f) {
@@ -69,12 +71,14 @@ export default class AdminController {
     this.user.edit = !this.user.edit;
   }//End cancelEdit
 
-  deleteClient(client) { 
-    this.$http.delete('/api/users/clientDelete/' + this.user._id + '/' + client._id)
-    .error(function(err) {
-      alert('An error occured while deleting. Please try again.');
-    });
-    this.user.clients.splice(this.user.clients.indexOf(client), 1);
+  deleteClient(client) {
+    if (confirm('Are you sure you want to delete ' + client.name + '?')) { 
+      this.$http.delete('/api/users/clientDelete/' + this.user._id + '/' + client._id)
+      .error(function(err) {
+        alert('An error occured while deleting. Please try again.');
+      });
+      this.user.clients.splice(this.user.clients.indexOf(client), 1);
+    }
   }//End deleteClient
 
   countClients(user) {

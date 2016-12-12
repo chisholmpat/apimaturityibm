@@ -1,5 +1,6 @@
+<div class="container top-padding">
 <div class="row special-row">
-  <div class="col-sm-6">
+  <div class="col-md-6 compare-column-left">
     <div class="panel panel-default">
       <div class="panel-heading panel-grad-head">
         <h4 class="h4-panel">{{comCtrl.assessmentName}}</h4>
@@ -12,31 +13,27 @@
           <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
           <span class="sr-only">Loading...</span>
         </div>
-        <div class="content-shadow" style="margin-bottom:15px;">
-
-        <div>
-          <h4>Overall Result</h4>
-          <canvas id="radarGraph"></canvas>
-        </div>
-        </div>
         <div ng-show="comCtrl.dataLoaded">
+          <div class="content-shadow" style="margin-bottom:15px;">
+            <div>
+              <h4>Overall Result</h4>
+              <canvas id="radarGraph"></canvas>
+            </div>
+          </div>
           <div class="content-shadow">
-            <h4>Form: {{comCtrl.form.name}}</h4>
+            <h4>Form: {{comCtrl.formOne.name}}</h4>
             <button style="margin-bottom:5px" ng-disabled="comCtrl.lineRdy" class="btn btn-default btn-sm" ng-click="comCtrl.savePDF()">
               Save PDF <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
             </button>
             <div style="padding:2%">
               <h4 class="text-primary">Self Assessment Results</h4>
               <hr/>
-<!--               <div id="gsa" class="col-md-4">
-                <canvas id="saBar" class="graph-padding-one"></canvas>
-              </div> -->
               <div class="col-md-12" id="lsa">
                 <canvas id="saLine" class="graph-padding-two"></canvas>
               </div>
               <h4 class="text-primary">Questions</h4>
               <hr/>
-              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessment.assessment" ng-if="comCtrl.form._id==form._id">
+              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessmentOne.assessment" ng-if="comCtrl.formOne._id==form._id">
                 <ul class="list-group list-survey" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
                   <li class="list-group-item list-group-item-survey" style="margin-top:1%;padding: 0%;">
                     <div class="media">
@@ -61,14 +58,11 @@
 
               <h4 class="text-primary" style="margin-top:20px">Quality Assessment Results</h4>
               <hr/>
-<!--               <div id="gqa" class="col-md-4">
-                <canvas id="qaBar" class="graph-padding-one"></canvas>
-              </div> -->
               <div class="col-md-12" id="lqa">
                 <canvas id="qaLine" class="graph-padding-two"></canvas>
               </div>
               <h4 class="text-primary" style="margin-bottom:20px;">Questions</h4>
-              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessment.assessment" ng-if="comCtrl.form._id==form._id">
+              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessmentOne.assessment" ng-if="comCtrl.formOne._id==form._id">
                 <ul class="list-group list-survey" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
                   <li class="list-group-item list-group-item-survey" style="margin-top:1%;padding: 0%;">
                     <div class="media">
@@ -100,7 +94,7 @@
               </div>
               <div>
                 <hr>
-                <uib-progressbar max="comCtrl.max" value="comCtrl.formIndex+1"><span style="color:white; white-space:nowrap;">Form: {{comCtrl.formIndex+1}} / {{comCtrl.max}}</span>
+                <uib-progressbar max="comCtrl.maxOne" value="comCtrl.formIndexOne+1"><span style="color:white; white-space:nowrap;">Form: {{comCtrl.formIndexOne+1}} / {{comCtrl.maxOne}}</span>
                 </uib-progressbar>
               </div>
             </div>
@@ -110,11 +104,11 @@
     </div>
   </div>
 
-  <div class="col-sm-6">
+  <div class="col-md-6 compare-column-right">
     <div class="panel panel-default">
       <div class="panel-heading panel-grad-head">
-        <h4 class="h4-panel">{{comCtrl.assessmentName}}</h4>
-        <small class="h4-panel">Client: {{comCtrl.clientName}}</small>
+        <h4 class="h4-panel">{{comCtrl.assessmentNameTwo}}</h4>
+        <small class="h4-panel">Client: {{comCtrl.clientNameTwo}}</small>
         <br/>
       </div>
       <div class="panel-body">
@@ -123,31 +117,27 @@
           <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
           <span class="sr-only">Loading...</span>
         </div>
-        <div class="content-shadow" style="margin-bottom:15px;">
-
-        <div>
-          <h4>Overall Result</h4>
-          <canvas id="radarGraph2"></canvas>
-        </div>
-        </div>
         <div ng-show="comCtrl.dataLoaded">
+          <div class="content-shadow" style="margin-bottom:15px;">
+            <div>
+              <h4>Overall Result</h4>
+              <canvas id="radarGraph2"></canvas>
+            </div>
+          </div>
           <div class="content-shadow">
-            <h4>Form: {{comCtrl.form.name}}</h4>
+            <h4>Form: {{comCtrl.formTwo.name}}</h4>
             <button style="margin-bottom:5px" ng-disabled="comCtrl.lineRdy" class="btn btn-default btn-sm" ng-click="comCtrl.savePDF()">
               Save PDF <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
             </button>
             <div style="padding:2%">
               <h4 class="text-primary">Self Assessment Results</h4>
               <hr/>
-<!--               <div id="gsa" class="col-md-4">
-                <canvas id="saBar" class="graph-padding-one"></canvas>
-              </div> -->
               <div class="col-md-12" id="lsa2">
                 <canvas id="saLine2" class="graph-padding-two"></canvas>
               </div>
               <h4 class="text-primary">Questions</h4>
               <hr/>
-              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessment.assessment" ng-if="comCtrl.form._id==form._id">
+              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessmentTwo.assessment" ng-if="comCtrl.formTwo._id==form._id">
                 <ul class="list-group list-survey" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Self-Assessment'">
                   <li class="list-group-item list-group-item-survey" style="margin-top:1%;padding: 0%;">
                     <div class="media">
@@ -172,14 +162,11 @@
 
               <h4 class="text-primary" style="margin-top:20px">Quality Assessment Results</h4>
               <hr/>
-<!--               <div id="gqa" class="col-md-4">
-                <canvas id="qaBar" class="graph-padding-one"></canvas>
-              </div> -->
               <div class="col-md-12" id="lqa2">
                 <canvas id="qaLine2" class="graph-padding-two"></canvas>
               </div>
               <h4 class="text-primary" style="margin-bottom:20px;">Questions</h4>
-              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessment.assessment" ng-if="comCtrl.form._id==form._id">
+              <ul class="list-group list-survey" ng-repeat="form in comCtrl.assessmentTwo.assessment" ng-if="comCtrl.formTwo._id==form._id">
                 <ul class="list-group list-survey" ng-repeat="(question, q) in form.questions" ng-if="form.questions[question].category === 'Quantitative-Assessment'">
                   <li class="list-group-item list-group-item-survey" style="margin-top:1%;padding: 0%;">
                     <div class="media">
@@ -211,7 +198,7 @@
               </div>
               <div>
                 <hr>
-                <uib-progressbar max="comCtrl.max" value="comCtrl.formIndex+1"><span style="color:white; white-space:nowrap;">Form: {{comCtrl.formIndex+1}} / {{comCtrl.max}}</span>
+                <uib-progressbar max="comCtrl.maxTwo" value="comCtrl.formIndexTwo+1"><span style="color:white; white-space:nowrap;">Form: {{comCtrl.formIndexTwo+1}} / {{comCtrl.maxTwo}}</span>
                 </uib-progressbar>
               </div>
             </div>
@@ -221,3 +208,4 @@
     </div>
     </div>
     </div>
+</div>

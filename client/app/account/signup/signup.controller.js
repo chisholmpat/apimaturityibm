@@ -17,7 +17,9 @@ export default class SignupController {
       return this.Auth.createUser({
         name: this.user.name,
         email: this.user.email,
-        password: this.user.password
+        password: this.user.password,
+        firstName: this.user.firstName,
+        lastName: this.user.lastName
       })
         .then(() => {
           // Account created, redirect to home

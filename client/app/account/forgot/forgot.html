@@ -1,0 +1,42 @@
+<header class="hero-unit" id="banner" style="margin-top:0;">
+  <div class="container">
+    <h1 class="logo-font">API Maturity</h1>
+    <p class="lead">Please enter your e-mail to reset your password.</p>  
+  </div>
+</header>
+<div class="row login-row">
+  <div class="col-lg-4 col-lg-offset-4" style="padding-top:15px">
+    <form class="form" name="form" ng-submit="forCtrl.sendToken(form)" novalidate>
+
+      <div class="form-group" ng-class="{ 'has-success': form.email.$valid && forCtrl.submitted,
+      'has-error': form.email.$invalid && forCtrl.submitted || forCtrl.didntSend || forCtrl.notUser}">
+      <label>Email</label>
+
+      <input type="email" name="email" class="form-control" ng-model="forCtrl.email" required>
+      <p class="help-block" ng-show="form.email.$error.required && forCtrl.submitted">
+        You need to provide an e-mail adress.
+      </p>
+      <p class="help-block" ng-show="form.email.$error.email && forCtrl.submitted">
+        Doesn't look like a valid email.
+      </p>
+      <p class="help-block" ng-show="forCtrl.didntSend && forCtrl.submitted">
+        Something went wrong while processing your request, please try again.
+      </p>
+      <p class="help-block" ng-show="forCtrl.notUser && forCtrl.submitted">
+        Something went wrong while processing your request, are you sure this is a valid e-mail? If so try again later.
+      </p>
+      <p class="help-block" ng-show="forCtrl.sent && forCtrl.submitted">
+        An e-mail has been sent to your account, please follow the instructions sent your account.
+      </p>
+    </div>
+
+    <div>
+    <button class="btn btn-default btn-md btn-login" ng-disabled="forCtrl.sent" type="submit">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+</div>
+
+

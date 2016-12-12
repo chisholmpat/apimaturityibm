@@ -12,34 +12,50 @@ export default class CompareToolComponent {
     this.graph = graph;
     this.scores = scores;
     this.pdf = pdf;
-    this.userId = this.$cookies.get('userId');
+    this.sharedSelected = this.$cookies.get('sharedSelected');
+    if (this.sharedSelected === 'true') {
+      this.userId = this.$cookies.get('sharedUserId');
+    } else if (this.sharedSelected === 'false') {
+      this.userId = this.$cookies.get('userId');
+    }
+    this.userIdTwo = this.$cookies.get('userId');
     this.clientId = this.$cookies.get('clientId');
     this.clientName = this.$cookies.get('clientName');
     this.assessmentId = this.$cookies.get('assessmentId');
     this.assessmentName = this.$cookies.get('assessmentName');
-    this.assessment = null, this.form = null;
-    this.formIndex = 0, this.max = 0, this.saLength = 0;
-    this.gTitles = ['Self Assessment Responses', 'Quality Assessment Responses'];
-    this.saLabels = ['Novice', 'Progressing', 'Mature'];
-    this.qaLabels = ["Don't do it", "Planned", "In Progress", "Partially Implemented", "Mature"];
+    this.clientIdTwo = this.$cookies.get('clientId2');
+    this.clientNameTwo = this.$cookies.get('clientName2');
+    this.assessmentIdTwo = this.$cookies.get('assessmentId2');
+    this.assessmentNameTwo = this.$cookies.get('assessmentName2');
+    this.assessmentOne = null, this.assessmentTwo = null, this.formOne = null, this.formTwo = null;
+    this.formIndexOne = 0, this.maxOne = 0, this.saLengthOne = 0;
+    this.formIndexTwo = 0, this.maxTwo = 0, this.saLengthTwo = 0;
   }//End constructor  
 
   $onInit() {      
     this.$http.get('/api/users/assessment/' + this.userId + '/' + this.clientId + '/' + this.assessmentId)
     .then(response => {
-      this.assessment = response.data;
-      this.form = this.assessment.assessment[0];
-      this.max = this.assessment.assessment.length;
-      this.averages = this.scores.averages(this.assessment.assessment);
-      this.graph.paintRadarGraph(this.averages, 'radarGraph');
-      this.graph.paintRadarGraph(this.averages, 'radarGraph2');
-      this.paintAllGraphs();
-      this.dataLoaded = true;
+      this.assessmentOne = response.data;
+      this.formOne = this.assessmentOne.assessment[0];
+      this.maxOne = this.assessmentOne.assessment.length;
+      this.averagesOne = this.scores.averages(this.assessmentOne.assessment);
+      this.graph.paintRadarGraph(this.averagesOne, 'radarGraph');
+
+      this.$http.get('/api/users/assessment/' + this.userIdTwo + '/' + this.clientIdTwo + '/' + this.assessmentIdTwo)
+      .then(response => {
+        this.assessmentTwo = response.data;
+        this.formTwo = this.assessmentTwo.assessment[0];
+        this.maxTwo = this.assessmentTwo.assessment.length;
+        this.averagesTwo = this.scores.averages(this.assessmentTwo.assessment);
+        this.graph.paintRadarGraph(this.averagesTwo, 'radarGraph2');
+        this.paintAllGraphs();
+        this.dataLoaded = true;
+      })
     });
   }//End onInit
 
   clearCanvas() {
-    var saCanvas = document.getElementById('saLine'), qaCanvas = document.getElementById('saLine');
+    var saCanvas = document.getElementById('saLine'), qaCanvas = document.getElementById('qaLine');
     var lsaCanvas = document.getElementById('saLine2'), lqaCanvas = document.getElementById('qaLine2');
     var saCon = document.getElementById('lsa'), qaCon = document.getElementById('lqa');
     var lsaCon = document.getElementById('lsa2'), lqaCon = document.getElementById('lqa2');
@@ -60,18 +76,20 @@ export default class CompareToolComponent {
   }//End clearCanvas
 
   paintAllGraphs() {
-    var saObj = this.scores.countSAResponse(this.form);
-    this.saLength = saObj.saLength;
+    var saObj = this.scores.countSAResponse(this.formOne);
+    this.saLengthOne = saObj.saLength;
     var saCounts = saObj.saCounts;
-    var qaCounts = this.scores.countQAResponse(this.form);
-    var saScoreObj = this.scores.countSAScores(this.form);
-    var qaScoreObj = this.scores.countQAScores(this.form);
-    // this.graph.paintPieChart(saCounts, this.saLabels, this.form.name + ': ' + this.gTitles[0], 'saBar');
-    // this.graph.paintPieChart(qaCounts, this.qaLabels, this.form.name + ': ' + this.gTitles[1], 'qaBar');
+    var saScoreObj = this.scores.countSAScores(this.formOne);
+    var qaScoreObj = this.scores.countQAScores(this.formOne);
+    var saObj2 = this.scores.countSAResponse(this.formTwo);
+    this.saLengthTwo = saObj2.saLength;
+    var saCounts = saObj.saCounts;
+    var saScoreObj2 = this.scores.countSAScores(this.formTwo);
+    var qaScoreObj2 = this.scores.countQAScores(this.formTwo);
     this.graph.paintLineGraph(saScoreObj, 'saLine');
     this.graph.paintLineGraph(qaScoreObj, 'qaLine');
-    this.graph.paintLineGraph(saScoreObj, 'saLine2');
-    this.graph.paintLineGraph(qaScoreObj, 'qaLine2');
+    this.graph.paintLineGraph(saScoreObj2, 'saLine2');
+    this.graph.paintLineGraph(qaScoreObj2, 'qaLine2');
   }//End paintAllGraphs
 
   savePDF() {
@@ -79,32 +97,38 @@ export default class CompareToolComponent {
   }//End savePDF
 
   next() { 
-    this.formIndex++;
-    this.form = this.assessment.assessment[this.formIndex];
-    this.saLength = 0;
+    ++this.formIndexOne;
+    this.formOne = this.assessmentOne.assessment[this.formIndexOne];
+    this.saLengthOne = 0;
+    ++this.formIndexTwo;
+    this.formTwo = this.assessmentTwo.assessment[this.formIndexTwo];
+    this.saLengthTwo = 0;
     this.clearCanvas();
     this.paintAllGraphs();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }//End next
 
   prev() { 
-    this.formIndex--;
-    this.form = this.assessment.assessment[this.formIndex];
+    --this.formIndexOne;
+    this.formOne = this.assessmentOne.assessment[this.formIndexOne];
     this.saLength = 0;
+    --this.formIndexTwo;
+    this.formTwo = this.assessmentTwo.assessment[this.formIndexTwo];
+    this.saLengthTwo = 0;
     this.clearCanvas();
     this.paintAllGraphs();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }//End prev
 
   checkMax() {
-    if (this.formIndex >= this.max - 1) {
+    if (this.formIndexOne >= this.maxOne - 1) {
       return true;
     }   
     return false;
   }//End checkMax
 
   checkMin() {
-    if (this.formIndex <= 0) {
+    if (this.formIndexOne <= 0) {
       return true;
     }
     return false;

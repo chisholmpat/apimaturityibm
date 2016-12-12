@@ -7,11 +7,20 @@ var Clients = mongoose.model('Clients').schema;
 var Assessments = mongoose.model('Assessments').schema;
 
 const authTypes = ['github', 'twitter', 'facebook', 'google'];
+var sharedClientsSchema = new Schema({
+  uid: String, 
+  cid: String,
+  client: Clients
+})
 
 var UserSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
+  },
+  active: {
+    type: Boolean,
+    default: true
   },
   name: String,
   firstName: String,
@@ -43,12 +52,15 @@ var UserSchema = new Schema({
   },
   provider: String,
   salt: String,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
   facebook: {},
   twitter: {},
   google: {},
   github: {},
   clients: [Clients],
-  assessmentTemplates: [Assessments]
+  assessmentTemplates: [Assessments],
+  sharedClients: [sharedClientsSchema]
 });
 
 /**

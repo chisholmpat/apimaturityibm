@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <base href="/">
-    <title>Api-Maturity</title>
+    <title>API Maturity</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Lobster+Two|Roboto+Slab" rel="stylesheet"> 
     <link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.debug.js"></script>
+    <script src="../assets/javascripts/jspdf/dist/jspdf.min.js"></script>
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 </head>
@@ -28,9 +28,15 @@
       ga('create', 'UA-XXXXX-X');
       ga('send', 'pageview');
     </script>
-
-    <navbar></navbar>
+    
+    <navbar class="nav-box-sizing"></navbar>
+    <div ui-view="" class="container nopadding lg-height large-margins"></div>
+    <footer></footer>
+    
+<!--     <div class="visible-sm visible-xs">
+    <navbar class="nav-box-sizing"></navbar>
     <div ui-view=""></div>
     <footer></footer>
+    </div> -->
 </body>
 </html>

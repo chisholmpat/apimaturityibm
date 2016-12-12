@@ -42,21 +42,23 @@ export class BuilderComponent {
   }//End onInit
 
   deleteTemplate(template) {
-    this.$http.delete('api/users/templateDelete/' + this.userId + '/' + template._id)
-    .error(function(err) {
-      alert('An error occured while deleting. Please try again.');
-    });
-    this.templates.splice(this.templates.indexOf(template), 1);
-    this.template = this.templates[0];
-    this.detailCount(template);
-    if (this.template.assessment.length > 0) {
-      this.formsExist = true;
-      this.form = this.template.assessment[0];
-      this.max = this.template.assessment.length;
-      this.formIndex = 0;
-    } else {
-      this.formsExist = false;
-    }//End if
+    if (confirm('Are you sure you want to delete ' + template.name + '?')) {
+      this.$http.delete('api/users/templateDelete/' + this.userId + '/' + template._id)
+      .error(function(err) {
+        alert('An error occured while deleting. Please try again.');
+      });
+      this.templates.splice(this.templates.indexOf(template), 1);
+      this.template = this.templates[0];
+      this.detailCount(template);
+      if (this.template.assessment.length > 0) {
+        this.formsExist = true;
+        this.form = this.template.assessment[0];
+        this.max = this.template.assessment.length;
+        this.formIndex = 0;
+      } else {
+        this.formsExist = false;
+      }//End if
+    }
   }//End deleteTemplate
 
   selectTemplate(template) {

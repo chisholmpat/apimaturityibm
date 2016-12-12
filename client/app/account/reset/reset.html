@@ -1,0 +1,50 @@
+<header class="hero-unit" id="banner" style="margin-top:0;">
+  <div class="container">
+    <h1 class="logo-font">API Maturity</h1>
+    <p class="lead">Reset your password.</p>  
+  </div>
+</header>
+<div class="row login-row">
+  <div class="col-lg-4 col-lg-offset-4" style="padding-top:15px">
+    <form class="form" name="form" ng-submit="resCtrl.changePassword(form)" novalidate>
+
+
+<!--       <div class="form-group" ng-class="{ 'has-success': form.password.$valid && vm.submitted, 'has-error': form.password.$invalid && vm.submitted }">
+        <label>Current Password</label>
+        <input type="text"  name="password" class="form-control" ng-model="resCtrl.user.oldPassword" mongoose-error/>
+        <p class="help-block" ng-show="form.password.$error.mongoose">
+          {{ vm.other }}
+        </p>
+      </div> -->
+
+      <div class="form-group" ng-class="{ 'has-success': form.newPassword.$valid && resCtrl.submitted, 'has-error': form.newPassword.$invalid && resCtrl.submitted }">
+        <label>New Password</label>
+        <input type="password"  name="newPassword" class="form-control" ng-model="resCtrl.newPassword" ng-minlength="3" required/>
+        <p class="help-block" ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && resCtrl.submitted">
+          Password must be at least 3 characters.
+        </p>
+      </div>
+
+      <div class="form-group" ng-class="{ 'has-success': form.confirmPassword.$valid && resCtrl.submitted, 'has-error': form.confirmPassword.$invalid && resCtrl.submitted }">
+        <label>Confirm New Password</label>
+        <input type="password" name="confirmPassword" class="form-control" ng-model="resCtrl.confirmPassword" ng-pattern="resCtrl.newPassword" ng-minlength="3" required/>
+        <p class="help-block" ng-show="form.confirmPassword.$error.pattern && resCtrl.submitted">
+          Passwords must match.
+        </p>
+        <p class="help-block" ng-show="form.confirmPassword.$error.required && resCtrl.submitted">
+          Please confirm password.
+        </p>
+      </div>
+      <p class="help-block" style="color:green"> {{ resCtrl.message }} </p>
+
+
+      <div>
+        <button class="btn btn-default btn-md btn-login" type="submit">
+          Change Password
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

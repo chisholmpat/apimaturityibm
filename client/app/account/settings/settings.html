@@ -1,82 +1,86 @@
-<div class="row special-row" style="margin-top:1%;">
-  <div class="container">
-  <div class="panel panel-default">
-    <div class="panel-heading panel-grad-head">
-      <h4 class="h4-panel">Account Settings</h4>
-    </div>
-    <div class="panel-body">
+<div class="container top-padding">
+    <div class="row special-row lg-height">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default lg-height">
+                <div class="panel-heading panel-grad-head">
+                    <h4 class="h4-panel">Account Dashboard</h4>
+                </div>
+                <div class="panel-body">
+                    <div ng-hide="vm.dataLoaded" style="text-align:center;">
+                        <h4>Loading Details...</h4>
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div ng-show="vm.dataLoaded">
+                        <h4 class="text-primary">Thanks for using our service, {{vm.userCopy.name}}!</h4>
+                        <div class="content-shadow">
+                            <button type="button" ng-hide="vm.changeMyPassword" class="btn btn-default btn-sm" ng-click="vm.togglePassword()">
+                                Change Password <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" ng-show="vm.changeMyPassword" class="btn btn-default btn-sm" ng-click="vm.togglePassword()">
+                                Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                            <br/>
+                            <br/>
+                            <div ng-hide="vm.changeMyPassword">
+                                <strong class="text-muted">Your Details</strong>
+                                <ul class="list-group list-special">
+                                    <li class="list-group-item">
+                                        <strong>Joined: </strong> {{vm.userCopy.created | date: short}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>E-mail address: </strong> {{vm.userCopy.email}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>First name: </strong> {{vm.userCopy.firstName}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Last name: </strong> {{vm.userCopy.lastName}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Clients Saved: </strong> {{vm.userCopy.clients.length}}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Templates Saved: </strong> {{vm.userCopy.assessmentTemplates.length}}
+                                    </li>
+                                </ul>
+                                <br/>
+                                <canvas id="activityGraph"></canvas>
+                            </div>
+                            <div ng-show="vm.changeMyPassword">
+                                <form class="form" name="form" ng-submit="vm.changePassword(form)" novalidate>
 
-      <div class="col-md-6">
-    <h4 class="text-primary">User: {{vm.userCopy.name}}</h4>
-    <div>
-      <strong class="text-muted">Details</strong>
-      <ul class="list-group list-special">
-        <li class="list-group-item">
-          <strong>Joined: </strong> {{vm.userCopy.created | date: short}}
-        </li>
-        <li class="list-group-item">
-          <strong>E-mail address: </strong> {{vm.userCopy.email}}
-        </li>
-        <li class="list-group-item">
-          <strong>First name: </strong> {{vm.userCopy.firstName}}
-        </li>
-        <li class="list-group-item">
-          <strong>Last name: </strong> {{vm.userCopy.lastName}}
-        </li>
-        <li class="list-group-item">
-          <strong>Clients: </strong> {{vm.userCopy.clients.length}}
-        </li>
-        <li class="list-group-item">
-          <strong>Templates: </strong> {{vm.userCopy.assessmentTemplates.length}}
-        </li>
-      </ul>
-    </div>
-  </div>
-      <div class="col-md-6">
-      <h4 class="text-primary">Password Settings</h4>
-      <div class="content-shadow">
-        <form class="form" name="form" ng-submit="vm.changePassword(form)" novalidate>
+                                    <div class="form-group" ng-class="{ 'has-success': form.password.$valid && vm.submitted, 'has-error': form.password.$invalid && vm.submitted }">
+                                        <label>Current Password</label>
+                                        <input type="password" autocomplete="nope" name="password" class="form-control" ng-model="vm.user.oldPassword" mongoose-error/>
+                                        <p class="help-block" ng-show="form.password.$error.mongoose">
+                                            {{ vm.other }}
+                                        </p>
+                                    </div>
 
-          <div class="form-group" ng-class="{ 'has-success': form.password.$valid && vm.submitted,
-                                            'has-error': form.password.$invalid && vm.submitted }">
-            <label>Current Password</label>
-            <input type="password" autocomplete="nope" name="password" class="form-control" ng-model="vm.user.oldPassword"
-            mongoose-error/>
-            <p class="help-block" ng-show="form.password.$error.mongoose">
-              {{ vm.other }}
-            </p>
-          </div>
+                                    <div class="form-group" ng-class="{ 'has-success': form.newPassword.$valid && vm.submitted, 'has-error': form.newPassword.$invalid && vm.submitted }">
+                                        <label>New Password</label>
+                                        <input type="password" autocomplete="nope" name="newPassword" class="form-control" ng-model="vm.user.newPassword" ng-minlength="3" required/>
+                                        <p class="help-block" ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && vm.submitted">
+                                            Password must be at least 3 characters.
+                                        </p>
+                                    </div>
 
-          <div class="form-group" ng-class="{ 'has-success': form.newPassword.$valid && vm.submitted,
-                                            'has-error': form.newPassword.$invalid && vm.submitted }">
-            <label>New Password</label>
-            <input type="password" autocomplete="nope" name="newPassword" class="form-control" ng-model="vm.user.newPassword"
-            ng-minlength="3"
-            required/>
-            <p class="help-block"
-            ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && vm.submitted">
-            Password must be at least 3 characters.
-          </p>
+                                    <div class="form-group" ng-class="{ 'has-success': form.confirmPassword.$valid && vm.submitted, 'has-error': form.confirmPassword.$invalid && vm.submitted }">
+                                        <label>Confirm New Password</label>
+                                        <input type="password" autocomplete="nope" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword" ng-pattern="vm.user.newPassword" ng-minlength="3" required="" />
+                                        <p class="help-block" ng-show="form.confirmPassword.$error.pattern && vm.submitted">
+                                            Passwords must match.
+                                        </p>
+                                    </div>
+                                    <p class="help-block" style="color:green"> {{ vm.message }} </p>
+                                </form>
+                                <button class="btn btn-default btn-sm" ng-click="vm.changePassword(form)">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group" ng-class="{ 'has-success': form.confirmPassword.$valid && vm.submitted,
-                                            'has-error': form.confirmPassword.$invalid && vm.submitted }">
-          <label>Confirm New Password</label>
-          <input type="password" autocomplete="nope" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword" 
-          ng-pattern="vm.user.newPassword"
-          ng-minlength="3"
-          required=""/>
-          <p class="help-block"
-          ng-show="form.confirmPassword.$error.pattern && vm.submitted">
-          Passwords must match.
-        </p>
-      </div>
-      <p class="help-block" style="color:green"> {{ vm.message }} </p>
-    </form>
-    <button class="btn btn-default btn-sm"  ng-click="vm.changePassword(form)">Save changes</button>
     </div>
-  </div>
-</div>
-</div>
-</div>
 </div>

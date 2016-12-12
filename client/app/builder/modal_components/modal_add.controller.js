@@ -52,8 +52,8 @@ export default function AddTemplateController($uibModalInstance, $http, userId, 
     for (var i = 0; i < $ctrl.selectedForms.length; i++)
       $ctrl.selectedForms[i].selected = true;
 
+    $ctrl.formString = $ctrl.formString.slice(0,-2);
     $ctrl.formsAdded = true;
-    console.log($ctrl.newTemplate);
   }//End confirmForms
 
   $ctrl.undoForms = function() {

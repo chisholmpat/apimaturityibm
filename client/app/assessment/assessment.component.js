@@ -10,10 +10,11 @@ export class AssessmentComponent {
   socket;
 
   /*@ngInject*/
-  constructor($http, $scope, $cookies, $state, Auth) {
+  constructor($http, $scope, $cookies, $window, $state, Auth) {
     this.$http = $http;
     this.$cookies = $cookies;
     this.$state = $state;
+    this.$window = $window;
     this.template = null;
     this.idCopies = [];
     this.formIndex = 0;
@@ -34,8 +35,12 @@ export class AssessmentComponent {
     })
   }//End onInit
 
-  getResult() {  
-    this.$state.go('finishedAssessment');
+  getResult() {
+    localStorage.clear();
+    var guestAssessment = JSON.stringify(this.template);
+    // this.$cookies.put('guestResult', guestAssessment);
+    localStorage.setItem('guestResult', guestAssessment);
+    this.$state.go('result');
   }//End saveAssessment
 
   next() { 

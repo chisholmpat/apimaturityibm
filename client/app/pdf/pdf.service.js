@@ -20,7 +20,7 @@ export function pdfService(scores) {
 		yMargin = yMargin+10;
 		doc.setFontSize(12);
 		doc.text('Form: ' + name, 10, yMargin);
-		yMargin = yMargin+10;
+		yMargin = yMargin + 10;
 		doc.setFontSize(10);
 		doc.text('Self-Assessment:', 10, yMargin);
 		doc.setFontSize(8);
@@ -45,9 +45,6 @@ export function pdfService(scores) {
       }//End if
     }//End for
 
-    var saPieBase64 = pdf.chartToBase64('#ffffff', 'saBar');
-    doc.addImage(saPieBase64, 'PNG', 10, yMargin, 75, 75);
-    yMargin = yMargin + 85;
     var saLineBase64 = pdf.chartToBase64('#ffffff', 'saLine');
     doc.addImage(saLineBase64, 'PNG', 10, yMargin, 150, 75);
     yMargin = yMargin + 85;
@@ -78,9 +75,6 @@ export function pdfService(scores) {
       }//End if
     }//End for
 
-    var qaPieBase64 = pdf.chartToBase64('#ffffff', 'qaBar');
-    doc.addImage(qaPieBase64, 'PNG', 10, yMargin, 75, 75);
-    yMargin = yMargin + 85;
     var qaLineBase64 = pdf.chartToBase64('#ffffff', 'qaLine');
     doc.addImage(qaLineBase64, 'PNG', 10, yMargin, 150, 75);
 

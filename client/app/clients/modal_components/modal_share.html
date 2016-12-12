@@ -1,0 +1,42 @@
+<div class="modal-wrap">
+	<div class="modal-header panel-grad-head">
+		<h3 class="modal-title" id="modal-title">Share Client</h3>
+	</div>
+	<div name="form" class="modal-body" id="modal-body">
+		<strong class="text-primary">Share {{shareCtrl.clientCopy.name}}'s Information</strong>
+		<div class="content-shadow">
+		<p>If you know the e-mail address of an API-Maturity user and would like to share this client with them, please enter it below.</p>
+		<form class="form" name="form" ng-submit="shareCtrl.checkForm(form)" novalidate>
+		<div class="form-group" ng-class="{ 'has-success': form.email.$valid && shareCtrl.submitted,
+			'has-error': form.email.$invalid && shareCtrl.submitted || shareCtrl.shared || shareCtrl.sameEmail || shareCtrl.notFound}">
+			<label>E-mail:</label>
+
+			<input type="email" name="email" class="form-control" ng-model="shareCtrl.email" required/>
+			<p class="help-block" ng-show="form.email.$error.email && shareCtrl.submitted">
+				Doesn't look like a valid email.
+			</p>
+			<p class="help-block" ng-show="form.email.$error.required && shareCtrl.submitted">
+				You need to provide an e-mail.
+			</p>
+			<p class="help-block" ng-show="shareCtrl.sameEmail && shareCtrl.submitted">
+				This e-mail belongs to your account.
+			</p>
+			<p class="help-block" ng-show="shareCtrl.shared && shareCtrl.submitted">
+				You have already shared this client with the user belonging to this e-mail.
+			</p>
+			<p class="help-block" ng-show="shareCtrl.notFound && shareCtrl.submitted">
+				A user registered to this e-mail was not found.
+			</p>
+		</div>
+	</form>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default btn-sm" ng-click="shareCtrl.checkForm(form)">
+		Save <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+	</button>
+	<button class="btn btn-default btn-sm" ng-click="shareCtrl.cancel()">
+		Cancel <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	</button>
+</div>
+</div>

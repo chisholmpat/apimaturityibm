@@ -1,8 +1,9 @@
 'use strict'
 
-export var defaultTemplate = [{
+export const defaultTemplate = [{
     name: 'API-Maturity Template',
     description: 'This is the default API-Maturity survey.',
+    master: true,
     assessment: [{
       name: 'Business',
       questions: [{

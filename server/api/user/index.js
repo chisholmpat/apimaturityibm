@@ -17,6 +17,11 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 router.post('/admin', controller.adminCreate);
 router.put('/admin/:id', controller.adminUpdate);
+router.get('/recentActivity/:id', controller.recentActivity);
+router.put('/setActive/:id', auth.hasRole('admin'), controller.setFalse);
+router.post('/forgotPassword/:email', controller.forgotPassword);
+router.get('/getByToken/:token', controller.getByToken);
+router.post('/setPasswordByToken/:token/:newPassword', controller.setPasswordByToken);
 
 /**
  * Client CRUD routes
@@ -26,6 +31,9 @@ router.get('/client/:id', controller.showClients);
 router.put('/clientUpdate/:id/:clientId', controller.upsertClient);
 router.delete('/clientDelete/:id/:clientId', controller.destroyClient);
 router.post('/clientNew/:id', controller.createClient);
+router.post('/clientAccess/:id/:email/:clientId', controller.clientAccess);
+router.get('/sharedClients/:id', controller.getSharedClients);
+router.delete('/removeSharedClient/:id/:sharedId', controller.removeSharedClient);
 
 /**
  * Assessment CRUD routes
@@ -33,7 +41,12 @@ router.post('/clientNew/:id', controller.createClient);
 router.get('/assessment/:id/:clientId', controller.showAssessments);
 router.get('/assessment/:id/:clientId/:assessmentId', controller.showAssessment);
 router.post('/assessmentNew/:id/:clientId', controller.createAssessment);
+router.put('/assessmentUpdate/:id/:clientId/:assessmentId', controller.upsertAssessment);
 router.delete('/assessmentDelete/:id/:clientId/:assessmentId', controller.destroyAssessment);
+router.get('/compare/:tempName', controller.getAllAssessmentsByName);
+router.get('/comparebycountry/:country', controller.getAllAssessmentsByCountry);
+router.get('/comparebyindustry/:industry', controller.getAllAssessmentsByIndustry);
+router.get('/comparebycountryindustry/:country/:industry', controller.getAllAssessmentsByCountryIndustry)
 
 /**
  * Assessment template CRUD routes

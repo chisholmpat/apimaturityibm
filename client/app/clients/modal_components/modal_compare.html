@@ -2,52 +2,364 @@
 	<div class="modal-header panel-grad-head">
 		<h3 class="modal-title" id="modal-title">Comparison Tool</h3>
 	</div>
-	<div class="modal-body" id="modal-body" style="overflow-y:auto">
-		<div ng-show="newCtrl.savingData" style="text-align:center;">
-			<h4>Saving your settings...</h4>
-			<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-			<span class="sr-only">Saving...</span>
-		</div>
-		<div ng-hide="newCtrl.savingData">
-			<h4 class="text-primary"><strong>Please make a selection</h4>
-			<div class="col-md-12 content-shadow">
+	<div class="modal-body" id="modal-body" style="max-height: calc(100vh - 200px);
+	overflow-y: auto;">
+<!-- 	<div ng-show="newCtrl.savingData" style="text-align:center;">
+		<h4>Saving your settings...</h4>
+		<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+		<span class="sr-only">Saving...</span>
+	</div> -->
+	<div ng-hide="newCtrl.savingData">
+		<ul class="nav nav-pills" role="tablist">
+			<li class="nav-item" ng-click="comCtrl.switch(1)"><a href="#">Compare Individually</a></li>
+			<li class="nav-item" ng-click="comCtrl.switch(2)"><a href="#">Global API Maturity Scores</a></li>
+		</ul>
+		<div class="col-md-12 content-shadow">
+			<div ng-show="comCtrl.panel==1">
+				<strong>Client Selected:</strong> {{comCtrl.clientCopy.name}}<br/>
+				<strong>Country:</strong> {{comCtrl.clientCopy.country}}<br/>
+				<strong>Industry:</strong> {{comCtrl.clientCopy.industry}}<br/>
 				<form name="form">
 
-					<div class="form-group" ng-class="{ 'has-error': comCtrl.submitted && form.clientOne.$invalid }">
-						<label for="clientOne"> Select the first client: </label>
-						<br/>
-						<select class="form-control" name="clientOne" ng-model="newCtrl.selectionOne" required>
-							<option class="modal-wrap" ng-repeat="client in comCtrl.clients" value="{{client._id}}" ng-click="comCtrl.copyClientOne(client)">{{client.name}}</option>
+					<div class="form-group" ng-class="{ 'has-success': form.assessmentOne.$valid && comCtrl.submitted, 'has-error': form.assessmentOne.$invalid && comCtrl.submitted }">
+						<label for="assessmentOne">Pick an assessment to compare: </label>
+						<select name="assessmentOne" class="form-control" ng-model="comCtrl.assessmentOne" ng-options="a as a.name for a in comCtrl.selectionOne.assessments" ng-change="comCtrl.changeAssessmentOne()">
 						</select>
 
-						<div class="help-block" ng-messages="form.clientOne.$error" ng-if="comCtrl.submitted &&form.templateSelect.$invalid">
-							<div ng-message="required" class="error">Please select a client.</div>
+						<div class="help-block" ng-messages="form.assessmentOne.$error" ng-if="comCtrl.submitted && form.assessmentOne.$invalid">
+							<div ng-message="required" class="error">Please select an assessment.</div>
 						</div>
 					</div>
+					<hr/>
 
-					<div class="form-group" ng-class="{ 'has-error': comCtrl.submitted && form.clientTwo.$invalid }">
-						<label for="clientOne"> Select the second client: </label>
-						<br/>
-						<select class="form-control" name="clientTwo" ng-model="newCtrl.selectionTwo" required>
+					<div class="form-group" ng-class="{ 'has-success': form.indClient.$valid && comCtrl.submitted, 'has-error': form.indClient.$invalid && comCtrl.submitted }">
+						<label for="clientTwo"> Select the second client: </label>
+						<select class="form-control" name="indClient" required>
 							<option class="modal-wrap" ng-repeat="client in comCtrl.clients" value="{{client._id}}" ng-click="comCtrl.copyClientTwo(client)">{{client.name}}</option>
 						</select>
 
-						<div class="help-block" ng-messages="form.clientTwo.$error" ng-if="comCtrl.submitted && form.clientTwo.$invalid">
+						<div class="help-block" ng-messages="form.indClient.$error" ng-if="comCtrl.submitted && form.clientTwo.$invalid">
 							<div ng-message="required" class="error">Please select a client.</div>
 						</div>
 					</div>
 
+					<div ng-hide="comCtrl.noMatches" class="form-group" ng-class="{ 'has-success': form.assessmentTwo.$valid && comCtrl.submitted, 'has-error': form.assessmentTwo.$invalid && comCtrl.submitted }">
+						<label for="assessmentTwo">Pick an assessment to compare: </label>
+						<select name="assessmentTwo" class="form-control" ng-model="comCtrl.assessmentTwo" ng-options="a as a.name for a in comCtrl.filteredList">
+						</select>
 
+						<div class="help-block" ng-messages="form.assessmentTwo.$error" ng-if="comCtrl.submitted && form.assessmentTwo.$invalid">
+							<div ng-message="required" class="error">Please select an assessment.</div>
+						</div>
+					</div>
+					<p ng-show="comCtrl.noMatches" class="text-danger">This client did not take any assessments using the template that was used for {{comCtrl.assessmentOne.name}}.</p>
 				</form>
+			</div>
+			<div ng-show="comCtrl.panel==2">
+				<strong>Client Selected:</strong> {{comCtrl.clientCopy.name}}<br/>
+				<strong>Country:</strong> {{comCtrl.clientCopy.country}}<br/>
+				<strong>Industry:</strong> {{comCtrl.clientCopy.industry}}<br/>
+				<form name="apiForm">
+					<div class="form-group" ng-class="{ 'has-success': form.assessmentApi.$valid && comCtrl.submitted, 'has-error': form.assessmentApi.$invalid && comCtrl.submitted }">
+						<label for="assessmentApi">Assessments: </label>
+						<select name="assessmentOne" class="form-control" ng-model="comCtrl.apiAssessment" ng-options="a as a.name for a in comCtrl.apiSelection.assessments">
+						</select>
 
+						<div class="help-block" ng-messages="form.apiAssessment.$error" ng-if="comCtrl.submitted && form.apiAssessment.$invalid">
+							<div ng-message="required" class="error">Please select an assessment.</div>
+						</div>
+					</div>
+
+					<div name="country" class="form-group">
+						<label for="countrySelect">Filter by country: </label>
+						<select class="form-control" name="country" ng-model="comCtrl.countrySelected">
+							<option value="none">All</option>
+							<option value="Afganistan">Afghanistan</option>
+							<option value="Albania">Albania</option>
+							<option value="Algeria">Algeria</option>
+							<option value="American Samoa">American Samoa</option>
+							<option value="Andorra">Andorra</option>
+							<option value="Angola">Angola</option>
+							<option value="Anguilla">Anguilla</option>
+							<option value="Antigua &amp; Barbuda">Antigua &amp; Barbuda</option>
+							<option value="Argentina">Argentina</option>
+							<option value="Armenia">Armenia</option>
+							<option value="Aruba">Aruba</option>
+							<option value="Australia">Australia</option>
+							<option value="Austria">Austria</option>
+							<option value="Azerbaijan">Azerbaijan</option>
+							<option value="Bahamas">Bahamas</option>
+							<option value="Bahrain">Bahrain</option>
+							<option value="Bangladesh">Bangladesh</option>
+							<option value="Barbados">Barbados</option>
+							<option value="Belarus">Belarus</option>
+							<option value="Belgium">Belgium</option>
+							<option value="Belize">Belize</option>
+							<option value="Benin">Benin</option>
+							<option value="Bermuda">Bermuda</option>
+							<option value="Bhutan">Bhutan</option>
+							<option value="Bolivia">Bolivia</option>
+							<option value="Bonaire">Bonaire</option>
+							<option value="Bosnia &amp; Herzegovina">Bosnia &amp; Herzegovina</option>
+							<option value="Botswana">Botswana</option>
+							<option value="Brazil">Brazil</option>
+							<option value="British Indian Ocean Ter">British Indian Ocean Ter</option>
+							<option value="Brunei">Brunei</option>
+							<option value="Bulgaria">Bulgaria</option>
+							<option value="Burkina Faso">Burkina Faso</option>
+							<option value="Burundi">Burundi</option>
+							<option value="Cambodia">Cambodia</option>
+							<option value="Cameroon">Cameroon</option>
+							<option value="Canada">Canada</option>
+							<option value="Canary Islands">Canary Islands</option>
+							<option value="Cape Verde">Cape Verde</option>
+							<option value="Cayman Islands">Cayman Islands</option>
+							<option value="Central African Republic">Central African Republic</option>
+							<option value="Chad">Chad</option>
+							<option value="Channel Islands">Channel Islands</option>
+							<option value="Chile">Chile</option>
+							<option value="China">China</option>
+							<option value="Christmas Island">Christmas Island</option>
+							<option value="Cocos Island">Cocos Island</option>
+							<option value="Colombia">Colombia</option>
+							<option value="Comoros">Comoros</option>
+							<option value="Congo">Congo</option>
+							<option value="Cook Islands">Cook Islands</option>
+							<option value="Costa Rica">Costa Rica</option>
+							<option value="Cote DIvoire">Cote D'Ivoire</option>
+							<option value="Croatia">Croatia</option>
+							<option value="Cuba">Cuba</option>
+							<option value="Curaco">Curacao</option>
+							<option value="Cyprus">Cyprus</option>
+							<option value="Czech Republic">Czech Republic</option>
+							<option value="Denmark">Denmark</option>
+							<option value="Djibouti">Djibouti</option>
+							<option value="Dominica">Dominica</option>
+							<option value="Dominican Republic">Dominican Republic</option>
+							<option value="East Timor">East Timor</option>
+							<option value="Ecuador">Ecuador</option>
+							<option value="Egypt">Egypt</option>
+							<option value="El Salvador">El Salvador</option>
+							<option value="Equatorial Guinea">Equatorial Guinea</option>
+							<option value="Eritrea">Eritrea</option>
+							<option value="Estonia">Estonia</option>
+							<option value="Ethiopia">Ethiopia</option>
+							<option value="Falkland Islands">Falkland Islands</option>
+							<option value="Faroe Islands">Faroe Islands</option>
+							<option value="Fiji">Fiji</option>
+							<option value="Finland">Finland</option>
+							<option value="France">France</option>
+							<option value="French Guiana">French Guiana</option>
+							<option value="French Polynesia">French Polynesia</option>
+							<option value="French Southern Ter">French Southern Ter</option>
+							<option value="Gabon">Gabon</option>
+							<option value="Gambia">Gambia</option>
+							<option value="Georgia">Georgia</option>
+							<option value="Germany">Germany</option>
+							<option value="Ghana">Ghana</option>
+							<option value="Gibraltar">Gibraltar</option>
+							<option value="Great Britain">Great Britain</option>
+							<option value="Greece">Greece</option>
+							<option value="Greenland">Greenland</option>
+							<option value="Grenada">Grenada</option>
+							<option value="Guadeloupe">Guadeloupe</option>
+							<option value="Guam">Guam</option>
+							<option value="Guatemala">Guatemala</option>
+							<option value="Guinea">Guinea</option>
+							<option value="Guyana">Guyana</option>
+							<option value="Haiti">Haiti</option>
+							<option value="Hawaii">Hawaii</option>
+							<option value="Honduras">Honduras</option>
+							<option value="Hong Kong">Hong Kong</option>
+							<option value="Hungary">Hungary</option>
+							<option value="Iceland">Iceland</option>
+							<option value="India">India</option>
+							<option value="Indonesia">Indonesia</option>
+							<option value="Iran">Iran</option>
+							<option value="Iraq">Iraq</option>
+							<option value="Ireland">Ireland</option>
+							<option value="Isle of Man">Isle of Man</option>
+							<option value="Israel">Israel</option>
+							<option value="Italy">Italy</option>
+							<option value="Jamaica">Jamaica</option>
+							<option value="Japan">Japan</option>
+							<option value="Jordan">Jordan</option>
+							<option value="Kazakhstan">Kazakhstan</option>
+							<option value="Kenya">Kenya</option>
+							<option value="Kiribati">Kiribati</option>
+							<option value="Korea North">Korea North</option>
+							<option value="Korea Sout">Korea South</option>
+							<option value="Kuwait">Kuwait</option>
+							<option value="Kyrgyzstan">Kyrgyzstan</option>
+							<option value="Laos">Laos</option>
+							<option value="Latvia">Latvia</option>
+							<option value="Lebanon">Lebanon</option>
+							<option value="Lesotho">Lesotho</option>
+							<option value="Liberia">Liberia</option>
+							<option value="Libya">Libya</option>
+							<option value="Liechtenstein">Liechtenstein</option>
+							<option value="Lithuania">Lithuania</option>
+							<option value="Luxembourg">Luxembourg</option>
+							<option value="Macau">Macau</option>
+							<option value="Macedonia">Macedonia</option>
+							<option value="Madagascar">Madagascar</option>
+							<option value="Malaysia">Malaysia</option>
+							<option value="Malawi">Malawi</option>
+							<option value="Maldives">Maldives</option>
+							<option value="Mali">Mali</option>
+							<option value="Malta">Malta</option>
+							<option value="Marshall Islands">Marshall Islands</option>
+							<option value="Martinique">Martinique</option>
+							<option value="Mauritania">Mauritania</option>
+							<option value="Mauritius">Mauritius</option>
+							<option value="Mayotte">Mayotte</option>
+							<option value="Mexico">Mexico</option>
+							<option value="Midway Islands">Midway Islands</option>
+							<option value="Moldova">Moldova</option>
+							<option value="Monaco">Monaco</option>
+							<option value="Mongolia">Mongolia</option>
+							<option value="Montserrat">Montserrat</option>
+							<option value="Morocco">Morocco</option>
+							<option value="Mozambique">Mozambique</option>
+							<option value="Myanmar">Myanmar</option>
+							<option value="Nambia">Nambia</option>
+							<option value="Nauru">Nauru</option>
+							<option value="Nepal">Nepal</option>
+							<option value="Netherland Antilles">Netherland Antilles</option>
+							<option value="Netherlands">Netherlands (Holland, Europe)</option>
+							<option value="Nevis">Nevis</option>
+							<option value="New Caledonia">New Caledonia</option>
+							<option value="New Zealand">New Zealand</option>
+							<option value="Nicaragua">Nicaragua</option>
+							<option value="Niger">Niger</option>
+							<option value="Nigeria">Nigeria</option>
+							<option value="Niue">Niue</option>
+							<option value="Norfolk Island">Norfolk Island</option>
+							<option value="Norway">Norway</option>
+							<option value="Oman">Oman</option>
+							<option value="Pakistan">Pakistan</option>
+							<option value="Palau Island">Palau Island</option>
+							<option value="Palestine">Palestine</option>
+							<option value="Panama">Panama</option>
+							<option value="Papua New Guinea">Papua New Guinea</option>
+							<option value="Paraguay">Paraguay</option>
+							<option value="Peru">Peru</option>
+							<option value="Phillipines">Philippines</option>
+							<option value="Pitcairn Island">Pitcairn Island</option>
+							<option value="Poland">Poland</option>
+							<option value="Portugal">Portugal</option>
+							<option value="Puerto Rico">Puerto Rico</option>
+							<option value="Qatar">Qatar</option>
+							<option value="Republic of Montenegro">Republic of Montenegro</option>
+							<option value="Republic of Serbia">Republic of Serbia</option>
+							<option value="Reunion">Reunion</option>
+							<option value="Romania">Romania</option>
+							<option value="Russia">Russia</option>
+							<option value="Rwanda">Rwanda</option>
+							<option value="St Barthelemy">St Barthelemy</option>
+							<option value="St Eustatius">St Eustatius</option>
+							<option value="St Helena">St Helena</option>
+							<option value="St Kitts-Nevis">St Kitts-Nevis</option>
+							<option value="St Lucia">St Lucia</option>
+							<option value="St Maarten">St Maarten</option>
+							<option value="St Pierre &amp; Miquelon">St Pierre &amp; Miquelon</option>
+							<option value="St Vincent &amp; Grenadines">St Vincent &amp; Grenadines</option>
+							<option value="Saipan">Saipan</option>
+							<option value="Samoa">Samoa</option>
+							<option value="Samoa American">Samoa American</option>
+							<option value="San Marino">San Marino</option>
+							<option value="Sao Tome &amp; Principe">Sao Tome &amp; Principe</option>
+							<option value="Saudi Arabia">Saudi Arabia</option>
+							<option value="Senegal">Senegal</option>
+							<option value="Serbia">Serbia</option>
+							<option value="Seychelles">Seychelles</option>
+							<option value="Sierra Leone">Sierra Leone</option>
+							<option value="Singapore">Singapore</option>
+							<option value="Slovakia">Slovakia</option>
+							<option value="Slovenia">Slovenia</option>
+							<option value="Solomon Islands">Solomon Islands</option>
+							<option value="Somalia">Somalia</option>
+							<option value="South Africa">South Africa</option>
+							<option value="Spain">Spain</option>
+							<option value="Sri Lanka">Sri Lanka</option>
+							<option value="Sudan">Sudan</option>
+							<option value="Suriname">Suriname</option>
+							<option value="Swaziland">Swaziland</option>
+							<option value="Sweden">Sweden</option>
+							<option value="Switzerland">Switzerland</option>
+							<option value="Syria">Syria</option>
+							<option value="Tahiti">Tahiti</option>
+							<option value="Taiwan">Taiwan</option>
+							<option value="Tajikistan">Tajikistan</option>
+							<option value="Tanzania">Tanzania</option>
+							<option value="Thailand">Thailand</option>
+							<option value="Togo">Togo</option>
+							<option value="Tokelau">Tokelau</option>
+							<option value="Tonga">Tonga</option>
+							<option value="Trinidad &amp; Tobago">Trinidad &amp; Tobago</option>
+							<option value="Tunisia">Tunisia</option>
+							<option value="Turkey">Turkey</option>
+							<option value="Turkmenistan">Turkmenistan</option>
+							<option value="Turks &amp; Caicos Is">Turks &amp; Caicos Is</option>
+							<option value="Tuvalu">Tuvalu</option>
+							<option value="Uganda">Uganda</option>
+							<option value="Ukraine">Ukraine</option>
+							<option value="United Arab Erimates">United Arab Emirates</option>
+							<option value="United Kingdom">United Kingdom</option>
+							<option value="United States of America">United States of America</option>
+							<option value="Uraguay">Uruguay</option>
+							<option value="Uzbekistan">Uzbekistan</option>
+							<option value="Vanuatu">Vanuatu</option>
+							<option value="Vatican City State">Vatican City State</option>
+							<option value="Venezuela">Venezuela</option>
+							<option value="Vietnam">Vietnam</option>
+							<option value="Virgin Islands (Brit)">Virgin Islands (Brit)</option>
+							<option value="Virgin Islands (USA)">Virgin Islands (USA)</option>
+							<option value="Wake Island">Wake Island</option>
+							<option value="Wallis &amp; Futana Is">Wallis &amp; Futana Is</option>
+							<option value="Yemen">Yemen</option>
+							<option value="Zaire">Zaire</option>
+							<option value="Zambia">Zambia</option>
+							<option value="Zimbabwe">Zimbabwe</option>
+						</select>
+					</div>
+
+
+                     <div class="form-group">
+                          <label>Filter by industry:</label>
+
+                          <select class="form-control" name="industry" ng-model="comCtrl.industrySelected">
+                              <option value="none">All</option>
+                              <option value="Aerospace and Defense">Aerospace and Defense</option>
+                              <option value="Automotive">Automotive</option>
+                              <option value="Banking">Banking</option>
+                              <option value="Chemical and Petroleum">Chemical and Petroleum</option>
+                              <option value="Consumer Products">Consumer Products</option>
+                              <option value="Education">Education</option>
+                              <option value="Electronics">Electronics</option>
+                              <option value="Energy and Utilities">Energy and Utilities</option>
+                              <option value="Financial Markets">Financial Markets</option>
+                              <option value="Government">Government</option>
+                              <option value="Healthcare">Healthcare</option>
+                              <option value="Insurance">Insurance</option>
+                              <option value="Life Sciences">Life Sciences</option>
+                              <option value="Metals and Mining">Metals and Mining</option>
+                              <option value="Retail">Retail</option>
+                              <option value="Telecommunications, Media and Entertainment">Telecommunications, Media and Entertainment</option>
+                              <option value="Travel and Transportation">Travel and Transportation</option>
+                          </select>
+                      </div>
+					</form>
+				</div>
 			</div>
 		</div>
+
 	</div>
 	<div class="modal-footer">
-		<button class="btn btn-default btn-sm" ng-click="comCtrl.cancel()" ng-disabled="newCtrl.savingData">
+		<button class="btn btn-default btn-sm" ng-click="comCtrl.cancel()">
 			Close <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 		</button>
-		<button type="button" class="btn btn-default btn-sm" ng-click="newCtrl.checkTemplate(form)" ng-disabled="newCtrl.savingData">
+		<button type="button" class="btn btn-default btn-sm" ng-click="comCtrl.checkTemplate(form, apiForm)">
 			Compare Results <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
 		</button>
 	</div>

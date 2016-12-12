@@ -11,6 +11,11 @@ function localAuthenticate(User, email, password, done) {
           message: 'This email is not registered.'
         });
       }
+      if(user.active == false) {
+        return done(null, false, {
+          message: 'Your account has been disabled. Please contact the the administrator to resolve this issue'
+        });
+      }
       user.authenticate(password, function(authError, authenticated) {
         if(authError) {
           return done(authError);

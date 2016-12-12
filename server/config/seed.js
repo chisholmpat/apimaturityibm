@@ -10,9 +10,15 @@ import Clients from '../api/clients/clients.model';
 import Assessments from '../api/assessments/assessments.model'
 // import demoTemp from '../api/user/default_template.seed.js'
 
+function randomIntFromInterval(min,max)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
 var defaultTemplate = [{
     name: 'API-Maturity Template',
     description: 'This is the default API-Maturity survey.',
+    master: true,
     assessment: [{
       name: 'Business',
       questions: [{
@@ -363,6 +369,7 @@ var defaultTemplate = [{
 var demoAssessment = [{
     name: 'My First Assesment',
     description: 'This is the default API-Maturity survey.',
+    tempName: 'API-Maturity Template',
     assessment: [{
       name: 'Business',
       questions: [{
@@ -710,9 +717,28 @@ var demoAssessment = [{
     }]
 }];
 
+var rand = function randomScores(demoAssessment) {
+  for (var i = 0; i < demoAssessment.length; i++) {
+    for (var j = 0; j < demoAssessment[i].assessment.length; j++) {
+      for (var q = 0; q < demoAssessment[i].assessment[j].questions.length; q++) {
+        if (demoAssessment[i].assessment[j].questions[q].category === 'Quantitative-Assessment')
+          demoAssessment[i].assessment[j].questions[q].answer = randomIntFromInterval(1,5);
+        else 
+          demoAssessment[i].assessment[j].questions[q].answer = randomIntFromInterval(1,3);
+      }
+    }
+  }
+  console.log(demoAssessment);
+  return demoAssessment;
+}//End randomScores
+
+var d1 = rand(demoAssessment);
+var d2 = rand(demoAssessment);
+var d3 = rand(demoAssessment);
+
 var demoClient = {
   name: 'Big Box Tech',
-  industry: 'UX Design',
+  industry: 'Banking',
   contact: 'Peter C',
   email: 'peter@bigboxtech.ca',
   phone: '18007775555',
@@ -723,28 +749,31 @@ var demoClient = {
   market_capitalization: 4,
   competitors: 'Small Box Corp, Medium Box Inc',
   active: false,
-  assessments: demoAssessment
+  assessments: d1
 };
+
+
 
 var demoClient1 = {
   name: 'Cubex Corporation',
-  industry: 'Health Informatics',
+  industry: 'Electronics',
   contact: 'Mike F',
   email: 'mike@cubex.com',
   phone: '18003334444',
-  country: 'USA',
+  country: 'United States of America',
   revenue: 3000000,
   industry_segment: 'Emergent Disease Analysis',
   market_share: 500,
   market_capitalization: 200,
   competitors: 'Squarex, Triex',
   active: false,
-  assessments: demoAssessment
+  assessments: d2
 };
+
 
 var demoClient2 = {
   name: 'Data Doctors Inc',
-  industry: 'Database Management Systems',
+  industry: 'Automotive',
   contact: 'Wendy S',
   email: 'wendy@datadoctors.com',
   phone: '18009992233',
@@ -755,8 +784,10 @@ var demoClient2 = {
   market_capitalization: 500,
   competitors: 'Data Shark Corp, Data Masters Inc',
   active: false,
-  assessments: demoAssessment
+  assessments: d3
 };
+
+
 
 var clientArray = [demoClient, demoClient1, demoClient2];
 
@@ -791,7 +822,10 @@ User.find({}).remove()
       clients: clientArray, 
       assessmentTemplates: defaultTemplate
     })
-    .then(() => {
+    .then((users) => {
       console.log('finished populating users');
     });
 });
+
+
+

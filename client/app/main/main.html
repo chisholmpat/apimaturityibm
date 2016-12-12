@@ -1,12 +1,12 @@
+
 <header class="hero-unit" id="banner" style="margin-top:0;" ng-cloak>
 	<div class="container">
 		<h1 class="logo-font">API Maturity</h1>
-		<p ng-hide="mainCtrl.isLoggedIn()" class="lead">Get Started Today!</p>
+		<p ng-hide="mainCtrl.isLoggedIn()" class="lead">Get important insights about your API.</p>
 		<p ng-show="mainCtrl.isLoggedIn()" class="lead">Welcome back, {{mainCtrl.getCurrentUser().name}}!</p>	
 	</div>
 </header>
-
-<div ng-hide="mainCtrl.isLoggedIn()" class="col-md-12 text-center" style="width:100%">
+<!-- <div ng-hide="mainCtrl.isLoggedIn()" class="col-md-12 text-center" style="width:100%">
 <button class="btn btn-success btn-lg" ui-sref="assessment">
 	Take the Assessment <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 </button>
@@ -18,4 +18,110 @@
 <button class="btn btn-success btn-lg" ng-click="mainCtrl.newAssessment()" style="width:260px">
 	Start a new assessment <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 </button><br/>
+</div> -->
+
+<div class="large-margins container">
+	<div class="row special-row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">Log Client Data</strong>
+						<hr/>
+						<p>Keep track of your clients by using our logging service. We host all your past surveys allowing you to easily keep track of your client's result history.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">Customize Surveys</strong>
+						<hr/>
+						<p>You aren't just limited to using our survey, you can copy sections of it, alter metrics or make your own surveys to meet your client's needs. 
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">Compare Scores</strong>
+						<hr/>
+						<p>Use our tool to compare individual scores between clients or compare your clients to other API developers from around the world.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row special-row" ng-show="mainCtrl.isLoggedIn()" >
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">How Our Clients Are Scoring</strong>
+						<hr/>
+						<canvas id="globalScores"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">Your Monthly Activity</strong>
+						<hr/>
+						<canvas id="activityGraph"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row special-row" ng-hide="mainCtrl.isLoggedIn()">
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">Take The Survey</strong>
+						<hr/>
+						<p>Take the API Maturity survey today and get insight about your API!</p>
+						<button ui-sref="assessment" class="btn btn-default btn-md">
+							Start Survey</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-body">
+
+
+					<div style="text-align:center">
+						<strong class="text-primary">Sign Up Today</strong>
+						<hr/>
+						<p>Signing up for an account lets you log clients, create surveys and compare results!</p>
+						<button ui-sref="signup" class="btn btn-default btn-md">
+							Sign Up</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -10,7 +10,14 @@ export default class NewAssessmentComponent {
     this.$cookies = $cookies;
     this.$state = $state;
     this.socket = socket;
-    this.userId = this.$cookies.get('userId');
+    this.sharedSelected = this.$cookies.get('sharedSelected');
+
+    if (this.sharedSelected === 'true') {
+      this.userId = this.$cookies.get('sharedUserId');
+    } else if (this.sharedSelected === 'false') {
+      this.userId = this.$cookies.get('userId');
+    }
+
     this.clientId = this.$cookies.get('clientId');
     this.clientName = this.$cookies.get('clientName');
     this.assessmentId = this.$cookies.get('assessmentId');
@@ -39,7 +46,8 @@ export default class NewAssessmentComponent {
   }//End onInit
 
   saveAssessment() {
-    this.$http.post('/api/users/assessmentNew/' + this.userId + '/' + this.clientId, this.newAssessment)
+    this.$http.put('/api/users/assessmentUpdate/' + this.userId + '/' + this.clientId + '/' +
+     this.assessmentId, this.newAssessment)
     .then(response => {
       this.$cookies.put('assessmentId', response.data._id);
       this.$cookies.put('assessmentName', response.data.name);
