@@ -40,7 +40,7 @@ import socket from '../components/socket/socket.service';
 import './app.scss';
 
 angular.module('apiLocalApp', [ngCookies, ngResource, ngSanitize, 'btford.socket-io', uiRouter,
-    uiBootstrap, ngMessages, ngAnimate, smartTable, _Auth, account, admin, navbar, footer, main, constants, 
+    uiBootstrap, ngMessages, smartTable, _Auth, account, admin, navbar, footer, main, constants, 
     socket, util, clients, builder, assessment, how_to, graph, scores, pdf
   ])
   .config(routeConfig)

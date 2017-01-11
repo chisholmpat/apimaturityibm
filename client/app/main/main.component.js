@@ -21,23 +21,25 @@ export class MainController {
   }
 
   $onInit() {
-    this.$http.get('/api/users/me')
-    .then(response => {
-      this.$cookies.put('userId', response.data._id);
-      this.userId = this.$cookies.get('userId');
-      this.$http.get('/api/users/compare/' + 'API-Maturity Template')
+    if (this.$cookies.get('token') !== undefined) {
+      this.$http.get('/api/users/me')
       .then(response => {
-        var dataObj = response.data;
-        this.results = this.scores.allAverages(dataObj);
-        this.graph.paintRadarGraph(this.results, 'globalScores');
-        this.$http.get('/api/users/recentActivity/' + this.userId)
+        this.$cookies.put('userId', response.data._id);
+        this.userId = this.$cookies.get('userId');
+        this.$http.get('/api/users/compare/' + 'API-Maturity Template')
         .then(response => {
-          this.dataObj = response.data;
-          this.graph.paintActivityGraph(this.dataObj, 'activityGraph');
-          this.dataLoaded = true;
+          var dataObj = response.data;
+          this.results = this.scores.allAverages(dataObj);
+          this.graph.paintRadarGraph(this.results, 'globalScores');
+          this.$http.get('/api/users/recentActivity/' + this.userId)
+          .then(response => {
+            this.dataObj = response.data;
+            this.graph.paintActivityGraph(this.dataObj, 'activityGraph');
+            this.dataLoaded = true;
+          })
         })
       })
-    })
+    }
   }//End onInit
 }//End controller
 

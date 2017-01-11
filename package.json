@@ -113,6 +113,7 @@
     "passport": "~0.3.0",
     "passport-facebook": "^2.0.0",
     "passport-google-oauth20": "^1.0.0",
+    "passport-idaas-openidconnect": "^2.0.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.3",
     "phantomjs-prebuilt": "^2.1.4",
@@ -138,8 +139,8 @@
     "webpack-stream": "^3.2.0"
   },
   "engines": {
-    "node": "^6.2.2",
-    "npm": "^3.9.5"
+    "node": "6.2.2",
+    "npm": "3.9.5"
   },
   "scripts": {
     "test": "gulp test",
