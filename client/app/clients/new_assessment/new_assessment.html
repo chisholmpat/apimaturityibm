@@ -1,10 +1,7 @@
-<div class="container top-padding">
-<div class="row special-row">
-	<div class="col-lg-8 col-lg-offset-2">
+	<div class="col-lg-8 col-lg-offset-2" style="margin-top:10px">
 		<div class="panel panel-default">
 			<div class="panel-heading panel-grad-head">
-				<h4 class="h4-panel">New Assessment: {{nasCtrl.assessmentName}}</h4>
-				<small class="h4-panel">Client: {{nasCtrl.clientName}}</small><br/>
+				<h4 class="h4-panel">{{nasCtrl.clientName}} > {{nasCtrl.assessmentName}}</h4>
 			</div>
 			<div class="panel-body">
 				<div ng-hide="nasCtrl.dataLoaded" style="text-align:center;">
@@ -147,5 +144,3 @@
 			</div>
 		</div>
 	</div>
-</div>
-</div>

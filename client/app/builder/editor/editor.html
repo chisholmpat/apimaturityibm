@@ -1,10 +1,7 @@
-<div class="container large-margins">
-<div class="row special-row lg-height">
-  <div class="col-md-4 left-col-pad lg-height">
-    <div class="panel panel-default panel-height lg-height">
+  <div class="col-md-4 left-col-pad">
+    <div class="panel panel-default panel-height">
       <div class="panel-heading panel-grad-head">
-        <h4 class="h4-panel">Edit Template</h4>
-        <span class="h4-panel">{{editCtrl.template.name}}</span>
+        <h4 class="h4-panel">Edit Template: {{editCtrl.template.name}}</h4>
       </div>
       <div class="panel-body">
                 <div ng-hide="editCtrl.dataLoaded" style="text-align:center;">
@@ -67,11 +64,10 @@
     </div>
   </div>
 
-  <div class="col-md-8 lg-height">
-    <div class="panel panel-default lg-height">
+  <div class="col-md-8 right-col">
+    <div class="panel panel-default">
       <div class="panel-heading panel-grad-head">
         <h4 class="h4-panel">Form: {{editCtrl.form.name}}</h4>
-        <span class="h4-panel">Details</span>
       </div>
       <div class="panel-body">
                 <div ng-hide="editCtrl.dataLoaded" style="text-align:center;">
